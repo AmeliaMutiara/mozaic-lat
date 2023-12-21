@@ -20,7 +20,13 @@
         @yield('title', config('adminlte.title', 'AdminLTE 3'))
         @yield('title_postfix', config('adminlte.title_postfix', ''))
     </title>
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    {{-- <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script> --}}
+    {{-- <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script> --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/js/bootstrap.min.js" integrity="sha512-WW8/jxkELe2CAiE4LvQfwm1rajOS8PHasCCx+knHG0gBHt8EXxS6T6tJRTGuDQVnluuAvMxWF4j8SNFDKceLFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
 
     {{-- Custom stylesheets (pre AdminLTE) --}}
@@ -39,14 +45,14 @@
         <link rel="stylesheet" href="{{ mix(config('adminlte.laravel_mix_css_path', 'css/app.css')) }}">
     @endif
     {{-- Extra Configured Plugins Stylesheets --}}
-    @include('adminlte::plugins', ['type' => 'css'])
+    {{-- @include('adminlte::plugins', ['type' => 'css']) --}}
 
     {{-- Livewire Styles --}}
     @if(config('adminlte.livewire'))
         @if(intval(app()->version()) >= 7)
-            @livewireStyles
+            {{-- @livewireStyles --}}
         @else
-            <livewire:styles />
+            {{-- <livewire:styles /> --}}
         @endif
     @endif
 
@@ -133,8 +139,20 @@
     .select2-container--disabled{
         background-color: #bcbcbc;
     }
+    .table td:first-child {
+        text-align: center !important;
+    }
+    .table thead,
+.table th {text-align: center !important;}
 </style>
 <body class="@yield('classes_body')" @yield('body_data')>
+    {{-- Loading Modal --}}
+    <div class="modal fade" id="loading" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="loadingLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="loading mx-auto">
+            </div>
+        </div>
+    </div>
     <div id="loading-widget" class="loading loading-widget mx-auto">
     </div>
     {{-- Body Content --}}
@@ -142,10 +160,11 @@
 
     {{-- Base Scripts --}}
     @if(!config('adminlte.enabled_laravel_mix'))
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-        <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-        <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-        <script src="{{ asset('vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+            <script src="{{ asset('vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+        @include('adminlte::plugins', ['type' => 'js'])
         <script>
             /**
              * Show loading modal
@@ -185,51 +204,6 @@
                     .split('').reverse().join('');
                 return rupiah + '.' + cents.slice(0, 2);
             }
-            $(document).ready(function() {
-                $('#example').dataTable({
-                    "aLengthMenu": [
-                        [5, 15, 20, -1],
-                        [5, 15, 20, "All"] // change per page values here
-                    ],
-                    // // set the initial value
-                    "iDisplayLength": 5,
-                });
-                $('#example').addClass('pull-left');
-            });
-            $(document).ready(function() {
-                if($('#merchant_id_view').val()!=''){
-                     $('#merchant_id').val($('#merchant_id_view').val());
-                 }
-                $("[data-toggle=popover]").popover({
-                    trigger: 'focus',
-                    content: '<div class="spinner-border spinner-border-sm text-secondary" role="status"><span class="sr-only">Loading...</span></div>',
-                });
-                $("[data-toggle=popover]").on("shown.bs.popover", function () {
-                    $.ajax({
-                        url: "{{ route('quote') }}",
-                        type: "GET",
-                        success: function (result) {
-                            $(".popover-body").html(result);
-                            $("[data-toggle=popover]").popover("update");
-                        },
-                        error: function (data) {
-                            console.log(data);
-                            $(".popover-body").html("<em class='text-danger'>Error ... </em>");
-                            $("[data-toggle=popover]").popover("update");
-                        }
-                    });
-                });
-
-                $('.datatables').dataTable({
-                        "aLengthMenu": [
-                            [5, 15, 20, -1],
-                            [5, 15, 20, "All"]
-                        ],
-                        "iDisplayLength": 5,
-                    });
-                $(".datatables").addClass('pull-left'); 
-            });
-            // $('.date').datepicker({ dateFormat: 'dd-mm-yy' }).val();
         </script>
         <script type="module">
              $('.selection-search-clear').select2({
@@ -245,7 +219,6 @@
     @endif
 
     {{-- Extra Configured Plugins Scripts --}}
-    @include('adminlte::plugins', ['type' => 'js'])
 
     {{-- Livewire Script --}}
     @if(config('adminlte.livewire'))
@@ -258,6 +231,9 @@
 
     {{-- Custom Scripts --}}
     @yield('adminlte_js')
+    @yield('scripts')
+    @yield('bladeScripts')
+    @stack('scripts')
 
 </body>
 

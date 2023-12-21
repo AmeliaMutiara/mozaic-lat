@@ -23,7 +23,13 @@
 @section('auth_body')
     <form action="{{ $login_url }}" method="post">
         @csrf
-
+        @if (count($errors) > 0)
+        <div class="alert alert-danger" role="alert">
+            @foreach ($errors->all() as $error)
+                {{ $error }}
+            @endforeach
+        </div>
+        @endif
         {{-- Email field --}}
         <div class="input-group mb-3">
             <input type="username" name="username" class="form-control @error('email') is-invalid @enderror"

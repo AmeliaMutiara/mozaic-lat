@@ -26,18 +26,9 @@ return new class extends Migration
             });
             DB::table('system_menu')->insert([
                [ 'id_menu' => 1,  'id' => 'index',              'type' => 'file','text' => 'Beranda','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 2,  'id' => 'client',             'type' => 'file','text' => 'Client','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 3,  'id' => 'product',            'type' => 'file','text' => 'Produk','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 4,  'id' => 'invoice',            'type' => 'file','text' => 'Invoice','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 8,  'id' => '#',                  'type' => 'folder','text' => 'Akutansi','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 81, 'id' => 'account',            'type' => 'file','text' => 'No. Perkiraan','parent' => "8",'menu_level' => "2",],
-               [ 'id_menu' => 82, 'id' => 'journal-voucher',    'type' => 'file','text' => 'Jurnal Umum','parent' => "8",'menu_level' => "2",],
-               [ 'id_menu' => 83, 'id' => 'journal-memorial',   'type' => 'file','text' => 'Jurnal Memorial','parent' => "8",'menu_level' => "2",],
-               [ 'id_menu' => 84, 'id' => 'balance-sheet',      'type' => 'file','text' => 'Laporan Neraca','parent' => "8",'menu_level' => "2",],
-               [ 'id_menu' => 9,  'id' => '#',                  'type' => 'folder','text' => 'Preferensi','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 91, 'id' => 'preference-company',       'type' => 'file','text' => 'Perusahaan','parent' => "9",'menu_level' => "2",],
-               [ 'id_menu' => 92, 'id' => 'product-type',       'type' => 'file','text' => 'Tipe Produk','parent' => "9",'menu_level' => "2",],
-               [ 'id_menu' => 93, 'id' => 'acct-account-setting','type' => 'file','text' => 'Pengaturan Akun','parent' => "9",'menu_level' => "2",],
+               [ 'id_menu' => 2,  'id' => 'example',             'type' => 'file','text' => 'Contoh Tabel','parent' => "#",'menu_level' => "1",],
+               [ 'id_menu' => 3, 'id' => '#',       'type' => 'file','text' => 'Level 1','parent' => "#",'menu_level' => "1",],
+               [ 'id_menu' => 31, 'id' => '#',       'type' => 'file','text' => 'Level 2','parent' => "3",'menu_level' => "2",],
             ]);
         }
     }
