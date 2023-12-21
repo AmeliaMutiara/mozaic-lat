@@ -18,7 +18,7 @@ use App\Http\Controllers\HomeController;
 
 Auth::routes();
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('home');
 });
 
 // * contoh route singgle (hanya 1 menu)
