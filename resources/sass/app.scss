@@ -6,6 +6,61 @@
 
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
+// DataTables
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+@import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
+@import "datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css";
+@import 'datatables.net-select-bs5/css/select.bootstrap5.css';
+@import "/node_modules/select2/dist/css/select2.css";
+#quote-content {
+background: #333;
+color: white;
+font-weight: bold;
+padding: 4px 8px;
+font-size: 12px;
+border-radius: 4px;
+max-width: 50%;
+}
+#arrow,
+#arrow::before {
+position: absolute;
+width: 8px;
+height: 8px;
+background: inherit;
+}
+
+#arrow {
+visibility: hidden;
+}
+
+#arrow::before {
+visibility: visible;
+content: '';
+transform: rotate(45deg);
+}
+#quote-content[data-popper-placement^='top'] > #arrow {
+    bottom: -4px;
+  }
+  
+  #quote-content[data-popper-placement^='bottom'] > #arrow {
+    top: -4px;
+  }
+  
+  #quote-content[data-popper-placement^='left'] > #arrow {
+    right: -4px;
+  }
+  
+  #quote-content[data-popper-placement^='right'] > #arrow {
+    left: -4px;
+  }
+  #quote-content {
+    /* ... */
+    display: none;
+  }
+  
+  #quote-content[data-show] {
+    display: block;
+  }
 .input-bb{
     border-top: 0 !important;
     border-right: 0 !important;

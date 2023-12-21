@@ -32,3 +32,78 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
 //     enabledTransports: ['ws', 'wss'],
 // });
+// import $ from 'jquery';
+// window.$ = $;
+import moment from 'moment';
+window.moment = moment;
+import Swal from 'sweetalert2'
+window.Swal = Swal;
+import toastr from 'toastr'
+window.toastr = toastr;
+// import select2 from 'select2'
+// window.select2 = select2;
+import select2 from 'select2';
+select2();
+import { createPopper } from '@popperjs/core';
+createPopper();
+const button = document.querySelector('#sys-show-quote');
+const tooltip = document.querySelector('#quote-content');
+const tooltipBody = document.querySelector('#quote-body');
+
+// Pass the button, the tooltip, and some options, and Popper will do the
+// magic positioning for you:
+const popperInstance = createPopper(button, tooltip, {
+  placement: 'left',
+  modifiers: [
+    {
+      name: 'offset',
+      options: {
+        offset: [-5, 8],
+      },
+    },
+  ],
+});
+function show() {
+tooltip.setAttribute('data-show', '');
+axios({
+    method: 'get',
+    url: 'http://127.0.0.1:8090/quote',
+    responseType: 'html'
+  })
+    .then(function (response) {
+        tooltip.innerHTML = response.data;
+        popperInstance.update();
+    });
+ // Enable the event listeners
+ popperInstance.setOptions((options) => ({
+    ...options,
+    modifiers: [
+      ...options.modifiers,
+      { name: 'eventListeners', enabled: true },
+    ],
+  }));
+
+  // Update its position
+popperInstance.update();
+}
+function hide() {
+tooltip.removeAttribute('data-show');
+  // Disable the event listeners
+  popperInstance.setOptions((options) => ({
+    ...options,
+    modifiers: [
+      ...options.modifiers,
+      { name: 'eventListeners', enabled: false },
+    ],
+  }));
+}
+
+const showEvents = ['click'];
+const hideEvents = ['blur','focusout'];
+showEvents.forEach((event) => {
+  button.addEventListener(event, show);
+});
+
+hideEvents.forEach((event) => {
+  button.addEventListener(event, hide);
+});
