@@ -27,17 +27,20 @@ Route::get('/quote', [HomeController::class, 'quote'])->name('quote');
 
 // * contoh route group untuk 1 menu tapi ada beberapa route yang masih berhubungan
 
-// * contoh >> Cara Pemanggilan di blade/controller : route('contoh.index')
-Route::prefix('example')->name('contoh.')->group(function () {
-    Route::get('/',[ExampleController::class, 'index'])->name('index');
-    // * variabel bisa ditaruh mana saja (lihat dokumentasi laravel)
-    Route::get('{parent_id}/child',[ExampleController::class, 'child'])->name('child');
-    Route::get('child/{parent_id}',[ExampleController::class, 'child'])->name('child-2');
-});
-// * contoh2 >> Cara Pemanggilan di blade/controller : route('contoh2.index')
-Route::prefix('example-ii')->name('contoh2.')->group(function () {
-    Route::get('/',[ExampleController::class, 'index'])->name('index');
-    // * variabel bisa ditaruh mana saja (lihat dokumentasi laravel)
-    Route::get('{parent_id}/child',[ExampleController::class, 'child'])->name('child');
-    Route::get('child/{parent_id}',[ExampleController::class, 'child'])->name('child-2');
+Route::middleware('auth')->group(function () {
+    // * contoh >> Cara Pemanggilan di blade/controller : route('contoh.index')
+    Route::prefix('example')->name('contoh.')->group(function () {
+        Route::get('/',[ExampleController::class, 'index'])->name('index');
+        // * variabel bisa ditaruh mana saja (lihat dokumentasi laravel)
+        Route::get('{parent_id}/child',[ExampleController::class, 'child'])->name('child');
+        Route::get('child/{parent_id}',[ExampleController::class, 'child'])->name('child-2');
+    });
+    // * contoh2 >> Cara Pemanggilan di blade/controller : route('contoh2.index')
+    Route::prefix('example-ii')->name('contoh2.')->group(function () {
+        Route::get('/',[ExampleController::class, 'index'])->name('index');
+        // * variabel bisa ditaruh mana saja (lihat dokumentasi laravel)
+        Route::get('{parent_id}/child',[ExampleController::class, 'child'])->name('child');
+        Route::get('child/{parent_id}',[ExampleController::class, 'child'])->name('child-2');
+    });
+
 });
