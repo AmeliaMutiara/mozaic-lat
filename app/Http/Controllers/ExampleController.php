@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class ExampleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index(ParentDataTable $table) {
        return  $table->render('content.ContohTable.List.index');
     }
