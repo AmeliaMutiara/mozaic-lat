@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>MOZAIC</b>LTE',
+    'logo' => '<b>MOZAIC</b> Base',
     'logo_img' => 'assets/img/logo_baru_mozaic/logo baru set-09.png',
     'logo_img_class' => 'brand-image',
     'logo_img_xl' => null,
