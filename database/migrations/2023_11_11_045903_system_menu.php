@@ -14,7 +14,7 @@ return new class extends Migration
     {
         if(!Schema::hasTable('system_menu')) {
             Schema::create('system_menu', function (Blueprint $table) {
-                $table->integer('id_menu');
+                $table->string('id_menu', 10);
                 $table->primary('id_menu');
                 $table->string('id',100)->nullable();
                 $table->enum('type',['folder','file','function'])->nullable();
@@ -25,10 +25,12 @@ return new class extends Migration
                 $table->softDeletesTz();
             });
             DB::table('system_menu')->insert([
-               [ 'id_menu' => 1,  'id' => 'index',              'type' => 'file','text' => 'Beranda','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 2,  'id' => 'example',             'type' => 'file','text' => 'Contoh Tabel','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 3, 'id' => '#',       'type' => 'file','text' => 'Level 1','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 31, 'id' => '#',       'type' => 'file','text' => 'Level 2','parent' => "3",'menu_level' => "2",],
+               [ 'id_menu' => 1,  'id' => 'home',          'type' => 'file','text' => 'Beranda','parent' => "#",'menu_level' => "1",],
+               [ 'id_menu' => 2,  'id' => 'example',             'type' => 'folder','text' => 'Contoh Table','parent' => "#",'menu_level' => "1",],
+               [ 'id_menu' => 3,  'id' => 'item-category',             'type' => 'file','text' => 'Kategori Barang','parent' => "#",'menu_level' => "1",],
+               [ 'id_menu' => 4, 'id' => '#',              'type' => 'folder','text' => 'Level 1','parent' => "#",'menu_level' => "1",],
+               [ 'id_menu' => 41, 'id' => 'level',         'type' => 'file','text' => 'Level 2','parent' => "4",'menu_level' => "2",],
+               [ 'id_menu' => 411, 'id' => 'level',         'type' => 'file','text' => 'Level 3','parent' => "41",'menu_level' => "3",],
             ]);
         }
     }

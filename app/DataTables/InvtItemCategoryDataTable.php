@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\ParentTable;
+use App\Models\InvtItemCategory;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class ParentDataTable extends DataTable
+class InvtItemCategoryDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -22,7 +22,7 @@ class ParentDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addIndexColumn() // * <-- Penting
+            ->addIndexColumn()
             ->addColumn('action', 'content.ContohTable.List._action-menu')
             ->setRowId('id');
     }
@@ -30,7 +30,7 @@ class ParentDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(ParentTable $model): QueryBuilder
+    public function query(InvtItemCategory $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -41,19 +41,15 @@ class ParentDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('parent-table')
+                    ->setTableId('invtitemcategory-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    // ->stateSave(true)
-                    ->dom('Bflrtip')// * <-- Penting
-                    ->parameters(["lengthMenu"=> [5, 10, 25, 50, 75, 100 ]])// * <-- Penting
+                    ->dom('Bfrtip')
+                    ->parameters(["lengthMenu"=> [5, 10, 25, 50, 75, 100 ]])
                     ->orderBy(0, 'asc')
-                    ->autoWidth(false)
-                    ->responsive()
-                    ->parameters(['scrollX' => true])
-                    ->addTableClass('align-middle table table-row-dashed gy-4')
+                    ->selectStyleSingle()
                     ->buttons([Button::make('reload')])// * <-- Penting
-                 ;
+                ;
     }
 
     /**
@@ -62,11 +58,9 @@ class ParentDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('parent_id')->title(__('No'))->data('DT_RowIndex') ->addClass('text-center')->width(10),
-            Column::make('name')->title('Nama'),
-            Column::make('description')->title('Deskripsi'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+            Column::make('item_category_id')->title(__('No'))->data('DT_RowIndex')->addClass('text-center')->width(10),
+            Column::make('item_category_code')->title('Kode Kategori Barang'),
+            Column::make('item_category_name')->title('Nama Kategori Barang'),
             Column::computed('action')->title('Aksi')
                   ->exportable(false)
                   ->printable(false)
@@ -80,6 +74,6 @@ class ParentDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Parent_' . date('YmdHis');
+        return 'InvtItemCategory_' . date('YmdHis');
     }
 }

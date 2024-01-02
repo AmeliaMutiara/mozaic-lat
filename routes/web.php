@@ -4,6 +4,7 @@ use App\Http\Controllers\ExampleController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InvtItemCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,9 @@ Route::get('/', function () {
 // * contoh route singgle (hanya 1 menu)
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/quote', [HomeController::class, 'quote'])->name('quote');
+Route::get('/item-category', [InvtItemCategoryController::class, 'index'])->name('item-category');
+Route::get('/item-category/add', [InvtItemCategoryController::class, 'addItemCetegory'])->name('add-item-category');
+Route::get('/quote', [ExampleController::class, 'index'])->name('index');
 
 // * contoh route group untuk 1 menu tapi ada beberapa route yang masih berhubungan
 
