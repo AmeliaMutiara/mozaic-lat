@@ -82,7 +82,6 @@ class InvtItemCategoryController extends Controller
             'category_code'     => 'required',
             'category_name'     => 'required',
             'category_remark'   => ''
-            
         ]);
         try {
             DB::beginTransaction();

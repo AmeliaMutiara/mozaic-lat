@@ -9,9 +9,9 @@
         console.log("value " + value);
 		$.ajax({
 				type: "POST",
-				url : "{{route('elements-add-category')}}",
+				url : "{{ route('ic.elements-add') }}",
 				data : {
-                    'name'      : name, 
+                    'name'      : name,
                     'value'     : value,
                     '_token'    : '{{csrf_token()}}'
                 },
@@ -23,7 +23,7 @@
     function reset_add() {
         $.ajax({
             type: "GET",
-            url : "{{route('add-reset-category')}}",
+            url : "{{ route('ic.add-reset') }}",
             success: function(mssg){
                 location.reload();
             }
@@ -67,11 +67,11 @@
             Form Ubah
         </h5>
         <div class="float-right">
-            <button onclick="location.href='{{ url('item-category') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
+            <a href='{{ route('ic.index') }}' name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</a>
         </div>
     </div>
 
-    <form method="post" action="{{ route('process-add-item-category') }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('ic.process-edit') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">
