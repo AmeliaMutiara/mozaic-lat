@@ -89,28 +89,29 @@ class InvtItemCategoryController extends Controller
             $table->item_category_code      = $fields['category_code'];
             $table->item_category_name      = $fields['category_name'];
             $table->item_category_remark    = $fields['category_remark'];
-            $table->margin_precentage       = $request['margin_percentage'] == '' ? 0 : $request['margin_percentage'];
+            $table->margin_percentage       = $request['margin_percentage'] == '' ? 0 : $request['margin_percentage'];
             $table->updated_id              = Auth::id();
+            $table->save();
             DB::commit();
             return redirect()->route('ic.index')->with('msg', 'Berhasil Mengubah Kategori Barang');
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e);
             report($e);
-            return redirect()->route('ic.edit')->with('msg', 'Gagal Mengubah Kategori Barang');
+            return redirect()->route('ic.edit', $fields['category_id'])->with('msg', 'Gagal Mengubah Kategori Barang');
         }
     }
     public function deleteItemCategory($item_category_id)
     {
-        $table              = InvtItemCategory::findOrFail($item_category_id);
-        // $table->data_state  = 1;
-        $table->updated_id  = Auth::id();
-
-        if($table->save()){
-            $msg = "Berhasil Menghapus Kategori Barang";
-            return redirect('/item-category')->with('msg', $msg);
-        } else {
-            $msg = "Gagal Menghapus Kategori Barang";
-            return redirect('/item-category')->with('msg', $msg);
+        try {
+        DB::beginTransaction();
+        InvtItemCategory::find($item_category_id)->delete();
+        DB::commit();
+        return redirect()->route('ic.index')->with(['msg'=> 'Berhasil Menghapus Kategori Barang', 'type' => 'success']);
+        } catch (\Exception $e) {
+        DB::rollBack();
+        report($e);
+        return redirect()->route('ic.index')->with(['msg'=> 'Gagal Menghapus Kategori Barang', 'type' => 'danger']);
         }
     }
 }

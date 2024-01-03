@@ -39,10 +39,12 @@ class InvtItemCategoryDataTable extends DataTable
             ->setTableId('invtitemcategory-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->dom('Bfrtip')
+            ->dom('Bflrtip')
             ->parameters(["lengthMenu" => [5, 10, 25, 50, 75, 100]])
             ->orderBy(0, 'asc')
-            ->selectStyleSingle()
+            ->autoWidth(false)
+            ->responsive()
+            ->parameters(['scrollX' => true])
             ->buttons([Button::make('reload')]) // * <-- Penting
         ;
     }
