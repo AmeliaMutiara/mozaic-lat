@@ -57,8 +57,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/process-add-category',[InvtItemCategoryController::class, 'processAddItemCategory'])->name('process-add');
         Route::get('/reset-add',[InvtItemCategoryController::class, 'addReset'])->name('add-reset');
         Route::get('edit/{item_category_id}',[InvtItemCategoryController::class, 'editItemCategory'])->name('edit');
-        Route::post('/process-edit-category',[InvtItemCategoryController::class, 'processEditItemCategory'])->name('process-edit');
-        Route::get('delete/{item_category_id}',[InvtItemCategoryController::class, 'deleteItemCategory'])->name('delete');
     });
 
 });

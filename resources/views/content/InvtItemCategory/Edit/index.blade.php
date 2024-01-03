@@ -4,14 +4,14 @@
 @section('js')
 
 <script>
-    function function_elements_add(name, value){
+    function function_elements_add(name, value) {
         console.log("name " + name);
         console.log("value " + value);
 		$.ajax({
 				type: "POST",
-				url : "{{route('ic.elements-add')}}",
+				url : "{{route('elements-add-category')}}",
 				data : {
-                    'name'      : name,
+                    'name'      : name, 
                     'value'     : value,
                     '_token'    : '{{csrf_token()}}'
                 },
@@ -20,10 +20,10 @@
 		});
 	}
 
-    function reset_add(){
+    function reset_add() {
         $.ajax({
             type: "GET",
-            url : "{{route('ic.add-reset')}}",
+            url : "{{route('add-reset-category')}}",
             success: function(mssg){
                 location.reload();
             }
@@ -45,7 +45,7 @@
 
 @section('content')
 <h3 class="page-title">
-Form Tambah Kategori Barang
+    Form Ubah Kategori Barang
 </h3>
 <br/>
 @if(session('msg'))
@@ -56,55 +56,56 @@ Form Tambah Kategori Barang
 
 @if(count($errors) > 0)
 <div class="alert alert-danger" role="alert">
-    @foreach ($errors->all() as $error);
-        <li>{{$error}}</li>
+    @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
     @endforeach
-</div>
 @endif
-<div class="card border border-dark">
+</div>
+    <div class="card border border-dark">
     <div class="card-header border-dark bg-dark">
         <h5 class="mb-0 float-left">
-            Form Tambah
+            Form Ubah
         </h5>
         <div class="float-right">
             <button onclick="location.href='{{ url('item-category') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
         </div>
     </div>
 
-    <form method="post" action="{{ route('ic.process-edit') }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('process-add-item-category') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <a class="text-dark">Kode Kategori Barang<a class='red'> *</a></a>
-                        <input class="form-control input-bb" name="item_category_code" id="category_code" type="text" autocomplete="off" onchange="function_elements_add(this.name, this.value);" value="{{ $datacategory['item_category_code'] }}"/>
+                        <a class="text-dark">Kode Barang Satuan<a class='red'> *</a></a>
+                        <input class="form-control input-bb" name="category_code" id="category_code" type="text" autocomplete="off" value="{{ $data['item_category_code'] }}{{ old('category_code') }}"/>
+                        <input class="form-control input-bb" name="category_id" id="category_id" type="text" autocomplete="off" value="{{ $data['item_category_id'] }}" hidden/>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <a class="text-dark">Nama Kategori Barang<a class='red'> *</a></a>
-                        <input class="form-control input-bb" name="item_category_name" id="category_name" type="text" autocomplete="off" onchange="function_elements_add(this.name, this.value);" value="{{ $datacategory['item_category_name'] }}"/>
+                        <a class="text-dark">Nama Barang Satuan<a class='red'> *</a></a>
+                        <input class="form-control input-bb" name="category_name" id="category_name" type="text" autocomplete="off" value="{{ $data['item_category_name'] }}{{ old('category_name') }}"/>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <a class="text-dark">Margin Kategori Barang (%)</a>
-                        <input class="form-control input-bb" name="margin_percentage" id="margin_percentage" type="number" autocomplete="off" onchange="function_elements_add(this.name, this.value);" value="{{ $datacategory['margin_percentage'] }}" oninput="margin_limit(this.value)"/>
+                        <input class="form-control input-bb" name="margin_percentage" id="margin_percentage" type="text" autocomplete="off" value="{{ $data['margin_percentage'] }}{{ old('margin_percentage') }}"/>
                     </div>
                 </div>
                 <div class="col-md-8 mt-3">
                     <div class="form-group">
                         <a class="text-dark">Keterangan</a>
-                        <textarea class="form-control input-bb" name="item_category_remark" id="category_remark" type="text" autocomplete="off" onchange="function_elements_add(this.name, this.value);">{{ $datacategory['item_category_remark'] }}</textarea>
+                        <textarea class="form-control input-bb" name="category_remark" id="category_remark" type="text" autocomplete="off">{{ $data['item_category_remark'] }}{{ old('category_remark') }}</textarea>
                     </div>
                 </div>
             </div>
         </div>
         <div class="card-footer text-muted">
             <div class="form-actions float-right">
-                <button type="reset" name="Reset" class="btn btn-danger" onclick="reset_add();"><i class="fa fa-times"></i> Batal</button>
-                <button type="submit" name="Save" class="btn btn-success" title="Save"><i class="fa fa-check"></i> Simpan</button>
+                <button type="reset" name="Reset" class="btn btn-danger" onclick="window.location.reload();"><i class="fa fa-times"></i> Batal</button>
+                <button type="button" onclick="$(this).addClass('disabled');$('form').submit();" name="Save" class="btn btn-success" title="Save"><i class="fa fa-check"></i> Simpan</button>
             </div>
         </div>
     </div>

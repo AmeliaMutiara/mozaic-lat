@@ -19,7 +19,7 @@ return new class extends Migration
                 $table->string('item_category_code')->nullable();
                 $table->string('item_category_name')->nullable();
                 $table->string('item_category_remark')->nullable();
-                $table->integer('margin_precentage')->nullable();
+                $table->integer('margin_percentage')->nullable();
                 $table->unsignedBigInteger('created_id')->nullable();
                 $table->unsignedBigInteger('updated_id')->nullable();
                 $table->unsignedBigInteger('deleted_id')->nullable();
