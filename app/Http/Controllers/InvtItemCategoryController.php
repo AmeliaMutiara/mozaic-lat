@@ -71,7 +71,7 @@ class InvtItemCategoryController extends Controller
     public function editItemCategory($item_category_id)
     {
         $data = InvtItemCategory::select('item_category_code', 'item_category_name', 'item_category_id', 'item_category_remark', 'margin_percentage')
-        ->where('item_category_id', $item_catgory_id)
+        ->where('item_category_id', $item_category_id)
         ->first();
         return view('content.InvtItemCategory.Edit.index', compact('data'));
     }
