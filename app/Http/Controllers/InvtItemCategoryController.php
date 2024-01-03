@@ -68,11 +68,11 @@ class InvtItemCategoryController extends Controller
             return redirect()->route('ic.add')->with('msg', 'Gagal Menambahkan Kategori Barang');
         }
     }
-    public function editItemCategory($item_catgory_id)
+    public function editItemCategory($item_category_id)
     {
         $data = InvtItemCategory::select('item_category_code', 'item_category_name', 'item_category_id', 'item_category_remark', 'margin_percentage')
-        ->where('item_category_id', $item_catgory_id)
-        ->first();
+        ->where('item_category_id', $item_category_id);
+        // ->first();
         return view('content.InvtItemCategory.Edit.index', compact('data'));
     }
     public function processEditItemCategory(Request $request)
@@ -99,19 +99,18 @@ class InvtItemCategoryController extends Controller
             return redirect()->route('ic.edit')->with('msg', 'Gagal Mengubah Kategori Barang');
         }
     }
-    public function deleteItemCategory($item_catgory_id)
+    public function deleteItemCategory($item_category_id)
     {
-        try {
-            DB::beginTransaction();
-            $table              = InvtItemCategory::findOrFail($item_catgory_id);
-            $table->data_state  = 1;
-            $table->updated_id  = Auth::id();
-            DB::delete();
-            return redirect()->route('ic.index')->with('msg', 'Berhasil Menghapus Kategori Barang');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            report($e);
-            return redirect()->route('ic.index')->with('msg', 'Gagal Menghapus Kategori Barang');
+        $table              = InvtItemCategory::findOrFail($item_category_id);
+        // $table->data_state  = 1;
+        $table->updated_id  = Auth::id();
+
+        if($table->save()){
+            $msg = "Berhasil Menghapus Kategori Barang";
+            return redirect('/item-category')->with('msg', $msg);
+        } else {
+            $msg = "Gagal Menghapus Kategori Barang";
+            return redirect('/item-category')->with('msg', $msg);
         }
     }
 }

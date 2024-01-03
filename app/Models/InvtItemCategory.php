@@ -15,6 +15,7 @@ class InvtItemCategory extends Model
     protected $table        = 'invt_item_category';
     protected $primaryKey   = 'item_category_id';
     protected $guarded = [
+        'margin_percentage',
         'deleted_at',
         'updated_at',
         'created_at'

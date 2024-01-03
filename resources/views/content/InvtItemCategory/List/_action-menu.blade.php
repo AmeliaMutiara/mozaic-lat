@@ -3,8 +3,8 @@
     <a type="button" href="{{route('ic.edit',$model->item_category_id)}}" class="btn btn-sm btn-primary btn-active-light-primary">
        Edit
     </a>
-    <a type="button" href="{{route('ic.edit',$model->item_category_id)}}" class="btn btn-sm btn-primary btn-active-light-primary">
-       Edit
+    <a type="button" href="{{route('ic.delete',$model->item_category_id)}}" class="btn btn-sm btn-danger btn-active-light-primary">
+       Hapus
     </a>
 </td>
 

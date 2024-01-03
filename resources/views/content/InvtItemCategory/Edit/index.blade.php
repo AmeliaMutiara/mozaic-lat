@@ -9,9 +9,9 @@
         console.log("value " + value);
 		$.ajax({
 				type: "POST",
-				url : "{{route('elements-add-category')}}",
+				url : "{{route('ic.elements-add')}}",
 				data : {
-                    'name'      : name, 
+                    'name'      : name,
                     'value'     : value,
                     '_token'    : '{{csrf_token()}}'
                 },
@@ -23,7 +23,7 @@
     function reset_add(){
         $.ajax({
             type: "GET",
-            url : "{{route('add-reset-category')}}",
+            url : "{{route('ic.add-reset')}}",
             success: function(mssg){
                 location.reload();
             }
@@ -71,7 +71,7 @@ Form Tambah Kategori Barang
         </div>
     </div>
 
-    <form method="post" action="{{ route('process-add-item-category') }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('ic.process-edit') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">
@@ -114,9 +114,9 @@ Form Tambah Kategori Barang
 @stop
 
 @section('footer')
-    
+
 @stop
 
 @section('css')
-    
+
 @stop
