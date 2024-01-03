@@ -1,41 +1,36 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-use App\DataTables\InvtItemCategoryDataTable;
 use App\Models\InvtItemCategory;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-
+use App\DataTables\InvtItemCategoryDataTable;
 class InvtItemCategoryController extends Controller
 {
-    public function __construct() 
+    public function __construct()
     {
         $this->middleware('auth');
     }
-
-    public function index(InvtItemCategoryDataTable $table) 
+    public function index(InvtItemCategoryDataTable $table)
     {
         Session::forget('datacategory');
         $data = InvtItemCategory::select('item_category_code', 'item_category_name', 'item_category_id')
-        // ->where('data_state', 0)
-        ->where('company_id', Auth::user()->company_id)
-        ->get();
+            // ->where('data_state', 0)
+            ->where('company_id', Auth::user()->company_id)
+            ->get();
         return  $table->render('content.InvtItemCategory.List.index');
     }
-
-    public function addItemCategory() 
+    public function addItemCategory()
     {
         $datacategory = Session::get('datacategory');
         return view('content.InvtItemCategory.Add.index', compact('datacategory'));
     }
-
     public function elementsAddItemCategory(Request $request)
     {
         $datacategory = Session::get('datacategory');
-        if(!$datacategory || $datacategory = ''){
+        if (!$datacategory || $datacategory = '') {
             $datacategory['item_category_code']     = '';
             $datacategory['item_category_name']     = '';
             $datacategory['margin_percentage']      = '';
@@ -44,13 +39,11 @@ class InvtItemCategoryController extends Controller
         $datacategory[$request->name] = $request->value;
         Session::put('datacategory', $datacategory);
     }
-
     public function addReset()
     {
         Session::forget('datacategory');
         return redirect()->back();
     }
-
     public function processAddItemCategory(Request $request)
     {
         $fields = $request->validate([
@@ -58,28 +51,69 @@ class InvtItemCategoryController extends Controller
             'item_category_name'    => 'required',
             'item_category_remark'  => ''
         ]);
-
-        $data = InvtItemCategory::create([
-            'item_category_code'    => $fields['item_category_code'],
-            'item_category_name'    => $fields['item_category_name'],
-            'item_category_remark'  => $fields['item_category_remark'],
-            'margin_precentage'     => $request['margin_percentage'],
-            'company_id'            => Auth::user()->company_id,
-            'updated_id'            => Auth::id(),
-            'created_id'            => Auth::id()
-        ]);
-
-        if($data->save()){
-            $msg = 'Tambah Kategori Berhasil';
-            return redirect('/item-category/add')->with('msg', $msg);
-        } else {
-            $msg = 'Tambah Kategori Gagal';
-            return redirect('/item-category/add')->with('msg', $msg);
+        try {
+            DB::beginTransaction();
+            $data = InvtItemCategory::create([
+                'item_category_code'    => $fields['item_category_code'],
+                'item_category_name'    => $fields['item_category_name'],
+                'item_category_remark'  => $fields['item_category_remark'],
+                'margin_precentage'     => $request['margin_percentage'],
+                'company_id'            => Auth::user()->company_id,
+                'updated_id'            => Auth::id(),
+                'created_id'            => Auth::id()
+            ]);
+            DB::commit();
+            return redirect()->route('ic.index')->with('msg', 'Berhasil Menambahkan Kategori Barang');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            report($e);
+            return redirect()->route('ic.add')->with('msg', 'Gagal Menambahkan Kategori Barang');
         }
     }
-
-    // public function editItemCategory($item_catgory_id)
-    // {
-
-    // }
+    public function editItemCategory($item_catgory_id)
+    {
+        $data = InvtItemCategory::select('item_category_code', 'item_category_name', 'item_category_id', 'item_category_remark', 'margin_percentage')
+        ->where('item_category_id', $item_catgory_id)
+        ->first();
+        return view('content.InvtItemCategory.Edit.index', compact('data'));
+    }
+    public function processEditItemCategory(Request $request)
+    {
+        $fields = $request->validate([
+            'category_id'       => '',
+            'category_code'     => 'required',
+            'category_name'     => 'required',
+            'category_remark'   => ''
+        ]);
+        try {
+            DB::beginTransaction();
+            $table                          = InvtItemCategory::findOrFail($fields['category_id']);
+            $table->item_category_code      = $fields['category_code'];
+            $table->item_category_name      = $fields['category_name'];
+            $table->item_category_remark    = $fields['category_remark'];
+            $table->margin_precentage       = $request['margin_percentage'] == '' ? 0 : $request['margin_percentage'];
+            $table->updated_id              = Auth::id();
+            DB::commit();
+            return redirect()->route('ic.index')->with('msg', 'Berhasil Mengubah Kategori Barang');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            report($e);
+            return redirect()->route('ic.edit')->with('msg', 'Gagal Mengubah Kategori Barang');
+        }
+    }
+    public function deleteItemCategory($item_catgory_id)
+    {
+        try {
+            DB::beginTransaction();
+            $table              = InvtItemCategory::findOrFail($item_catgory_id);
+            $table->data_state  = 1;
+            $table->updated_id  = Auth::id();
+            DB::delete();
+            return redirect()->route('ic.index')->with('msg', 'Berhasil Menghapus Kategori Barang');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            report($e);
+            return redirect()->route('ic.index')->with('msg', 'Gagal Menghapus Kategori Barang');
+        }
+    }
 }

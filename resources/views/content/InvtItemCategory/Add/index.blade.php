@@ -42,7 +42,7 @@
 @stop
 
 @section('content-header')
-    
+
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
@@ -54,7 +54,7 @@
 @stop
 
 @section('content')
-    
+
 <h3 class="page-title">
     Form Tambah Kategori Barang
 </h3>
@@ -63,7 +63,7 @@
 @if (session('msg'))
 <div class="alert alert-info" role="alert">
     {{ session('msg') }}
-</div>   
+</div>
 @endif
 
 @if (count($errors) > 0)
@@ -109,7 +109,7 @@
                 <div class="col-md-8 mt-3">
                     <div class="form-group">
                         <a class="text-dark">Keterangan</a>
-                        <textarea class="form-control input-bb" name="item_category_remark" id="category_remark" type="text" autocomplete="off" onchange="functions_elements_add(this.name, this.value);">{{ $datacategory['item_category_remark'] }}</textarea>
+                        <textarea class="form-control input-bb" name="item_category_remark" id="category_remark" type="text" autocomplete="off" onchange="functions_elements_add(this.name, this.value);">{{ $datacategory['item_category_remark'] ?? '' }}</textarea>
                     </div>
                 </div>
             </div>
@@ -117,7 +117,7 @@
         <div class="card-footer text-muted">
             <div class="form-actions float-right">
                 <button type="reset" name="Reset" class="btn btn-danger" onclick="reset_add();"><i class="fa fa-times"></i> Batal</button>
-                <button type="submit" name="Save" class="btn btn-success" title="Save"><i class="fa fa-check"></i> Simpan</button>
+                <button type="button" onclick="$(this).addClass('disabled');$('form').submit();" name="Save" class="btn btn-success" title="Save"><i class="fa fa-check"></i> Simpan</button>
             </div>
         </div>
     </form>
@@ -126,9 +126,9 @@
 @stop
 
 @section('footer')
-    
+
 @stop
 
 @section('css')
-    
+
 @stop
