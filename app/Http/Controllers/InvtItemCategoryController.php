@@ -18,8 +18,8 @@ class InvtItemCategoryController extends Controller
         Session::forget('datacategory');
         $data = InvtItemCategory::select('item_category_code', 'item_category_name', 'item_category_id')
             // ->where('data_state', 0)
-            ->where('company_id', Auth::user()->company_id)
-            ->get();
+            ->where('company_id', Auth::user()->company_id);
+
         return  $table->render('content.InvtItemCategory.List.index');
     }
     public function addItemCategory()
