@@ -20,7 +20,7 @@ class InvtItemCategoryDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
-            ->addColumn('action', 'content.ContohTable.List._action-menu')
+            ->addColumn('action', 'content.InvtItemCategory.List._action-menu')
             ->setRowId('id');
     }
     /**

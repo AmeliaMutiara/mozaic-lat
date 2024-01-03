@@ -10,7 +10,7 @@
         console.log("value " + value);
         $.ajax({
             type: "POST",
-            url : "{{ route('elements-add-category') }}",
+            url : "{{ route('ic.elements-add') }}",
             data : {
                 'name'      : name,
                 'value'     : value,
@@ -24,7 +24,7 @@
     function reset_add() {
         $.ajax({
             type: "GET",
-            url : "{{ route('add-reset-category') }}",
+            url : "{{ route('ic.add-reset') }}",
             success: function(msg){
                 location.reload();
             }
@@ -80,11 +80,11 @@
             Form Tambah
         </h5>
         <div class="float-right">
-            <button onclick="location.href='{{ url('item-category') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"> Kembali</i></button>
+            <a href='{{ route('ic.index') }}' name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"> Kembali</i></a>
         </div>
     </div>
 
-    <form action="{{ route('process-add-item-category') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('ic.process-add') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">

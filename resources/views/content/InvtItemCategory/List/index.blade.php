@@ -35,7 +35,7 @@ Dashboard
           Daftar
       </h5>
       <div class="form-actions float-right">
-          <a onclick="location.href='{{ url('/item-category/add') }}'" name="Find" class="btn btn-sm btn-info" title="Add Data"><i class="fa fa-plus"></i> Tambah Data</a>
+          <a href='{{ route('ic.add') }}' name="Find" class="btn btn-sm btn-info" title="Add Data"><i class="fa fa-plus"></i> Tambah Data</a>
       </div>
     </div>
   

@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Session;
 use App\DataTables\InvtItemCategoryDataTable;
 class InvtItemCategoryController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
     public function index(InvtItemCategoryDataTable $table)
     {
         Session::forget('datacategory');
@@ -49,23 +49,21 @@ class InvtItemCategoryController extends Controller
         $fields = $request->validate([
             'item_category_code'    => 'required',
             'item_category_name'    => 'required',
-            'item_category_remark'  => ''
         ]);
         try {
             DB::beginTransaction();
             $data = InvtItemCategory::create([
                 'item_category_code'    => $fields['item_category_code'],
                 'item_category_name'    => $fields['item_category_name'],
-                'item_category_remark'  => $fields['item_category_remark'],
-                'margin_precentage'     => $request['margin_percentage'],
-                'company_id'            => Auth::user()->company_id,
-                'updated_id'            => Auth::id(),
-                'created_id'            => Auth::id()
+                'item_category_remark'  => $request->item_category_remark,
+                'margin_precentage'     => $request->margin_percentage,
+                'company_id'            => Auth::user()->company_id
             ]);
             DB::commit();
             return redirect()->route('ic.index')->with('msg', 'Berhasil Menambahkan Kategori Barang');
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e);
             report($e);
             return redirect()->route('ic.add')->with('msg', 'Gagal Menambahkan Kategori Barang');
         }

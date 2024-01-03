@@ -29,9 +29,7 @@ Route::get('/quote', [HomeController::class, 'quote'])->name('quote');
 
 // Route::get('/item-category', [InvtItemCategoryController::class, 'index'])->name('item-category');
 // Route::get('/item-category/add', [InvtItemCategoryController::class, 'addItemCetegory'])->name('add-item-category');
-Route::post('/elements-add',[InvtItemCategoryController::class, 'elementsAddItemCategory'])->name('elements-add-category');
-Route::post('/process-add-category',[InvtItemCategoryController::class, 'processAddItemCategory'])->name('process-add-item-category');
-Route::get('/reset-add',[InvtItemCategoryController::class, 'addReset'])->name('add-reset-category');
+
 
 Route::get('/quote', [ExampleController::class, 'index'])->name('index');
 
@@ -55,7 +53,10 @@ Route::middleware('auth')->group(function () {
     Route::prefix('item-category')->name('ic.')->group(function () {
         Route::get('/',[InvtItemCategoryController::class, 'index'])->name('index');
         Route::get('add',[InvtItemCategoryController::class, 'addItemCategory'])->name('add');
-        Route::get('edit',[InvtItemCategoryController::class, 'editItemCategory'])->name('edit');
+        Route::post('/elements-add',[InvtItemCategoryController::class, 'elementsAddItemCategory'])->name('elements-add');
+        Route::post('/process-add-category',[InvtItemCategoryController::class, 'processAddItemCategory'])->name('process-add');
+        Route::get('/reset-add',[InvtItemCategoryController::class, 'addReset'])->name('add-reset');
+        Route::get('edit/{item_category_id}',[InvtItemCategoryController::class, 'editItemCategory'])->name('edit');
     });
 
 });
