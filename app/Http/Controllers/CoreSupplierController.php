@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\CoreSupplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use App\DataTables\CoreSupplierDataTable;
 
 class CoreSupplierController extends Controller
@@ -21,8 +23,8 @@ class CoreSupplierController extends Controller
         $datasupplier = Session::get('datasupplier');
         if(!$datasupplier || $datasupplier == ''){
             $datasupplier['supplier_name']      = '';
-            $datasupplier['supplier_phone']     = '';   
-            $datasupplier['supplier_address']   = '';   
+            $datasupplier['supplier_phone']     = '';
+            $datasupplier['supplier_address']   = '';
         }
         $datasupplier[$request->name] = $request->value;
         Session::put('datasupplier', $datasupplier);
@@ -104,6 +106,4 @@ class CoreSupplierController extends Controller
             return redirect()->back()->with('msg', $msg);
         }
     }
-}
-
 }

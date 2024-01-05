@@ -22,7 +22,7 @@ class CoreSupplierDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'coresupplier.action')
+            ->addColumn('action', 'content.CoreSupplier.List._action-menu')
             ->setRowId('id');
     }
 
