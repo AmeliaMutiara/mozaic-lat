@@ -20,17 +20,18 @@
     Form Ubah Gudang
 </h3>
 <br/>
-@if(session('msg'))
-<div class="alert alert-info" role="alert">
-    {{session('msg')}}
+@if (session('msg'))
+<div class="alert alert-{{session('type')??'info'}}" role="alert">
+    {{ session('msg') }}
 </div>
 @endif
 
-@if(count($errors) > 0)
+@if (count($errors) > 0)
 <div class="alert alert-danger" role="alert">
     @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
+        <li>{{ $error }}</li>
     @endforeach
+</div>
 @endif
 </div>
     <div class="card border border-dark">
@@ -39,11 +40,11 @@
             Form Ubah
         </h5>
         <div class="float-right">
-            <button onclick="location.href='{{ url('warehouse') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
+            <a href='{{ route('warehouse.index') }}' name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"> Kembali</i></a>
         </div>
     </div>
 
-    <form method="post" action="{{ url('warehouse/process-edit-warehouse') }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('warehouse.process-edit-warehouse') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">
@@ -77,7 +78,7 @@
         <div class="card-footer text-muted">
             <div class="form-actions float-right">
                 <button type="reset" name="Reset" class="btn btn-danger" onclick="window.location.reload();"><i class="fa fa-times"></i> Batal</button>
-                <button type="button" onclick="$(this).addClass('disabled');$('form').submit();" name="Save" class="btn btn-success" title="Save"><i class="fa fa-check"></i> Simpan</button>
+                <button type="submit" onclick="$(this).addClass('disabled');$('form').submit();" name="Save" class="btn btn-success" title="Save"><i class="fa fa-check"></i> Simpan</button>
             </div>
         </div>
     </div>

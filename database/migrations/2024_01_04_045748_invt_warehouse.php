@@ -18,7 +18,7 @@ return new class extends Migration
                 $table->string('warehouse_code')->nullable();
                 $table->string('warehouse_name')->nullable();
                 $table->string('warehouse_address')->nullable();
-                $table->string('warehouse_phone')->nullable()->default(0);
+                $table->string('warehouse_phone')->nullable();
                 $table->unsignedBigInteger('created_id')->nullable();
                 $table->unsignedBigInteger('updated_id')->nullable();
                 $table->unsignedBigInteger('deleted_id')->nullable();

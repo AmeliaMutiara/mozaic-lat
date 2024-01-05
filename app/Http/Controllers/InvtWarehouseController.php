@@ -1,21 +1,18 @@
 <?php
-
 namespace App\Http\Controllers;
-use App\Http\Controllers\Controller;
-use App\DataTables\InvtWarehouseDataTable;
-use App\Models\InvtWarehouse;
 use Illuminate\Http\Request;
+use App\Models\InvtWarehouse;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-
+use App\DataTables\InvtWarehouseDataTable;
 class InvtWarehouseController extends Controller
 {
     // public function __construct()
     // {
     //     $this->middleware('auth');
-        
     // }
-    
     public function index(InvtWarehouseDataTable $table)
     {
         Session::forget('warehouses');
@@ -23,13 +20,11 @@ class InvtWarehouseController extends Controller
         ->where('company_id', Auth::user()->company_id);
         return $table->render('content.InvtWarehouse.List.index');
     }
-
     public function addWarehouse()
     {
         $warehouses = Session::get('warehouses');
         return view('content.InvtWarehouse.Add.index', compact('warehouses'));
     }
-
     public function addElementsWarehouse(Request $request)
     {
         $warehouses  = Session::get('warehouses');
@@ -42,7 +37,6 @@ class InvtWarehouseController extends Controller
         $warehouses[$request->name] = $request->value;
         Session::put('warehouses', $warehouses);
     }
-
     public function processAddWarehouse(Request $request)
     {
         $fields = $request->validate([
@@ -51,73 +45,71 @@ class InvtWarehouseController extends Controller
             'warehouse_phone'   => 'required',
             'warehouse_address' => 'required'
         ]);
-
-        $data = InvtWarehouse::create([
-            'warehouse_code'    => $fields['warehouse_code'],
-            'warehouse_name'    => $fields['warehouse_name'],
-            'warehouse_phone'   => $fields['warehouse_phone'],
-            'warehouse_address' => $fields['warehouse_address'],
-            'company_id'        => Auth::user()->company_id,
-            'created_id'        => Auth::id(),
-            'updated_id'        => Auth::id(),
-        ]);
-
-        if($data->save()){
-            $msg = "Tambah Gudang Berhasil";
-            return redirect('/warehouse/add-warehouse')->with('msg', $msg);
-        } else {
-            $msg = "Tambah Gudang Gagal";
-            return redirect('/warehouse/add-warehouse')->with('msg', $msg);
+        try {
+            DB::beginTransaction();
+            $data = InvtWarehouse::create([
+                'warehouse_code'    => $fields['warehouse_code'],
+                'warehouse_name'    => $fields['warehouse_name'],
+                'warehouse_phone'   => $fields['warehouse_phone'],
+                'warehouse_address' => $fields['warehouse_address'],
+                'company_id'        => Auth::user()->company_id,
+                'created_id'        => Auth::id(),
+                'updated_id'        => Auth::id(),
+            ]);
+            DB::commit();
+            return redirect()->route('warehouse.index')->with(['msg' => 'Berhasil Menambahkan Data Gudang', 'type' => 'success']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+            report($e);
+            return redirect()->route('warehouse.add')->with(['msg' => 'Gagl Menambahkan Data Gudang', 'type' => 'danger']);
         }
     }
-
     public function editWarehouse($warehouse_id)
     {
         $data   = InvtWarehouse::where('warehouse_id',$warehouse_id)->first();
         return view('content.InvtWarehouse.Edit.index', compact('data'));
     }
-
     public function processEditWarehouse(Request $request)
     {
         $fields = $request->validate([
             'warehouse_id'      => '',
-            'warehouse_code'    => 'required',    
+            'warehouse_code'    => 'required',
             'warehouse_name'    => 'required',
             'warehouse_phone'   => 'required',
             'warehouse_address' => 'required'
         ]);
-
-        $table                      = InvtWarehouse::findOrFail($fields['warehouse_id']);
-        $table->warehouse_code      = $fields['warehouse_code'];
-        $table->warehouse_name      = $fields['warehouse_name'];
-        $table->warehouse_phone     = $fields['warehouse_phone'];
-        $table->warehouse_address   = $fields['warehouse_address'];
-        $table->updated_id          = Auth::id();
-
-        if($table->save()){
-            $msg = "Ubah Gudang Berhasil";
-            return redirect('/warehouse')->with('msg',$msg);
-        } else {
-            $msg = "Ubah Gudang Gagal";
-            return redirect('/warehouse')->with('msg',$msg);
+        try {
+            DB::beginTransaction();
+            $table                      = InvtWarehouse::findOrFail($fields['warehouse_id']);
+            $table->warehouse_code      = $fields['warehouse_code'];
+            $table->warehouse_name      = $fields['warehouse_name'];
+            $table->warehouse_phone     = $fields['warehouse_phone'];
+            $table->warehouse_address   = $fields['warehouse_address'];
+            $table->updated_id          = Auth::id();
+            $table->save();
+            DB::commit();
+            return redirect()->route('warehouse.index')->with(['msg' => 'Berhasil Mengubah Data Gudang', 'type' => 'success']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+            report($e);
+            return redirect()->route('warehouse.index', $fields['warehouse_id'])->with(['msg' => 'Berhasil Mengubah Data Gudang', 'type' => 'Danger']);
         }
     }
-
     public function deleteWarehouse($warehouse_id)
     {
-        $table             = InvtWarehouse::findOrFail($warehouse_id);
-        $table->data_state = 1;
-        $table->updated_id = Auth::id();
-
-        if($table->save()){
-            $msg = "Hapus Gudang Berhasil";
-            return redirect('/warehouse')->with('msg',$msg);
-        } else {
-            $msg = "Hapus Gudang Gagal";
-            return redirect('/warehouse')->with('msg',$msg);
+        try {
+            DB::beginTransaction();
+            InvtWarehouse::find($warehouse_id)->delete();
+            DB::commit();
+            return redirect()->route('warehouse.index')->with(['msg' => 'Berhasil Menghapus Data Gudang', 'type' => 'success']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            report($e);
+            return redirect()->route('warehouse.index')->with(['msg' => 'Gagal Mengubah Data Gudang', 'type' => 'danger']);
         }
     }
-
     public function addResetWarehouse()
     {
         Session::forget('warehouses');

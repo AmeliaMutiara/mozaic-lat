@@ -8,7 +8,7 @@
         console.log("value " + value);
 		$.ajax({
 				type: "POST",
-				url : "{{route('warehouse.elements-add')}}",
+				url : "{{ route('warehouse.elements-add') }}",
 				data : {
                     'name'      : name, 
                     'value'     : value,
@@ -22,7 +22,7 @@
     function reset_add(){
 		$.ajax({
 				type: "GET",
-				url : "{{route('warehouse.add-reset')}}",
+				url : "{{ route('warehouse.add-reset-warehouse') }}",
 				success: function(msg){
                     location.reload();
 			}
@@ -31,6 +31,7 @@
 	}
 </script>
 @stop
+
 @section('content_header')
     
 <nav aria-label="breadcrumb">
@@ -49,9 +50,10 @@
     Form Tambah Gudang
 </h3>
 <br/>
-@if(session('msg'))
-<div class="alert alert-info" role="alert">
-    {{session('msg')}}
+
+@if (session('msg'))
+<div class="alert alert-{{session('type') ?? 'info'}}" role="alert">
+    {{ session('msg') }}
 </div>
 @endif
 
@@ -68,7 +70,7 @@
             Form Tambah
         </h5>
         <div class="float-right">
-            <button onclick="location.href='{{ url('warehouse') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
+            <a href='{{ route('warehouse.index') }}' name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"> Kembali</i></a>
         </div>
     </div>
 
@@ -78,32 +80,32 @@
             // }
         ?>
 
-    <form method="post" action="{{ route('warehouse.index') }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('warehouse.process-add') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">Kode Gudang<a class='red'> *</a></a>
-                        <input class="form-control input-bb" name="warehouse_code" id="warehouse_code" type="text" autocomplete="off" onchange="function_elements_add(this.name, this.value);" value="{{ $warehouses['warehouse_code']?? '' }}"/>
+                        <input class="form-control input-bb" name="warehouse_code" id="warehouse_code" type="text" autocomplete="off" onchange="function_elements_add(this.name, this.value);" value="{{ $warehouses['warehouse_code'] ?? '' }}"/>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">Nama Gudang<a class='red'> *</a></a>
-                        <input class="form-control input-bb" name="warehouse_name" id="warehouse_name" type="text" autocomplete="off" onchange="function_elements_add(this.name, this.value);" value="{{ $warehouses['warehouse_name']?? '' }}"/>
+                        <input class="form-control input-bb" name="warehouse_name" id="warehouse_name" type="text" autocomplete="off" onchange="function_elements_add(this.name, this.value);" value="{{ $warehouses['warehouse_name'] ?? '' }}"/>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">Telp Gudang<a class='red'> *</a></a>
-                        <input class="form-control input-bb" name="warehouse_phone" id="warehouse_phone" type="text" autocomplete="off" onchange="function_elements_add(this.name, this.value);" value="{{ $warehouses['warehouse_phone']?? '' }}"/>
+                        <input class="form-control input-bb" name="warehouse_phone" id="warehouse_phone" type="text" autocomplete="off" onchange="function_elements_add(this.name, this.value);" value="{{ $warehouses['warehouse_phone'] ?? '' }}"/>
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="form-group">
                         <a class="text-dark">Alamat<a class='red'> *</a></a>
-                        <textarea class="form-control input-bb" name="warehouse_address" id="warehouse_address" type="text" autocomplete="off" onchange="function_elements_add(this.name, this.value);">{{ $warehouses['warehouse_address']?? '' }}</textarea>
+                        <textarea class="form-control input-bb" name="warehouse_address" id="warehouse_address" type="text" autocomplete="off" onchange="function_elements_add(this.name, this.value);">{{ $warehouses['warehouse_address'] ?? '' }}</textarea>
                     </div>
                 </div>
             </div>

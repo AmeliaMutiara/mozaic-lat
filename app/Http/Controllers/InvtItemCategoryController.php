@@ -68,29 +68,6 @@ class InvtItemCategoryController extends Controller
             return redirect()->route('ic.add')->with('msg', 'Gagal Menambahkan Kategori Barang');
         }
     }
-    {
-        $fields = $request->validate([
-            'item_category_code'    => 'required',
-            'item_category_name'    => 'required',
-        ]);
-        try {
-            DB::beginTransaction();
-            $data = InvtItemCategory::create([
-                'item_category_code'    => $fields['item_category_code'],
-                'item_category_name'    => $fields['item_category_name'],
-                'item_category_remark'  => $request->item_category_remark,
-                'margin_precentage'     => $request->margin_percentage,
-                'company_id'            => Auth::user()->company_id
-            ]);
-            DB::commit();
-            return redirect()->route('ic.index')->with('msg', 'Berhasil Menambahkan Kategori Barang');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            dd($e);
-            report($e);
-            return redirect()->route('ic.add')->with('msg', 'Gagal Menambahkan Kategori Barang');
-        }
-    }
     public function editItemCategory($item_category_id)
     {
         $data = InvtItemCategory::select('item_category_code', 'item_category_name', 'item_category_id', 'item_category_remark', 'margin_percentage')
