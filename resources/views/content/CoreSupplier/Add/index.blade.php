@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'MOZAIC Minimarket')
+@section('title', 'MOZAIC Practice')
 @section('js')
 <script>
     function function_elements_add(name, value){

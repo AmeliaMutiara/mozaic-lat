@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'MOZAIC Minimarket')
+@section('title', 'MOZAIC Practice')
 
 @section('content_header')
     
