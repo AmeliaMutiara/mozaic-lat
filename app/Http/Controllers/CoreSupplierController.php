@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller;
 use App\Models\CoreSupplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,8 +15,7 @@ class CoreSupplierController extends Controller
     {
        Session::forget('datasupplier');
        $data = CoreSupplier::select('supplier_name','supplier_phone','supplier_address','supplier_id')
-       ->where('company_id', Auth::user()->company_id)
-       ->get();
+       ->where('company_id', Auth::user()->company_id);
        return $table->render('content.CoreSupplier.List.index');
     }
     public function addElementsCoreSupplier(Request $request)
@@ -47,13 +46,17 @@ class CoreSupplierController extends Controller
 
     public function processAddCoreSupplier(Request $request)
     {
-        $request->validate(['supplier_name' => 'required']);
+        $fields = $request->validate([
+            'supplier_name'    => 'required',
+            'supplier_phone'   => 'required',
+            'supplier_address' => 'required'
+        ]);
         try {
             DB::beginTransaction();
             $data = CoreSupplier::create([
-                'supplier_name'     => $request->supplier_name,
-                'supplier_phone'    => $request->supplier_phone,
-                'supplier_address'  => $request->supplier_address,
+                'supplier_name'     => $fields['supplier_name'],
+                'supplier_phone'    => $fields['supplier_phone'],
+                'supplier_address'  => $fields['supplier_address'],
                 'company_id'        => Auth::user()->company_id,
                 'created_id'        => Auth::id(),
                 'updated_id'        => Auth::id(),
@@ -70,21 +73,24 @@ class CoreSupplierController extends Controller
 
     public function editCoreSupplier($supplier_id)
     {
-        $data = CoreSupplier::select('supplier_name','supplier_phone','supplier_address','supplier_id')
-        ->where('supplier_id', $supplier_id)
-        ->first();
-
+        $data   = CoreSupplier::where('supplier_id',$supplier_id)->first();
         return view('content.CoreSupplier.Edit.index', compact('data'));
     }
 
     public function processEditCoreSupplier(Request $request)
     {
+        $fields = $request->validate([
+            'supplier_id'       => '',
+            'supplier_name'    => 'required',
+            'supplier_phone'   => 'required',
+            'supplier_address' => 'required'
+        ]);
         try {
             DB::beginTransaction();
-            $table                      = CoreSupplier::findOrFail($request->supplier_id);
-            $table->supplier_name       = $request->supplier_name;
-            $table->supplier_phone      = $request->supplier_phone;
-            $table->supplier_address    = $request->supplier_address;
+            $table                      = CoreSupplier::findOrFail($fields['supplier_id']);
+            $table->supplier_name       = $fields['supplier_name'];
+            $table->supplier_phone      = $fields['supplier_phone'];
+            $table->supplier_address    = $fields['supplier_address'];
             $table->updated_id          = Auth::id();
             $table->save();
             DB::commit();
