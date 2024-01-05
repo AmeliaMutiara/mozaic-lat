@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CoreSupplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\DataTables\CoreSupplierDataTable;
@@ -16,7 +17,7 @@ class CoreSupplierController extends Controller
        $data = CoreSupplier::select('supplier_name','supplier_phone','supplier_address','supplier_id')
        ->where('company_id', Auth::user()->company_id)
        ->get();
-       return view('content.CoreSupplier.ListCoreSupplier', compact('data'));
+       return $table->render('content.CoreSupplier.List.index');
     }
     public function addElementsCoreSupplier(Request $request)
     {
@@ -41,28 +42,29 @@ class CoreSupplierController extends Controller
     {
         $suppliers = Session::get('datasupplier');
 
-        return view('content.CoreSupplier.AddCoreSupplier', compact('suppliers'));
+        return view('content.CoreSupplier.Add.index', compact('suppliers'));
     }
 
     public function processAddCoreSupplier(Request $request)
     {
         $request->validate(['supplier_name' => 'required']);
-
-        $data = CoreSupplier::create([
-            'supplier_name'     => $request->supplier_name,
-            'supplier_phone'    => $request->supplier_phone,
-            'supplier_address'  => $request->supplier_address,
-            'company_id'        => Auth::user()->company_id,
-            'created_id'        => Auth::id(),
-            'updated_id'        => Auth::id(),
-        ]);
-
-        if ($data->save()) {
-            $msg = 'Tambah Supplier Berhasil';
-            return redirect()->back()->with('msg', $msg);
-        } else {
-            $msg = 'Tambah Supplier Gagal';
-            return redirect()->back()->with('msg', $msg);
+        try {
+            DB::beginTransaction();
+            $data = CoreSupplier::create([
+                'supplier_name'     => $request->supplier_name,
+                'supplier_phone'    => $request->supplier_phone,
+                'supplier_address'  => $request->supplier_address,
+                'company_id'        => Auth::user()->company_id,
+                'created_id'        => Auth::id(),
+                'updated_id'        => Auth::id(),
+            ]);
+            DB::commit();
+            return redirect()->route('supplier.index')->with(['msg' => 'Berhasil Menambahkan Data Supplier', 'type' => 'success']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+            report($e);
+            return redirect()->route('supplier.add')->with(['msg' => 'Gagal Menambahkan Data Supplier', 'type' => 'danger']);
         }
     }
 
@@ -72,38 +74,39 @@ class CoreSupplierController extends Controller
         ->where('supplier_id', $supplier_id)
         ->first();
 
-        return view('content.CoreSupplier.EditCoreSupplier', compact('data'));
+        return view('content.CoreSupplier.Edit.index', compact('data'));
     }
 
     public function processEditCoreSupplier(Request $request)
     {
-        $table                      = CoreSupplier::findOrFail($request->supplier_id);
-        $table->supplier_name       = $request->supplier_name;
-        $table->supplier_phone      = $request->supplier_phone;
-        $table->supplier_address    = $request->supplier_address;
-        $table->updated_id          = Auth::id();
-
-        if ($table->save()) {
-            $msg = 'Ubah Supplier Berhasil';
-            return redirect()->back()->with('msg', $msg);
-        } else {
-            $msg = 'Ubah Supplier Gagal';
-            return redirect()->back()->with('msg', $msg);
+        try {
+            DB::beginTransaction();
+            $table                      = CoreSupplier::findOrFail($request->supplier_id);
+            $table->supplier_name       = $request->supplier_name;
+            $table->supplier_phone      = $request->supplier_phone;
+            $table->supplier_address    = $request->supplier_address;
+            $table->updated_id          = Auth::id();
+            $table->save();
+            DB::commit();
+            return redirect()->route('supplier.index')->with(['msg' => 'Berhasil Mengubah Data Supplier', 'type' => 'success']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            report($e);
+            return redirect()->route('supplier.edit')->with(['msg' => 'Gagal Menambahkan Data Supplier', 'type' => 'danger']);
         }
     }
 
     public function deleteCoreSupplier($supplier_id)
     {
-        $table              = CoreSupplier::findOrFail($supplier_id);
-        $table->data_state  = 1;
-        $table->updated_id  = Auth::id();
-
-        if ($table->save()) {
-            $msg = 'Hapus Supplier Berhasil';
-            return redirect()->back()->with('msg', $msg);
-        } else {
-            $msg = 'Hapus Supplier Gagal';
-            return redirect()->back()->with('msg', $msg);
+        try {
+            DB::beginTransaction();
+            CoreSupplier::find($supplier_id)->delete();
+            DB::commit();
+            return redirect()->route('supplier.index')->with(['msg' => 'Berhasil Menghapus Data Supplier', 'type' => 'success']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            report($e);
+            return redirect()->route('supplier.index')->with(['msg' => 'Gagal Mengubah Data Supplier', 'type' => 'danger']);
         }
     }
 }
