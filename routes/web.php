@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CoreSupplierController;
 use App\Http\Controllers\ExampleController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -71,5 +72,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/warehouse/edit-warehouse/{warehouse_id}',[InvtWarehouseController::class, 'editWarehouse'])->name('edit-warehouse');
         Route::post('/warehouse/process-edit-warehouse', [InvtWarehouseController::class, 'processEditWarehouse'])->name('process-edit-warehouse');
         Route::get('/warehouse/delete-warehouse/{warehouse_id}', [InvtWarehouseController::class, 'deleteWarehouse'])->name('delete-warehouse');
+    });
+    Route::prefix('core-supplier')->name('supplier.')->group(function() {
+        Route::get('/', [CoreSupplierController::class, 'index'])->name('index');
+        Route::get('/add', [CoreSupplierController::class, 'addCoreSupplier'])->name('add');
+        Route::get('/process-add', [CoreSupplierController::class, 'processAddCoreSupplier'])->name('add-process');
+        Route::post('/add-elements', [CoreSupplierController::class, 'addElementsCoreSupplier'])->name('add-elements');
+        Route::get('/reset-elements', [CoreSupplierController::class, 'resetElementsCoreSupplier'])->name('reset-elements');
+        Route::get('/edit/{supplier_id}', [CoreSupplierController::class, 'editCoreSupplier'])->name('edit');
+        Route::get('/process-edit', [CoreSupplierController::class, 'processEditCoreSupplier'])->name('edit-process');
+        Route::get('/delete/{supplier_id}', [CoreSupplierController::class, 'deleteCoreSupplier'])->name('delete');
     });
 });
