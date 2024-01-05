@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvtItemCategoryController;
+use App\Http\Controllers\InvtWarehouseController;
 use App\Models\InvtItemCategory;
 
 /*
@@ -59,6 +60,20 @@ Route::middleware('auth')->group(function () {
         Route::get('edit/{item_category_id}',[InvtItemCategoryController::class, 'editItemCategory'])->name('edit');
         Route::post('/process-edit-category',[InvtItemCategoryController::class, 'processEditItemCategory'])->name('process-edit');
         Route::get('delete/{item_category_id}',[InvtItemCategoryController::class, 'deleteItemCategory'])->name('delete');
-    });
 
+    });
+    Route::prefix('warehouse')->name('warehouse.')->group(function () {
+        Route::get('/',[InvtWarehouseController::class, 'index'])->name('index');
+        Route::get('add',[InvtWarehouseController::class, 'addWarehouse'])->name('add');
+    // Route::get('/warehouse',[InvtWarehouseController::class, 'index'])->name('warehouse');
+        Route::post('/elements-add',[InvtWarehouseController::class, 'elementsAddWarehouse'])->name('elements-add');
+        Route::post('/process-add-warehouse',[InvtWarehouseController::class, 'processAddWarehouse'])->name('process-add');
+        Route::get('/reset-add',[InvtWarehouseController::class, 'addReset'])->name('add-reset');
+        Route::get('/warehouse/add-reset', [InvtWarehouseController::class, 'addResetWarehouse'])->name('add-reset-warehouse');
+        // Route::post('/warehouse/add-warehouse-elements', [InvtWarehouseController::class, 'addElementsWarehouse'])->name('add-warehouse-elements');
+        // Route::post('/warehouse/process-add-warehouse', [InvtWarehouseController::class,'processAddWarehouse'])->name('process-add-warehouse');
+        Route::get('/warehouse/edit-warehouse/{warehouse_id}',[InvtWarehouseController::class, 'editWarehouse'])->name('edit-warehouse');
+        Route::post('/warehouse/process-edit-warehouse', [InvtWarehouseController::class, 'processEditWarehouse'])->name('process-edit-warehouse');
+        Route::get('/warehouse/delete-warehouse/{warehouse_id}', [InvtWarehouseController::class, 'deleteWarehouse'])->name('delete-warehouse');
+    });
 });
