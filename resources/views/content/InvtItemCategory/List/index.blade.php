@@ -1,12 +1,17 @@
 @extends('adminlte::page')
 
-@section('title', "MOZAIC Parent Table")
+@section('title', "MOZAIC Practice")
 
-{{-- @section('content_header')
+@section('content_header')
+    
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Daftar Kategori</li>
+    </ol>
+  </nav>
 
-Dashboard
-
-@stop --}}
+@stop
 
 @section('content')
 

@@ -36,7 +36,7 @@ class InvtWarehouseDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('InvtWarehouse-table')
+            ->setTableId('invtwarehouse-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bflrtip')

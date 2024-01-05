@@ -28,9 +28,10 @@ return new class extends Migration
                [ 'id_menu' => 1,  'id' => 'home',          'type' => 'file','text' => 'Beranda','parent' => "#",'menu_level' => "1",],
                [ 'id_menu' => 2,  'id' => 'example',             'type' => 'folder','text' => 'Contoh Table','parent' => "#",'menu_level' => "1",],
                [ 'id_menu' => 3,  'id' => 'item-category',             'type' => 'file','text' => 'Kategori Barang','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 4, 'id' => '#',              'type' => 'folder','text' => 'Level 1','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 41, 'id' => 'level',         'type' => 'file','text' => 'Level 2','parent' => "4",'menu_level' => "2",],
-               [ 'id_menu' => 411, 'id' => 'level',         'type' => 'file','text' => 'Level 3','parent' => "41",'menu_level' => "3",],
+               [ 'id_menu' => 4,  'id' => 'warehouse',             'type' => 'file','text' => 'Gudang','parent' => "#",'menu_level' => "1",],
+               [ 'id_menu' => 5, 'id' => '#',              'type' => 'folder','text' => 'Level 1','parent' => "#",'menu_level' => "1",],
+               [ 'id_menu' => 51, 'id' => 'level',         'type' => 'file','text' => 'Level 2','parent' => "4",'menu_level' => "2",],
+               [ 'id_menu' => 511, 'id' => 'level',         'type' => 'file','text' => 'Level 3','parent' => "41",'menu_level' => "3",],
             ]);
         }
     }

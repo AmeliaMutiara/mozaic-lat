@@ -38,7 +38,7 @@
         <li class="breadcrumb-item"><a href="{{url('home')}}">Beranda</a></li>
         <li class="breadcrumb-item"><a href="{{url('item-category')}}">Daftar Kategori Barang</a></li>
         <li class="breadcrumb-item active" aria-current="page">Daftar Kategori Barang</li>
-    </ol>
+</ol>
 </nav>
 
 @stop
@@ -48,17 +48,18 @@
     Form Ubah Kategori Barang
 </h3>
 <br/>
-@if(session('msg'))
-<div class="alert alert-info" role="alert">
-    {{session('msg')}}
+@if (session('msg'))
+<div class="alert alert-{{session('type')??'info'}}" role="alert">
+    {{ session('msg') }}
 </div>
 @endif
 
-@if(count($errors) > 0)
+@if (count($errors) > 0)
 <div class="alert alert-danger" role="alert">
     @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
+        <li>{{ $error }}</li>
     @endforeach
+</div>
 @endif
 </div>
     <div class="card border border-dark">
