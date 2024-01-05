@@ -57,12 +57,12 @@ class InvtWarehouseController extends Controller
                 'updated_id'        => Auth::id(),
             ]);
             DB::commit();
-            return redirect()->route('warehouse.index')->with(['msg' => 'Berhasil Menambahkan Data Gudang', 'type' => 'success']);
+            return redirect()->route('warehouse.index')->with(['msg'=> 'Berhasil Menambahkan Data Gudang', 'type' => 'success']);
         } catch (\Exception $e) {
             DB::rollBack();
             dd($e);
             report($e);
-            return redirect()->route('warehouse.add')->with(['msg' => 'Gagl Menambahkan Data Gudang', 'type' => 'danger']);
+            return redirect()->route('warehouse.add')->with(['msg'=> 'Gagl Menambahkan Data Gudang', 'type' => 'danger']);
         }
     }
     public function editWarehouse($warehouse_id)
@@ -103,11 +103,11 @@ class InvtWarehouseController extends Controller
             DB::beginTransaction();
             InvtWarehouse::find($warehouse_id)->delete();
             DB::commit();
-            return redirect()->route('warehouse.index')->with(['msg' => 'Berhasil Menghapus Data Gudang', 'type' => 'success']);
+            return redirect()->route('warehouse.index')->with(['msg'=> 'Berhasil Menghapus Data Gudang', 'type' => 'success']);
         } catch (\Exception $e) {
             DB::rollBack();
             report($e);
-            return redirect()->route('warehouse.index')->with(['msg' => 'Gagal Mengubah Data Gudang', 'type' => 'danger']);
+            return redirect()->route('warehouse.index')->with(['msg'=> 'Gagal Mengubah Data Gudang', 'type' => 'danger']);
         }
     }
     public function addResetWarehouse()
