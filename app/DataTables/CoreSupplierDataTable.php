@@ -22,6 +22,7 @@ class CoreSupplierDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addIndexColumn()
             ->addColumn('action', 'content.CoreSupplier.List._action-menu')
             ->setRowId('id');
     }
@@ -40,7 +41,7 @@ class CoreSupplierDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('invtitemcategory-table')
+            ->setTableId('coresupplier-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bflrtip')

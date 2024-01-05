@@ -1,14 +1,14 @@
 
 <td class="text-center">
-    <a type="button" href="{{route('ic.edit',$model->item_category_id)}}" class="btn btn-sm btn-primary btn-active-light-primary">
+    <a type="button" href="{{route('supplier.edit',$model->supplier_id)}}" class="btn btn-sm btn-primary btn-active-light-primary">
        Edit
     </a>
-    <button type="button" data-bs-toggle="modal" data-bs-target="#modal_delete_{{ $model->item_category_id }}" class="btn btn-sm btn-danger btn-active-light-danger">
+    <button type="button" data-bs-toggle="modal" data-bs-target="#modal_delete_{{ $model->supplier_id }}" class="btn btn-sm btn-danger btn-active-light-danger">
         Hapus
     </button>
 </td>
 
-<div class="modal fade" tabindex="-1" id="modal_delete_{{ $model->item_category_id }}">
+<div class="modal fade" tabindex="-1" id="modal_delete_{{ $model->supplier_id }}">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -22,7 +22,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-bs-dismiss="modal">Tidak</button>
-                <a type="button" href="{{route('ic.delete',$model->item_category_id)}}" class="btn btn-danger">
+                <a type="button" href="{{route('supplier.delete',$model->supplier_id)}}" class="btn btn-danger">
                     Ya
                  </a>
             </div>

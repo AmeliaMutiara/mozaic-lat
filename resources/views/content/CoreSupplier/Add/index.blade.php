@@ -8,7 +8,7 @@
         console.log("value " + value);
 		$.ajax({
 				type: "POST",
-				url : "{{route('add-elements-core-supplier')}}",
+				url : "{{ route('supplier.add-elements') }}",
 				data : {
                     'name'      : name, 
                     'value'     : value,
@@ -22,7 +22,7 @@
     function reset_add(){
 		$.ajax({
 				type: "GET",
-				url : "{{route('reset-elements-core-supplier')}}",
+				url : "{{ route('supplier.reset-elements') }}",
 				success: function(msg){
                     location.reload();
 			}
@@ -49,26 +49,28 @@
     Form Tambah Supplier
 </h3>
 <br/>
-@if(session('msg'))
-<div class="alert alert-info" role="alert">
-    {{session('msg')}}
+
+@if (session('msg'))
+<div class="alert alert-{{session('type')??'info'}}" role="alert">
+    {{ session('msg') }}
 </div>
 @endif
 
-@if(count($errors) > 0)
+@if (count($errors) > 0)
 <div class="alert alert-danger" role="alert">
     @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
+        {{ $error }}
     @endforeach
 </div>
 @endif
+
     <div class="card border border-dark">
     <div class="card-header border-dark bg-dark">
         <h5 class="mb-0 float-left">
             Form Tambah
         </h5>
         <div class="float-right">
-            <button onclick="location.href='{{ url('core-supplier') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
+            <button href='{{ route('supplier.index') }}' name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
         </div>
     </div>
 
@@ -78,7 +80,7 @@
             // }
         ?>
 
-    <form method="post" action="{{ route('process-add-core-supplier') }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('supplier.add-process') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">
