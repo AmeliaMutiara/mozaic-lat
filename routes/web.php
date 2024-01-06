@@ -83,4 +83,15 @@ Route::middleware('auth')->group(function () {
         Route::post('/process-edit', [CoreSupplierController::class, 'processEditCoreSupplier'])->name('edit-process');
         Route::get('/delete/{supplier_id}', [CoreSupplierController::class, 'deleteCoreSupplier'])->name('delete');
     });
+    // Route::get('acct-account')->name('account.')->group(function() {
+    //     Route::get('/', [CoreSupplierController::class, 'index'])->name('index');
+    //     Route::get('/add',[AcctAccountController::class, 'addAcctAccount'])->name('add');
+    //     Route::post('/process-add',[AcctAccountController::class, 'processAddAcctAccount'])->name('process-add');
+    //     Route::post('/add-elements',[AcctAccountController::class, 'addElementsAcctAccount'])->name('add-elements');
+    //     Route::get('/add-reset',[AcctAccountController::class, 'addResetAcctAccount'])->name('add-reset');
+    //     Route::get('/edit/{account_id}',[AcctAccountController::class, 'editAcctAccount'])->name('edit');
+    //     Route::post('/process-edit',[AcctAccountController::class, 'processEditAcctAccount'])->name('process-edit');
+    //     Route::get('/delete/{account_id}',[AcctAccountController::class, 'deleteAcctAccount'])->name('delete-edit');
+    // });
+
 });
