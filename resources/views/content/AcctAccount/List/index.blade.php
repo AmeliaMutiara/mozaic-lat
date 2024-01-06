@@ -20,32 +20,39 @@
     <b>Daftar Perkiraan</b> <small>Kelola Perkiraan </small>
 </h3>
 <br/>
-
-@if(session('msg'))
-div class="alert alert-{{session('type')??'info'}}" role="alert">
-    {{session('msg')}}
+@if (session('msg'))
+<div class="alert alert-{{session('type')??'info'}}" role="alert">
+    {{ session('msg') }}
 </div>
-@endif 
+@endif
+@if (count($errors) > 0)
+<div class="alert alert-danger" role="alert">
+    @foreach ($errors->all() as $error)
+        {{ $error }}
+    @endforeach
+</div>
+@endif
 <div class="card border border-dark">
   <div class="card-header bg-dark clearfix">
     <h5 class="mb-0 float-left">
         Daftar
     </h5>
     <div class="form-actions float-right">
-        <button onclick="location.href='{{ route('acct-account') }}'" name="Find" class="btn btn-sm btn-info" title="Add Data"><i class="fa fa-plus"></i> Tambah Perkiraan </button>
+        <button onclick="location.href='{{ route('account.add') }}'" name="Find" class="btn btn-sm btn-info" title="Add Data"><i class="fa fa-plus"></i> Tambah Perkiraan </button>
     </div>
   </div>
+<div class="card-body">
 
-  div class="card-body">
   <div class="table-responsive">
-      <!--begin::Table-->
-      {{ $dataTable->table() }}
-      <!--end::Table-->
-       {{-- Inject Scripts --}}
+    <!--begin::Table-->
+    {{ $dataTable->table() }}
+    <!--end::Table-->
+    {{-- Inject Scripts --}}
     @push('scripts')
-        {{ $dataTable->scripts() }}
+    {{ $dataTable->scripts() }}
     @endpush
   </div>
+</div>
 </div>
 </div>
 </div>

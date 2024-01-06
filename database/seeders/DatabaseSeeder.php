@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             ParentSedder::class,
             CategorySeeder::class,
             WarehouseSeeder::class,
-            SupplierSeeder::class
+            SupplierSeeder::class,
+            AccountSeeder::class
         ]);
     }
 }

@@ -66,8 +66,8 @@ class AcctAccountController extends Controller
                 'account_name'          => $fields['account_name'],
                 'account_group'         => $fields['account_group'],
                 'account_default_status'=> $fields['account_status'],
-                'account_status'        => $fields['account_code'],
-                'account_type_id'       => $fields['account_code'],
+                'account_status'        => $fields['account_status'],
+                'account_type_id'       => $fields['account_type_id'],
                 'company_id'            => Auth::user()->company_id
             ]);
             DB::commit();

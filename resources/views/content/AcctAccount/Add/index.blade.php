@@ -10,7 +10,7 @@
         console.log("value " + value);
         $.ajax({
             type: "POST",
-            url : "{{ route('acct-account.elements-add') }}",
+            url : "{{ route('account.add-elements') }}",
             data : {
                 'name'      : name,
                 'value'     : value,
@@ -24,7 +24,7 @@
     function reset_add() {
         $.ajax({
             type: "GET",
-            url : "{{ route('acct-account.add-reset') }}",
+            url : "{{ route('account.add-reset') }}",
             success: function(msg){
                 location.reload();
             }
@@ -80,10 +80,10 @@
             Form Tambah
         </h5>
         <div class="float-right">
-            <button onclick="location.href='{{ route('acct-account.index') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
+            <button onclick="location.href='{{ route('account.index') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
         </div>
     </div>
-    <form method="post" action="{{ route('acct-account.process-add') }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('account.add-process') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">
@@ -108,7 +108,7 @@
                 </div>
                 <div class="col-md-6 mt-4">
                     <div class="form-group">
-                        {!! Form::select(0, $status, $datases['account_status'] ??'',['class' => 'selection-search-clear select-form','name'=>'account_status','id'=>'account_status', 'onchange' => 'function_elements_add(this.name, this.value)']) !!} 
+                        {!! Form::select('account_status', $status, $datases['account_status'] ??'',['class' => 'selection-search-clear select-form','name'=>'account_status','id'=>'account_status', 'onchange' => 'function_elements_add(this.name, this.value)']) !!} 
                         {{-- <select name="account_status" id="account_status" class="selection-search-clear select-form">
                             <option value="0">Debit</option>
                             <option value="1">Kredit</option>
@@ -118,13 +118,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">Kelompok Perkiraan<a class='red'> *</a></a>
-                        {!! Form::select(0, $account_type, $datases['account_type_id'] ??'',['class' => 'selection-search-clear select-form','name'=>'account_type_id','id'=>'account_type_id', 'onchange' => 'function_elements_add(this.name, this.value)']) !!} 
-                        {{-- <select name="account_type_id" id="account_type_id" class="selection-search-clear select-form">
+                        {{-- {!! Form::select(0, $account_type, $datases['account_type_id'] ??'',['class' => 'selection-search-clear select-form','name'=>'account_type_id','id'=>'account_type_id', 'onchange' => 'function_elements_add(this.name, this.value)']) !!}  --}}
+                        <select name="account_type_id" id="account_type_id" class="selection-search-clear    select-form">
                             <option value="0">NA - Neraca Aktif</option>
                             <option value="1">NP - Neraca Pasif</option>
                             <option value="2">RA - Rugi Laba (A)</option>
                             <option value="3">RP - Rugi Laba (B)</option>
-                        </select> --}}
+                        </select>
                     </div>
                 </div>
             </div>

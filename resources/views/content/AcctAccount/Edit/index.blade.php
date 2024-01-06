@@ -9,7 +9,7 @@
         console.log("value " + value);
 		$.ajax({
 				type: "POST",
-				url : "{{ route('acct-account.elements-add') }}",
+				url : "{{ route('account.add-elements') }}",
 				data : {
                     'name'      : name,
                     'value'     : value,
@@ -23,7 +23,7 @@
     function reset_add() {
         $.ajax({
             type: "GET",
-            url : "{{ route('acct-account.add-reset') }}",
+            url : "{{ route('account.add-reset') }}",
             success: function(mssg){
                 location.reload();
             }
@@ -48,16 +48,15 @@
     Form Ubah Perkiraan
 </h3>
 <br/>
-@if(session('msg'))
-<div class="alert alert-info" role="alert">
-    {{session('msg')}}
+@if (session('msg'))
+<div class="alert alert-{{session('type')??'info'}}" role="alert">
+    {{ session('msg') }}
 </div>
 @endif
-
-@if(count($errors) > 0)
+@if (count($errors) > 0)
 <div class="alert alert-danger" role="alert">
     @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
+        {{ $error }}
     @endforeach
 </div>
 @endif
@@ -67,17 +66,11 @@
             Form Ubah
         </h5>
         <div class="float-right">
-            <button onclick="location.href='{{ route('acct-account.index') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
+            <button onclick="location.href='{{ route('account.index') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
         </div>
     </div>
 
-    <?php 
-            // if (empty($coresection)){
-            //     $coresection['section_name'] = '';
-            // }
-        ?>
-
-    <form method="post" action="{{ route('acct-account.index') }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('account.process-edit') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">

@@ -29,8 +29,9 @@ return new class extends Migration
                 ['user_group_level' => 1,'id_menu' => 4  ],
                 ['user_group_level' => 1,'id_menu' => 5  ],
                 ['user_group_level' => 1,'id_menu' => 6  ],
-                ['user_group_level' => 1,'id_menu' => 61 ],
-                ['user_group_level' => 1,'id_menu' => 611 ],
+                ['user_group_level' => 1,'id_menu' => 7  ],
+                ['user_group_level' => 1,'id_menu' => 71 ],
+                ['user_group_level' => 1,'id_menu' => 711 ],
             ]);
         }
     }

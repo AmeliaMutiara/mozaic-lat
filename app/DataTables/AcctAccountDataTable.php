@@ -21,8 +21,20 @@ class AcctAccountDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
+        $account_type = array(
+            '0' => 'NA - Neraca Aktif',
+            '1' => 'NP - Neraca Pasif',
+            '2' => 'RA - Rugi Laba (A)',
+            '3' => 'RP - Rugi Laba (b)',
+        );
+        $status = array(
+            '0' => 'Debit',
+            '1' => 'Kredit'
+        );
         return (new EloquentDataTable($query))
             ->addIndexColumn()
+            ->editColumn('account_type_id',fn($query)=>$account_type[$query->account_type_id])
+            ->editColumn('account_status', fn($query)=>$status[$query->account_status])
             ->addColumn('action', 'content.AcctAccount.List._action-menu')
             ->setRowId('id');
     }
@@ -49,7 +61,7 @@ class AcctAccountDataTable extends DataTable
                     ->orderBy(0, 'asc')
                     ->autoWidth(false)
                     ->responsive()
-                    ->parameters(['scrollX' => true])
+                    ->parameters(['scrollX' => true, 'scrollY' => true])
                     ->buttons([Button::make('reload')]);
     }
 
@@ -59,7 +71,7 @@ class AcctAccountDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('account_id')->title(__('No'))->data('DT_RowIndex')->addClass('text-center')->width(10),
+            Column::make('account_id')->title(__('No'))->data('DT_RowIndex')->addClass('text-center')->width(6),
             Column::make('account_code')->title('No Perkiraan'),
             Column::make('account_name')->title('Nama Perkiraan'),
             Column::make('account_group')->title('Golongan Perkiraan'),
