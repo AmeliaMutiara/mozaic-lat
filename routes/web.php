@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AcctAccountController;
+use App\Http\Controllers\CoreBankController;
 use App\Http\Controllers\CoreSupplierController;
 use App\Http\Controllers\ExampleController;
 use Illuminate\Support\Facades\Auth;
@@ -8,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvtItemCategoryController;
 use App\Http\Controllers\InvtWarehouseController;
+use App\Models\CoreBank;
 use App\Models\InvtItemCategory;
 
 /*
@@ -29,11 +31,6 @@ Route::get('/', function () {
 // * contoh route singgle (hanya 1 menu)
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/quote', [HomeController::class, 'quote'])->name('quote');
-
-// Route::get('/item-category', [InvtItemCategoryController::class, 'index'])->name('item-category');
-// Route::get('/item-category/add', [InvtItemCategoryController::class, 'addItemCetegory'])->name('add-item-category');
-
-
 Route::get('/quote', [ExampleController::class, 'index'])->name('index');
 
 // * contoh route group untuk 1 menu tapi ada beberapa route yang masih berhubungan
@@ -55,31 +52,31 @@ Route::middleware('auth')->group(function () {
     });
     Route::prefix('item-category')->name('ic.')->group(function () {
         Route::get('/',[InvtItemCategoryController::class, 'index'])->name('index');
-        Route::get('add',[InvtItemCategoryController::class, 'addItemCategory'])->name('add');
-        Route::post('/elements-add',[InvtItemCategoryController::class, 'elementsAddItemCategory'])->name('elements-add');
-        Route::post('/process-add-category',[InvtItemCategoryController::class, 'processAddItemCategory'])->name('process-add');
-        Route::get('/reset-add',[InvtItemCategoryController::class, 'addReset'])->name('add-reset');
-        Route::get('edit/{item_category_id}',[InvtItemCategoryController::class, 'editItemCategory'])->name('edit');
-        Route::post('/process-edit-category',[InvtItemCategoryController::class, 'processEditItemCategory'])->name('process-edit');
-        Route::get('delete/{item_category_id}',[InvtItemCategoryController::class, 'deleteItemCategory'])->name('delete');
+        Route::get('/add',[InvtItemCategoryController::class, 'addItemCategory'])->name('add');
+        Route::post('/add-elements',[InvtItemCategoryController::class, 'elementsAddItemCategory'])->name('add-elements');
+        Route::post('/add-process',[InvtItemCategoryController::class, 'processAddItemCategory'])->name('add-process');
+        Route::get('/add-reset',[InvtItemCategoryController::class, 'addReset'])->name('add-reset');
+        Route::get('/edit/{item_category_id}',[InvtItemCategoryController::class, 'editItemCategory'])->name('edit');
+        Route::post('/process-edit-category',[InvtItemCategoryController::class, 'processEditItemCategory'])->name('edit-process');
+        Route::get('/delete/{item_category_id}',[InvtItemCategoryController::class, 'deleteItemCategory'])->name('delete');
 
     });
     Route::prefix('warehouse')->name('warehouse.')->group(function () {
         Route::get('/',[InvtWarehouseController::class, 'index'])->name('index');
         Route::get('/add',[InvtWarehouseController::class, 'addWarehouse'])->name('add');
-        Route::post('/elements-add',[InvtWarehouseController::class, 'elementsAddWarehouse'])->name('elements-add');
-        Route::post('/process-add-warehouse',[InvtWarehouseController::class, 'processAddWarehouse'])->name('process-add');
-        Route::get('/warehouse/add-reset', [InvtWarehouseController::class, 'addResetWarehouse'])->name('add-reset-warehouse');
-        Route::get('/warehouse/edit-warehouse/{warehouse_id}',[InvtWarehouseController::class, 'editWarehouse'])->name('edit-warehouse');
-        Route::post('/warehouse/process-edit-warehouse', [InvtWarehouseController::class, 'processEditWarehouse'])->name('process-edit-warehouse');
-        Route::get('/warehouse/delete-warehouse/{warehouse_id}', [InvtWarehouseController::class, 'deleteWarehouse'])->name('delete-warehouse');
+        Route::post('/add-elements',[InvtWarehouseController::class, 'elementsAddWarehouse'])->name('add-elements');
+        Route::post('/add-process',[InvtWarehouseController::class, 'processAddWarehouse'])->name('add-process');
+        Route::get('/add-reset', [InvtWarehouseController::class, 'addResetWarehouse'])->name('add-reset');
+        Route::get('/edit/{warehouse_id}',[InvtWarehouseController::class, 'editWarehouse'])->name('edit');
+        Route::post('/edit-process', [InvtWarehouseController::class, 'processEditWarehouse'])->name('edit-process');
+        Route::get('/delete/{warehouse_id}', [InvtWarehouseController::class, 'deleteWarehouse'])->name('delete');
     });
     Route::prefix('core-supplier')->name('supplier.')->group(function() {
         Route::get('/', [CoreSupplierController::class, 'index'])->name('index');
         Route::get('/add', [CoreSupplierController::class, 'addCoreSupplier'])->name('add');
-        Route::post('/process-add', [CoreSupplierController::class, 'processAddCoreSupplier'])->name('add-process');
+        Route::post('/add-process', [CoreSupplierController::class, 'processAddCoreSupplier'])->name('add-process');
         Route::post('/add-elements', [CoreSupplierController::class, 'addElementsCoreSupplier'])->name('add-elements');
-        Route::get('/reset-elements', [CoreSupplierController::class, 'resetElementsCoreSupplier'])->name('reset-elements');
+        Route::get('/add-elements', [CoreSupplierController::class, 'resetElementsCoreSupplier'])->name('add-reset');
         Route::get('/edit/{supplier_id}', [CoreSupplierController::class, 'editCoreSupplier'])->name('edit');
         Route::post('/process-edit', [CoreSupplierController::class, 'processEditCoreSupplier'])->name('edit-process');
         Route::get('/delete/{supplier_id}', [CoreSupplierController::class, 'deleteCoreSupplier'])->name('delete');
@@ -91,8 +88,17 @@ Route::middleware('auth')->group(function () {
         Route::post('/add-elements',[AcctAccountController::class, 'addElementsAcctAccount'])->name('add-elements');
         Route::get('/add-reset',[AcctAccountController::class, 'addResetAcctAccount'])->name('add-reset');
         Route::get('/edit/{account_id}',[AcctAccountController::class, 'editAcctAccount'])->name('edit');
-        Route::post('/process-edit',[AcctAccountController::class, 'processEditAcctAccount'])->name('process-edit');
+        Route::post('/process-edit',[AcctAccountController::class, 'processEditAcctAccount'])->name('edit-process');
         Route::get('/delete/{account_id}',[AcctAccountController::class, 'deleteAcctAccount'])->name('delete');
     });
-
+    Route::prefix('core-bank')->name('bank.')->group(function() {
+        Route::get('/', [CoreBankController::class, 'index'])->name('index');
+        Route::get('/add', [CoreBankController::class, 'addCoreBank'])->name('add');
+        Route::post('/add-process', [CoreBankController::class, 'processAddCoreBank'])->name('add-process');
+        Route::post('/add-elements', [CoreBankController::class, 'addElementsCoreBank'])->name('add-elements');
+        Route::get('/add-reset', [CoreBankController::class, 'resetElementsCoreBank'])->name('add-reset');
+        Route::get('/edit/{bank_id}', [CoreBankController::class, 'editCoreBank'])->name('edit');
+        Route::post('/edit-process', [CoreBankController::class, 'processEditCoreBank'])->name('edit-process');
+        Route::get('/delete/{bank_id}', [CoreBankController::class, 'deleteCoreBank'])->name('delete');
+    });
 });

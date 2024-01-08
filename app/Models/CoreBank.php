@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CoreBank extends Model
 {
-    // use HasFactory;
+    use HasFactory;
     protected $table        = 'core_bank';
     protected $primaryKey   = 'bank_id';
     protected $guarded = [

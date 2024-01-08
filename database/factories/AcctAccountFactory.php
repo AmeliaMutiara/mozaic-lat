@@ -17,6 +17,7 @@ class AcctAccountFactory extends Factory
     public function definition(): array
     {
         return [
+            'company_id' => 1,
             'account_code'   => fake()->randomNumber(),
             'account_name'   => fake()->word(),
             'account_group'  => fake()->randomNumber(),

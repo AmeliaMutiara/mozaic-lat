@@ -10,7 +10,7 @@
         console.log("value " + value);
         $.ajax({
             type: "POST",
-            url : "{{ route('ic.elements-add') }}",
+            url : "{{ route('ic.add-elements') }}",
             data : {
                 'name'      : name,
                 'value'     : value,
@@ -46,7 +46,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('/item-category') }}">Daftar Kategori</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('ic.index') }}">Daftar Kategori</a></li>
         <li class="breadcrumb-item active" aria-current="page">Tambah Kategori</li>
     </ol>
   </nav>
@@ -84,7 +84,7 @@
         </div>
     </div>
 
-    <form action="{{ route('ic.process-add') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('ic.add-process') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">

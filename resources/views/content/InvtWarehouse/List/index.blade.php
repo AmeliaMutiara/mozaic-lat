@@ -34,14 +34,14 @@
 @endif
 
 <div class="card border border-dark">
-  <div class="card-header bg-dark clearfix">
-    <h5 class="mb-0 float-left">
-        Daftar
-    </h5>
-    <div class="form-actions float-right">
-        <a href='{{ route('warehouse.add') }}' name="Find" class="btn btn-sm btn-info" title="Add Data"><i class="fa fa-plus"></i> Tambah Data</a>
+    <div class="card-header bg-dark clearfix">
+        <h5 class="mb-0 float-left">
+            Daftar
+        </h5>
+        <div class="form-actions float-right">
+            <a href='{{ route('warehouse.add') }}' name="Find" class="btn btn-sm btn-info" title="Add Data"><i class="fa fa-plus"></i> Tambah Data</a>
+        </div>
     </div>
-  </div>
     <div class="card-body">
         <div class="table-responsive">
             <!--begin::Table-->

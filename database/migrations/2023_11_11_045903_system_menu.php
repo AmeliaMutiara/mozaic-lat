@@ -31,9 +31,10 @@ return new class extends Migration
                [ 'id_menu' => 4,  'id' => 'warehouse',             'type' => 'file','text' => 'Gudang','parent' => "#",'menu_level' => "1",],
                [ 'id_menu' => 5,  'id' => 'core-supplier',             'type' => 'file','text' => 'Supplier','parent' => "#",'menu_level' => "1",],
                [ 'id_menu' => 6,  'id' => 'acct-account',             'type' => 'file','text' => 'No Perkiraan','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 7, 'id' => '#',              'type' => 'folder','text' => 'Level 1','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 71, 'id' => 'level',         'type' => 'file','text' => 'Level 2','parent' => "4",'menu_level' => "2",],
-               [ 'id_menu' => 711, 'id' => 'level',         'type' => 'file','text' => 'Level 3','parent' => "41",'menu_level' => "3",],
+               [ 'id_menu' => 7,  'id' => 'core-bank',             'type' => 'file','text' => 'Bank','parent' => "#",'menu_level' => "1",],
+               [ 'id_menu' => 8, 'id' => '#',              'type' => 'folder','text' => 'Level 1','parent' => "#",'menu_level' => "1",],
+               [ 'id_menu' => 81, 'id' => 'level',         'type' => 'file','text' => 'Level 2','parent' => "4",'menu_level' => "2",],
+               [ 'id_menu' => 811, 'id' => 'level',         'type' => 'file','text' => 'Level 3','parent' => "41",'menu_level' => "3",],
             ]);
         }
     }

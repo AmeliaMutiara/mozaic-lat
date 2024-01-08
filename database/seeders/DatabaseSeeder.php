@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             WarehouseSeeder::class,
             SupplierSeeder::class,
-            AccountSeeder::class
+            AccountSeeder::class,
+            BankSeeder::class
         ]);
     }
 }

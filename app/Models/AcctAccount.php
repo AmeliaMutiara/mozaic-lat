@@ -15,4 +15,9 @@ class AcctAccount extends Model
         'updated_at',
         'created_at'
     ];
+
+    // public function bank()
+    // {
+    //     return $this->hasMany(CoreBank::)
+    // }
 }

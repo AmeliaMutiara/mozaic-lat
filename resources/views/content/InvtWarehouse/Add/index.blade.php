@@ -8,7 +8,7 @@
         console.log("value " + value);
 		$.ajax({
 				type: "POST",
-				url : "{{ route('warehouse.elements-add') }}",
+				url : "{{ route('warehouse.add-elements') }}",
 				data : {
                     'name'      : name, 
                     'value'     : value,
@@ -22,7 +22,7 @@
     function reset_add(){
 		$.ajax({
 				type: "GET",
-				url : "{{ route('warehouse.add-reset-warehouse') }}",
+				url : "{{ route('warehouse.add-reset') }}",
 				success: function(msg){
                     location.reload();
 			}
@@ -37,7 +37,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('/warehouse') }}">Daftar Gudang</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('warehouse.index') }}">Daftar Gudang</a></li>
         <li class="breadcrumb-item active" aria-current="page">Tambah Gudang</li>
     </ol>
   </nav>
@@ -80,7 +80,7 @@
             // }
         ?>
 
-    <form method="post" action="{{ route('warehouse.process-add') }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('warehouse.add-process') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">
