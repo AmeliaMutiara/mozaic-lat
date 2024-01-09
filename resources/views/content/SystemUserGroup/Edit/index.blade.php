@@ -2,34 +2,20 @@
 
 @section('title', 'MOZAIC Practice')
 
-{{-- @section('js')
+@section('js')
 <script>
-    function function_elements_add(name, value) {
-        console.log("name " + name);
-        console.log("value " + value);
-		$.ajax({
-				type: "POST",
-				url : "{{ route('user-group.add-elements') }}",
-				data : {
-                    'name'      : name,
-                    'value'     : value,
-                    '_token'    : '{{csrf_token()}}'
-                },
-				success: function(msg){
-			}
-		});
-	}
-
-    function reset_add() {
-        $.ajax({
-            type: "GET",
-            url : "{{ route('user-group.add-reset') }}",
-            success: function(mssg){
-                location.reload();
-            }
+    function check_all(){
+        $(':checkbox').each(function() {
+            this.checked = true;                        
         });
     }
-</script> --}}
+    function uncheck_all(){
+        $(':checkbox').each(function() {
+            this.checked = false;                        
+        });
+    }
+</script>
+@stop
 
 
 @section('content_header')
@@ -47,7 +33,7 @@
 @section('content')
 
 <h3 class="page-title">
-    Form Edit System User
+    Form Edit System User Group
 </h3>
 <br/>
 @if (session('msg'))
@@ -72,46 +58,65 @@
         </div>
     </div>
 
-    <form method="post" action="{{ route('usergroup.edit-process') }}" enctype="multipart/form-data">
+    <form method="post" action="{{route('process-edit-system-user-group')}}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
-                        <a class="text-dark">Nama<a class='red'> *</a></a>
-                        <input class="form-control input-bb" type="text" name="name" id="name" value="{{$systemusergroup['name']}}"/>
-                        <input class="form-control input-bb" type="hidden" name="user_id" id="user_id" value="{{$user_group_id}}"/>
+                        <a class="text-dark">Nama Group<a class='red'> *</a></a>
+                        <input class="form-control input-bb" type="text" name="user_group_name" id="user_group_name" value="{{$systemusergroup['user_group_name']}}"/>
+                        <input class="form-control input-bb" type="hidden" name="user_group_id" id="user_group_id" value="{{$systemusergroup['user_group_id']}}"/>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
-                        <a class="text-dark">Nama Panjang<a class='red'> *</a></a>
-                        <input class="form-control input-bb" type="text" name="full_name" id="full_name" value="{{$systemusergroup['full_name']}}"/>
+                        <a class="text-dark">User Group Level<a class='red'> *</a></a>
+                        <input class="form-control input-bb" type="text" name="user_group_level" id="user_group_level" value="{{$systemusergroup['user_group_level']}}"/>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <a class="text-dark">Password<a class='red'> *</a></a>
-                        <input class="form-control input-bb" type="password" name="password" id="password" value=""/>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <a class="text-dark">No HP</a>
-                        <input class="form-control input-bb" type="text" name="phone_number" id="phone_number" value="{{$systemusergroup['phone_number']}}"/>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <a class="text-dark">User Group<a class='red'> *</a></a>
-                    <br/>
-                    {!! Form::select('user_group_id',  $systemusergroup, $systemusergroup['user_group_id'], ['class' => 'selection-search-clear select-form']) !!}
-                </div>
-                {{-- <div class="col-md-4">
-                    <a class="text-dark">Bagian<a class='red'> *</a></a>
-                    <br/>
-                    {!! Form::select('section_id',  $coresection, $systemuser['section_id'], ['class' => 'selection-search-clear select-form']) !!}
-                </div> --}}
             </div>
+
+            <br/>
+            <div class="row">
+                <div class="col-md-10">
+                    <h5 class="form-section"><b>Privilage Menu<a class='red'> *</a></b></h5>
+                </div>
+                <div class="col-md-2" style="padding-left: 3%;">
+                    <a onclick="check_all()" name="Find" class="btn btn-sm btn-info" title="Back"> Check All</a>
+                    <a onclick="uncheck_all()" name="Find" class="btn btn-sm btn-info" title="Back"> UnCheck All</a>
+                </div>
+            </div>
+            <hr style="margin:0;">
+            <br/>
+            <?php foreach($systemmenu as $key => $val) {
+                    if($val['indent_level']==1 && $SystemUserGroup->getMenuMappingStatus($systemusergroup['user_group_level'], $val['id_menu'])!=0){
+            ?>
+                <div class="indent_first">
+                    <input type='checkbox' class='checkboxes' name='checkbox_{{$val['id_menu']}}' id='checkbox_{{$val['id_menu']}}' value='1'  OnClick='checkboxSalesOrderChange({{$val['id_menu']}})'; checked/> {{$val['text']}}
+                </div>
+            <?php   }else if($val['indent_level']==1 && $SystemUserGroup->getMenuMappingStatus($systemusergroup['user_group_level'], $val['id_menu'])==0){ ?>
+                <div class="indent_first">
+                    <input type='checkbox' class='checkboxes' name='checkbox_{{$val['id_menu']}}' id='checkbox_{{$val['id_menu']}}' value='1'  OnClick='checkboxSalesOrderChange({{$val['id_menu']}})';/> {{$val['text']}}
+                </div>
+            <?php   }else if($val['indent_level']==2 && $SystemUserGroup->getMenuMappingStatus($systemusergroup['user_group_level'], $val['id_menu'])!=0){ ?>
+                <div class="indent_second">
+                    <input type='checkbox' class='checkboxes' name='checkbox_{{$val['id_menu']}}' id='checkbox_{{$val['id_menu']}}' value='1'  OnClick='checkboxSalesOrderChange({{$val['id_menu']}})'; checked/> {{$val['text']}}
+                </div>
+            <?php   }else if($val['indent_level']==2 && $SystemUserGroup->getMenuMappingStatus($systemusergroup['user_group_level'], $val['id_menu'])==0){ ?>
+                <div class="indent_second">
+                    <input type='checkbox' class='checkboxes' name='checkbox_{{$val['id_menu']}}' id='checkbox_{{$val['id_menu']}}' value='1'  OnClick='checkboxSalesOrderChange({{$val['id_menu']}})';/> {{$val['text']}}
+                </div>
+            <?php   }else if($val['indent_level']==3 && $SystemUserGroup->getMenuMappingStatus($systemusergroup['user_group_level'], $val['id_menu'])!=0){ ?>
+                <div class="indent_third">
+                    <input type='checkbox' class='checkboxes' name='checkbox_{{$val['id_menu']}}' id='checkbox_{{$val['id_menu']}}' value='1'  OnClick='checkboxSalesOrderChange({{$val['id_menu']}})'; checked/> {{$val['text']}}
+                </div>
+            <?php   }else if($val['indent_level']==3 && $SystemUserGroup->getMenuMappingStatus($systemusergroup['user_group_level'], $val['id_menu'])==0){ ?>
+                <div class="indent_third">
+                    <input type='checkbox' class='checkboxes' name='checkbox_{{$val['id_menu']}}' id='checkbox_{{$val['id_menu']}}' value='1'  OnClick='checkboxSalesOrderChange({{$val['id_menu']}})';/> {{$val['text']}}
+                </div>
+            <?php   } 
+            } ?>
         </div>
         <div class="card-footer text-muted">
             <div class="form-actions float-right">
@@ -130,9 +135,5 @@
 @stop
 
 @section('css')
-    
-@stop
-
-@section('js')
     
 @stop
