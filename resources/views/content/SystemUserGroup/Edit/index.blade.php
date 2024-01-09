@@ -2,7 +2,7 @@
 
 @section('title', 'MOZAIC Practice')
 
-@section('js')
+{{-- @section('js')
 <script>
     function function_elements_add(name, value) {
         console.log("name " + name);
@@ -29,7 +29,7 @@
             }
         });
     }
-</script>
+</script> --}}
 
 
 @section('content_header')
@@ -37,7 +37,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('user-group.index') }}">Daftar System User</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('usergroup.index') }}">Daftar System User</a></li>
         <li class="breadcrumb-item active" aria-current="page">Edit System User</li>
     </ol>
   </nav>
@@ -68,25 +68,25 @@
             Form Edit
         </h5>
         <div class="float-right">
-            <button onclick="location.href='{{ route('user-group.index') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
+            <button onclick="location.href='{{ route('usergroup.index') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
         </div>
     </div>
 
-    <form method="post" action="{{ route('user-group.edit-process') }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('usergroup.edit-process') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">
                 <div class="col-md-4">
                     <div class="form-group">
                         <a class="text-dark">Nama<a class='red'> *</a></a>
-                        <input class="form-control input-bb" type="text" name="name" id="name" value="{{$systemuser['name']}}"/>
-                        <input class="form-control input-bb" type="hidden" name="user_id" id="user_id" value="{{$user_id}}"/>
+                        <input class="form-control input-bb" type="text" name="name" id="name" value="{{$systemusergroup['name']}}"/>
+                        <input class="form-control input-bb" type="hidden" name="user_id" id="user_id" value="{{$user_group_id}}"/>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <a class="text-dark">Nama Panjang<a class='red'> *</a></a>
-                        <input class="form-control input-bb" type="text" name="full_name" id="full_name" value="{{$systemuser['full_name']}}"/>
+                        <input class="form-control input-bb" type="text" name="full_name" id="full_name" value="{{$systemusergroup['full_name']}}"/>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -98,13 +98,13 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <a class="text-dark">No HP</a>
-                        <input class="form-control input-bb" type="text" name="phone_number" id="phone_number" value="{{$systemuser['phone_number']}}"/>
+                        <input class="form-control input-bb" type="text" name="phone_number" id="phone_number" value="{{$systemusergroup['phone_number']}}"/>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <a class="text-dark">User Group<a class='red'> *</a></a>
                     <br/>
-                    {!! Form::select('user_group_id',  $systemusergroup, $systemuser['user_group_id'], ['class' => 'selection-search-clear select-form']) !!}
+                    {!! Form::select('user_group_id',  $systemusergroup, $systemusergroup['user_group_id'], ['class' => 'selection-search-clear select-form']) !!}
                 </div>
                 {{-- <div class="col-md-4">
                     <a class="text-dark">Bagian<a class='red'> *</a></a>

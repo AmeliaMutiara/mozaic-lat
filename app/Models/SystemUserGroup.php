@@ -16,6 +16,10 @@ class SystemUserGroup extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function menuMapping() {
+        return $this->belongsTo(SystemMenu::class,'user_group_level','user_group_level');
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

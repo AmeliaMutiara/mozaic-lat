@@ -1,6 +1,6 @@
 
 <td class="text-center">
-    <a type="button" href="{{route('user-group.edit',$model->user_group_id)}}" class="btn btn-sm btn-primary btn-active-light-primary">
+    <a type="button" href="{{route('usergroup.edit',$model->user_group_id)}}" class="btn btn-sm btn-primary btn-active-light-primary">
        Edit
     </a>
     <button type="button" data-bs-toggle="modal" data-bs-target="#modal_delete_{{ $model->user_group_id }}" class="btn btn-sm btn-danger btn-active-light-danger">
@@ -22,7 +22,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-bs-dismiss="modal">Tidak</button>
-                <a type="button" href="{{route('user-group.delete',$model->user_group_id)}}" class="btn btn-danger">
+                <a type="button" href="{{route('usergroup.delete',$model->user_group_id)}}" class="btn btn-danger">
                     Ya
                  </a>
             </div>
