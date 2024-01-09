@@ -86,8 +86,7 @@ class CoreBankController extends Controller
 
     public function editCoreBank($bank_id)
     {
-        $data = CoreBank::select('bank_id', 'bank_name', 'account_id')
-        ->where('bank_id', $bank_id)
+        $data = CoreBank::where('bank_id', $bank_id)
         ->first();
 
         $accountlist = AcctAccount::select(DB::raw("CONCAT(account_code,' - ',account_name) AS full_account"), 'account_id')
@@ -111,7 +110,7 @@ class CoreBankController extends Controller
             $table              = CoreBank::findOrFail($fields['bank_id']);
             $table->bank_name   = $fields['bank_name'];
             $table->account_id  = $fields['account_id'];
-            $table->bank_code   = $$fields['bank_code'];
+            $table->bank_code   = $fields['bank_code'];
             $table->account_no  = $fields['account_no'];
             $table->onbehalf    = $request->onbehalf;
             $table->bank_remark = $request->bank_remark;

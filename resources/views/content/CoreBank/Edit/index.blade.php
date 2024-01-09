@@ -76,13 +76,13 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <a class="text-dark">Atas Nama<a class='red'> *</a></a>
+                        <a class="text-dark">Atas Nama</a></a>
                         <input class="form-control input-bb" name="onbehalf" id="onbehalf" type="text" autocomplete="off" value="{{ $data['onbehalf'] }}"/>
                     </div>
                 </div>
                 <div class="col-md-8 mt-3">
                     <div class="form-group">
-                        <a class="text-dark">Keterangan<a class='red'> *</a></a>
+                        <a class="text-dark">Keterangan</a></a>
                         <input class="form-control input-bb" name="bank_remark" id="bank_remark" type="text" autocomplete="off" value="{{ $data['bank_remark'] }}"/>
                     </div>
                 </div>

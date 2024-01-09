@@ -23,7 +23,7 @@ class CoreBankDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
-            ->editColumn('account.account_id', fn($query)=>"{$query->account_id}")
+            ->editColumn('account_id', fn($query)=>"{$query->account->account_code} - {$query->account->account_name}")
             ->addColumn('action', 'content.CoreBank.List._action-menu')
             ->setRowId('id');
     }
@@ -33,7 +33,7 @@ class CoreBankDataTable extends DataTable
      */
     public function query(CoreBank $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->with('account');
     }
 
     /**
