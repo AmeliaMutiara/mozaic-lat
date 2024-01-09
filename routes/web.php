@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvtItemCategoryController;
 use App\Http\Controllers\InvtWarehouseController;
+use App\Http\Controllers\SystemUserGroupController;
 use App\Models\CoreBank;
 use App\Models\InvtItemCategory;
 
@@ -100,5 +101,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/{bank_id}', [CoreBankController::class, 'editCoreBank'])->name('edit');
         Route::post('/edit-process', [CoreBankController::class, 'processEditCoreBank'])->name('edit-process');
         Route::get('/delete/{bank_id}', [CoreBankController::class, 'deleteCoreBank'])->name('delete');
+    });
+    Route::prefix('system-user-group')->name('usergroup.')->group(function() {
+        Route::get('/', [SystemUserGroupController::class, 'index'])->name('index');
+        Route::get('/add', [SystemUserGroupController::class, 'addSystemUserGroup'])->name('add');
+        Route::post('/add-process', [SystemUserGroupController::class, 'processAddSystemUserGroup'])->name('add-process');
+        Route::get('/edit/{user_group_id}', [SystemUserGroupController::class, 'editSystemUserGroup'])->name('edit');
+        Route::post('/edit-process', [SystemUserGroupController::class, 'processEditSystemUserGroup'])->name('edit-process');
+        Route::get('/delete/{user_group_id}', [SystemUserGroupController::class, 'deleteSystemUserGroup'])->name('delete');
     });
 });

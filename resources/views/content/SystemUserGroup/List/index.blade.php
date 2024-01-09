@@ -1,11 +1,11 @@
-@inject('SystemUser', 'App\Http\Controllers\SystemUserController')
+{{-- @inject('SystemUser', 'App\Http\Controllers\SystemUserController') --}}
 
 @extends('adminlte::page')
 
 @section('title', 'MOZAIC Practice')
 
 @section('content_header')
-    
+
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
@@ -22,11 +22,6 @@
 </h3>
 <br/>
 
-<h3 class="page-title">
-    <b>Daftar Perkiraan</b> <small>Kelola Perkiraan </small>
-</h3>
-<br/>
-
 @if (session('msg'))
 <div class="alert alert-{{session('type')??'info'}}" role="alert">
     {{ session('msg') }}
@@ -38,14 +33,14 @@
         {{ $error }}
     @endforeach
 </div>
-@endif 
+@endif
 <div class="card border border-dark">
   <div class="card-header bg-dark clearfix">
     <h5 class="mb-0 float-left">
         Daftar
     </h5>
     <div class="form-actions float-right">
-        <button onclick="location.href='{{ route('user-group.add') }}'" name="Find" class="btn btn-sm btn-info" title="Add Data"><i class="fa fa-plus"></i> Tambah System User Group Baru</button>
+        <button onclick="location.href='{{ route('usergroup.add') }}'" name="Find" class="btn btn-sm btn-info" title="Add Data"><i class="fa fa-plus"></i> Tambah System User Group Baru</button>
     </div>
   </div>
 
@@ -63,13 +58,13 @@
         </div>
         </div>
         </div>
-        
+
         @stop
-        
+
         @section('css')
-        
+
         @stop
-        
+
         @section('js')
-        
+
         @stop

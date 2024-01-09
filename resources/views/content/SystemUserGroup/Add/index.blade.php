@@ -4,47 +4,26 @@
 
 @section('js')
 <script>
-    function function_elements_add(name, value) {
-        console.log("name " + name);
-        console.log("value " + value);
-        $.ajax({
-            type: "POST",
-            url : "{{ route('user-group.add-elements') }}",
-            data : {
-                'name'      : name,
-                'value'     : value,
-                '_token'    : '{{ csrf_token() }}'
-            },
-            success: function(msg) {
-            }
+    function check_all(){
+        $(':checkbox').each(function() {
+            this.checked = true;
         });
     }
-
-    function reset_add() {
-        $.ajax({
-            type: "GET",
-            url : "{{ route('user-group.add-reset') }}",
-            success: function(msg){
-                location.reload();
-            }
+    function uncheck_all(){
+        $(':checkbox').each(function() {
+            this.checked = false;
         });
-    }
-    function margin_limit(value) {
-        if (value > 100) {
-            alert('Margin Tidak Boleh Melebihi 100%');
-            $('#margin_percentage').val('');
-        }
     }
 </script>
 
 @stop
 
 @section('content_header')
-    
+
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('user-group.index') }}">Daftar System User Group</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('usergroup.index') }}">Daftar System User Group</a></li>
         <li class="breadcrumb-item active" aria-current="page">Tambah System User Group</li>
     </ol>
   </nav>
@@ -68,11 +47,11 @@
             Form Tambah
         </h5>
         <div class="float-right">
-            <button onclick="location.href='{{ route('user-group.index') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
+            <button onclick="location.href='{{ route('usergroup.index') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
         </div>
     </div>
 
-    <form method="post" action="{{route('user-group.add-process')}}" enctype="multipart/form-data">
+    <form method="post" action="{{route('usergroup.add-process')}}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">
@@ -116,7 +95,7 @@
                 <div class="indent_third">
                     <input type='checkbox' class='checkboxes' name='checkbox_{{$val['id_menu']}}' id='checkbox_{{$val['id_menu']}}' value='1'  OnClick='checkboxSalesOrderChange({{$val['id_menu']}})';/> {{$val['text']}}
                 </div>
-            <?php   } 
+            <?php   }
             } ?>
         </div>
         <div class="card-footer text-muted">
@@ -132,9 +111,9 @@
 @stop
 
 @section('footer')
-    
+
 @stop
 
 @section('css')
-    
+
 @stop

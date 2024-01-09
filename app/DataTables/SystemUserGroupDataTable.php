@@ -62,7 +62,7 @@ class SystemUserGroupDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('user_group_id')->title(__('User Group ID'))->data('DT_RowIndex') ->addClass('text-center')->width(10),
+            Column::make('user_group_id')->title(__('ID'))->data('DT_RowIndex') ->addClass('text-center')->width(10),
             Column::make('user_group_name')->title('Nama'),
             Column::make('user_group_level')->title('User Group Level'),
             Column::computed('action')->title('Aksi')
