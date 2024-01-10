@@ -15,9 +15,13 @@ return new class extends Migration
         if(!Schema::hasTable('system_menu_mapping')) {
             Schema::create('system_menu_mapping', function (Blueprint $table) {
                 $table->id('menu_mapping_id');
+                $table->unsignedBigInteger('company_id')->nullable();
                 $table->integer('user_group_level')->nullable();
                 $table->string('id_menu')->nullable();
                 $table->foreign('id_menu')->references('id_menu')->on('system_menu')->onUpdate('cascade')->onDelete('cascade');
+                $table->unsignedBigInteger('created_id')->nullable();
+                $table->unsignedBigInteger('updated_id')->nullable();
+                $table->unsignedBigInteger('deleted_id')->nullable();
                 $table->timestamps();
                 $table->softDeletesTz();
             });
@@ -32,8 +36,9 @@ return new class extends Migration
                 ['user_group_level' => 1,'id_menu' => 7  ],
                 ['user_group_level' => 1,'id_menu' => 8  ],
                 ['user_group_level' => 1,'id_menu' => 9  ],
-                ['user_group_level' => 1,'id_menu' => 91 ],
-                ['user_group_level' => 1,'id_menu' => 911 ],
+                // ['user_group_level' => 1,'id_menu' => 9  ],
+                // ['user_group_level' => 1,'id_menu' => 91 ],
+                // ['user_group_level' => 1,'id_menu' => 911 ],
             ]);
         }
     }

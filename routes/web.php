@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvtItemCategoryController;
+use App\Http\Controllers\InvtItemUnitController;
 use App\Http\Controllers\InvtWarehouseController;
 use App\Http\Controllers\SystemUserGroupController;
 use App\Models\CoreBank;
@@ -109,5 +110,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/{user_group_id}', [SystemUserGroupController::class, 'editSystemUserGroup'])->name('edit');
         Route::post('/edit-process', [SystemUserGroupController::class, 'processEditSystemUserGroup'])->name('edit-process');
         Route::get('/delete/{user_group_id}', [SystemUserGroupController::class, 'deleteSystemUserGroup'])->name('delete');
+    });
+    Route::prefix('item-unit')->name('itemunit.')->group(function() {
+        Route::get('/', [InvtItemUnitController::class, 'index'])->name('index');
+        Route::get('/add', [InvtItemUnitController::class, 'addInvtItemUnit'])->name('add');
+        Route::post('/add-process', [InvtItemUnitController::class, 'processAddInvtItemUnit'])->name('add-process');
+        Route::post('/add-elements', [InvtItemUnitController::class, 'addElementsInvtItemUnit'])->name('add-elements');
+        Route::get('/add-reset', [InvtItemUnitController::class, 'addReset'])->name('add-reset');
+        Route::get('/edit/{item_unit_id}', [InvtItemUnitController::class, 'editInvtItemUnit'])->name('edit');
+        Route::post('/edit-process', [InvtItemUnitController::class, 'processEditInvtItemUnit'])->name('edit-process');
+        Route::get('/delete/{item_unit_id}', [InvtItemUnitController::class, 'deleteInvtItemUnit'])->name('delete');
     });
 });

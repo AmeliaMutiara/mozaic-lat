@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <form method="post" action="{{route('process-edit-system-user-group')}}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('usergroup.edit-process') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">
@@ -90,28 +90,28 @@
             <hr style="margin:0;">
             <br/>
             <?php foreach($systemmenu as $key => $val) {
-                    if($val['indent_level']==1 && $SystemUserGroup->getMenuMappingStatus($systemusergroup['user_group_level'], $val['id_menu'])!=0){
+                    if($val['menu_level']==1 && $systemusergroup->getMenuMappingStatus($systemusergroup['user_group_level'], $val['id_menu'])!=0){
             ?>
                 <div class="indent_first">
                     <input type='checkbox' class='checkboxes' name='checkbox_{{$val['id_menu']}}' id='checkbox_{{$val['id_menu']}}' value='1'  OnClick='checkboxSalesOrderChange({{$val['id_menu']}})'; checked/> {{$val['text']}}
                 </div>
-            <?php   }else if($val['indent_level']==1 && $SystemUserGroup->getMenuMappingStatus($systemusergroup['user_group_level'], $val['id_menu'])==0){ ?>
+            <?php   }else if($val['menu_level']==1 && $systemusergroup->getMenuMappingStatus($systemusergroup['user_group_level'], $val['id_menu'])==0){ ?>
                 <div class="indent_first">
                     <input type='checkbox' class='checkboxes' name='checkbox_{{$val['id_menu']}}' id='checkbox_{{$val['id_menu']}}' value='1'  OnClick='checkboxSalesOrderChange({{$val['id_menu']}})';/> {{$val['text']}}
                 </div>
-            <?php   }else if($val['indent_level']==2 && $SystemUserGroup->getMenuMappingStatus($systemusergroup['user_group_level'], $val['id_menu'])!=0){ ?>
+            <?php   }else if($val['menu_level']==2 && $systemusergroup->getMenuMappingStatus($systemusergroup['user_group_level'], $val['id_menu'])!=0){ ?>
                 <div class="indent_second">
                     <input type='checkbox' class='checkboxes' name='checkbox_{{$val['id_menu']}}' id='checkbox_{{$val['id_menu']}}' value='1'  OnClick='checkboxSalesOrderChange({{$val['id_menu']}})'; checked/> {{$val['text']}}
                 </div>
-            <?php   }else if($val['indent_level']==2 && $SystemUserGroup->getMenuMappingStatus($systemusergroup['user_group_level'], $val['id_menu'])==0){ ?>
+            <?php   }else if($val['menu_level']==2 && $systemusergroup->getMenuMappingStatus($systemusergroup['user_group_level'], $val['id_menu'])==0){ ?>
                 <div class="indent_second">
                     <input type='checkbox' class='checkboxes' name='checkbox_{{$val['id_menu']}}' id='checkbox_{{$val['id_menu']}}' value='1'  OnClick='checkboxSalesOrderChange({{$val['id_menu']}})';/> {{$val['text']}}
                 </div>
-            <?php   }else if($val['indent_level']==3 && $SystemUserGroup->getMenuMappingStatus($systemusergroup['user_group_level'], $val['id_menu'])!=0){ ?>
+            <?php   }else if($val['menu_level']==3 && $systemusergroup->getMenuMappingStatus($systemusergroup['user_group_level'], $val['id_menu'])!=0){ ?>
                 <div class="indent_third">
                     <input type='checkbox' class='checkboxes' name='checkbox_{{$val['id_menu']}}' id='checkbox_{{$val['id_menu']}}' value='1'  OnClick='checkboxSalesOrderChange({{$val['id_menu']}})'; checked/> {{$val['text']}}
                 </div>
-            <?php   }else if($val['indent_level']==3 && $SystemUserGroup->getMenuMappingStatus($systemusergroup['user_group_level'], $val['id_menu'])==0){ ?>
+            <?php   }else if($val['menu_level']==3 && $systemusergroup->getMenuMappingStatus($systemusergroup['user_group_level'], $val['id_menu'])==0){ ?>
                 <div class="indent_third">
                     <input type='checkbox' class='checkboxes' name='checkbox_{{$val['id_menu']}}' id='checkbox_{{$val['id_menu']}}' value='1'  OnClick='checkboxSalesOrderChange({{$val['id_menu']}})';/> {{$val['text']}}
                 </div>

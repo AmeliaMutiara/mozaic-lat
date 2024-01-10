@@ -70,21 +70,9 @@
             Form Tambah
         </h5>
         <div class="float-right">
-            <button onclick="location.href='{{ route('itemunit') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
+            <button onclick="location.href='{{ route('itemunit.add-process') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
         </div>
     </div>
-
-    <?php 
-            // if (empty($itemunits)){
-            //     $itemunits['item_unit_code'] = '';
-            // }
-            // if (empty($itemunits)){
-            //     $itemunits['item_unit_name'] = '';
-            // }
-            // if (empty($itemunits)){
-            //     $itemunits['item_unit_remark'] = '';
-            // }
-        ?>
 
     <form method="post" action="{{ route('itemunit.add-process') }}" enctype="multipart/form-data">
         @csrf

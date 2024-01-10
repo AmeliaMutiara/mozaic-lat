@@ -21,8 +21,8 @@ class SystemUserGroup extends Model
         return $this->belongsTo(SystemMenuMapping::class,'id_menu','id_menu');
     }
 
-    public function menu() {
-        return $this->belongsTo(Model::class,'foreign_key','local_key');
+    public function user() {
+        return $this->belongsTo(User::class,'user_group_id','user_group_id');
     }
     /**
      * The attributes that should be hidden for serialization.
