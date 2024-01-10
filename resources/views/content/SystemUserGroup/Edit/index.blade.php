@@ -1,3 +1,5 @@
+@inject('SystemUserGroup', 'App\Http\Controllers\SystemUserGroupController')
+
 @extends('adminlte::page')
 
 @section('title', 'MOZAIC Practice')
@@ -6,12 +8,12 @@
 <script>
     function check_all(){
         $(':checkbox').each(function() {
-            this.checked = true;                        
+            this.checked = true;
         });
     }
     function uncheck_all(){
         $(':checkbox').each(function() {
-            this.checked = false;                        
+            this.checked = false;
         });
     }
 </script>
@@ -19,7 +21,7 @@
 
 
 @section('content_header')
-    
+
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
@@ -65,14 +67,14 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">Nama Group<a class='red'> *</a></a>
-                        <input class="form-control input-bb" type="text" name="user_group_name" id="user_group_name" value="{{$systemusergroup['user_group_name']}}"/>
-                        <input class="form-control input-bb" type="hidden" name="user_group_id" id="user_group_id" value="{{$systemusergroup['user_group_id']}}"/>
+                        <input class="form-control input-bb" type="text" name="user_group_name" id="user_group_name" value="{{ $systemusergroup['user_group_name'] }}"/>
+                        <input class="form-control input-bb" type="hidden" name="user_group_id" id="user_group_id" value="{{ $systemusergroup['user_group_id'] }}"/>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">User Group Level<a class='red'> *</a></a>
-                        <input class="form-control input-bb" type="text" name="user_group_level" id="user_group_level" value="{{$systemusergroup['user_group_level']}}"/>
+                        <input class="form-control input-bb" type="text" name="user_group_level" id="user_group_level" value="{{ $systemusergroup['user_group_level'] }}"/>
                     </div>
                 </div>
             </div>
@@ -115,7 +117,7 @@
                 <div class="indent_third">
                     <input type='checkbox' class='checkboxes' name='checkbox_{{$val['id_menu']}}' id='checkbox_{{$val['id_menu']}}' value='1'  OnClick='checkboxSalesOrderChange({{$val['id_menu']}})';/> {{$val['text']}}
                 </div>
-            <?php   } 
+            <?php   }
             } ?>
         </div>
         <div class="card-footer text-muted">
@@ -131,9 +133,9 @@
 @stop
 
 @section('footer')
-    
+
 @stop
 
 @section('css')
-    
+
 @stop

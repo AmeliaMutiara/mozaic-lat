@@ -7,6 +7,7 @@ use App\Models\SystemMenu;
 use Illuminate\Http\Request;
 use App\Models\SystemUserGroup;
 use App\Models\SystemMenuMapping;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\DataTables\SystemUserGroupDataTable;
 
@@ -55,12 +56,11 @@ class SystemUserGroupController extends Controller
                 }
             }
         } else {
-            $msg = 'Gagal Menambahkan System User Group';
-            return redirect('usergroup.add')->with('msg', $msg);
+            return redirect()->route('usergroup.add')->with(['msg' => 'Gagal Menambahkan System User Group', 'type' => 'success']);
         }
 
         $msg = 'Berhasil Menambahkan System User Group';
-        return redirect('usergroup.index')->with('msg', $msg);
+        return redirect()->route('usergroup.index')->with(['msg' => 'Berhasil Menambahkan System User Group', 'type' => 'success']);
     }
 
     public function editSystemUserGroup($user_group_id)
@@ -79,21 +79,24 @@ class SystemUserGroupController extends Controller
     public function processEditSystemUserGroup(Request $request)
     {
         $fields = $request->validate([
-            'user_group_id'         => 'required',
-            'user_group_name'       => 'required',
-            'user_group_level'      => 'required'
+            'user_group_id'             => 'required',
+            'user_group_name'           => 'required',
+            'user_group_level'          => 'required'
         ]);
 
         $systemmenu = SystemMenu::get();
 
         $allrequest = $request->all();
 
-        $usergroup                      = SystemUserGroup::findOrFail($fields['user_group_id']);
-        $user_group_level_last          = $usergroup['user_group_level'];
-        $usergroup->user_group_name     = $fields['user_group_name'];
-        $usergroup->user_group_level    = $fields['user_group_level'];
+        $usergroup                   = SystemUserGroup::findOrFail($fields['user_group_id']);
+        $user_group_level_last       = $usergroup['user_group_level'];
+        $usergroup->user_group_name  = $fields['user_group_name'];
+        $usergroup->user_group_level = $fields['user_group_level'];
 
-        if($usergroup->save()) {
+        try {
+            DB::beginTransaction();
+            $usergroup->save();
+
             foreach($systemmenu as $key => $val){
                 $menumapping_last = SystemMenuMapping::where('user_group_level', $user_group_level_last)
                 ->where('id_menu', $val['id_menu'])
@@ -106,54 +109,36 @@ class SystemUserGroupController extends Controller
                 if(isset($allrequest['checkbox_'.$val['id_menu']])){
                     $menumapping = array(
                         'user_group_level' => $fields['user_group_level'],
-                        'id_menu'          => $val['id_menu']
+                        'id_menu'          => $val['id_menu'],
                     );
                     SystemMenuMapping::create($menumapping);
                 }
             }
-            $msg = 'Berhasil Mengubah System User Group';
-            return redirect('usergroup.index')->with('msg', $msg);
-        } else {
-            $msg = 'Gagal Mengubah System User Group';
-            return redirect('usergroup.edit')->with('msg', $msg);
+
+            DB::commit();
+            return redirect()->route('usergroup.index')->with(['msg' => 'Berhasil Mengubah System User Group', 'type' => 'success']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+            report($e);
+            return redirect()->route('usergroup.edit')->with(['msg' => 'Gagal Mengubah System User Group', 'type' => 'danger']);
         }
+        
     }
 
     public function deleteSystemUserGroup($user_group_id)
     {
-        $user = SystemUserGroup::findOrFail($user_group_id);
-
-        if($user->save())
-        {
-            $alluser = User::where('user_group_id', $user_group_id)
-            ->get();
-
-            $allmenumapping = SystemMenuMapping::where('user_group_level', $user['user_group_level'])
-            ->get();
-
-            foreach($alluser as $key => $val) {
-                $userdata = User::where('user_id', $val['user_id'])
-                ->first();
-
-                if($userdata){
-                    $userdata->delete();
-                }
-            }
-
-            foreach($allmenumapping as $key => $val) {
-                $menumapping = SystemMenuMapping::where('user_group_level', $user['user_group_level'])
-                ->where('id_menu', $val['id_menu'])
-                ->first();
-
-                if($menumapping) {
-                    $menumapping->delete();
-                }
-            }
-            $msg = 'Berhasil Menghapus System User Group';
-        } else {
-            $msg = 'Gagal Menghapus System User Group';
+        try {
+            DB::beginTransaction();
+            SystemUserGroup::find($user_group_id)->delete();
+            DB::commit();
+            return redirect()->route('usergroup.index')->with(['msg' => 'Berhasil Menghapus System User Group', 'type' => 'success']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+            report($e);
+            return redirect()->route('usergroup.index')->with(['msg' => 'Gagal Menghapus System User Group', 'type' => 'danger']);
         }
-        return redirect('usergroup.index')->with('msg', $msg);
     }
 
     public function getUserGroupName($user_group_id)
