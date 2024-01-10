@@ -23,7 +23,7 @@ class InvtItemUnitDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
-            ->addColumn('action', 'invtitemunit.action')
+            ->addColumn('action', 'content.InvtItemUnit.List._action-menu')
             ->setRowId('id');
     }
 

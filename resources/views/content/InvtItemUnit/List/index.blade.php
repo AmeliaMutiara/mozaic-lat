@@ -1,4 +1,4 @@
-@inject('SystemUser', 'App\Http\Controllers\SystemUserController')
+{{-- @inject('SystemUser', 'App\Http\Controllers\SystemUserController') --}}
 
 @extends('adminlte::page')
 

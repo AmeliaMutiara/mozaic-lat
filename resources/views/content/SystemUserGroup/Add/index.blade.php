@@ -82,16 +82,16 @@
             <hr style="margin:0;">
             <br/>
             <?php foreach($systemmenu as $key => $val) {
-                    if($val['indent_level']==1){
+                    if($val['menu_level']==1){
             ?>
                 <div class="indent_first">
                     <input type='checkbox' class='checkboxes' name='checkbox_{{$val['id_menu']}}' id='checkbox_{{$val['id_menu']}}' value='1'  OnClick='checkboxSalesOrderChange({{$val['id_menu']}})';/> {{$val['text']}}
                 </div>
-            <?php   }else if($val['indent_level']==2){ ?>
+            <?php   }else if($val['menu_level']==2){ ?>
                 <div class="indent_second">
                     <input type='checkbox' class='checkboxes' name='checkbox_{{$val['id_menu']}}' id='checkbox_{{$val['id_menu']}}' value='1'  OnClick='checkboxSalesOrderChange({{$val['id_menu']}})';/> {{$val['text']}}
                 </div>
-            <?php   }else if($val['indent_level']==3){ ?>
+            <?php   }else if($val['menu_level']==3){ ?>
                 <div class="indent_third">
                     <input type='checkbox' class='checkboxes' name='checkbox_{{$val['id_menu']}}' id='checkbox_{{$val['id_menu']}}' value='1'  OnClick='checkboxSalesOrderChange({{$val['id_menu']}})';/> {{$val['text']}}
                 </div>

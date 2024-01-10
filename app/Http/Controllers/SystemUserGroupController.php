@@ -45,7 +45,7 @@ class SystemUserGroupController extends Controller
 
         if(SystemUserGroup::create($usergroup)) {
             foreach($systemmenu as $key => $val) {
-                if(isset($allrequest['checkbox_' . $val['id_menu']])){
+                if(isset($allrequest['checkbox_'.$val['id_menu']])){
                     $menumapping = array(
                         'user_group_level' => $fields['user_group_level'],
                         'id_menu'          => $val['id_menu'],
@@ -103,7 +103,7 @@ class SystemUserGroupController extends Controller
                     $menumapping_last->delete();
                 }
 
-                if(isset($allrequest['checkbox_' . $val['id_menu']])){
+                if(isset($allrequest['checkbox_'.$val['id_menu']])){
                     $menumapping = array(
                         'user_group_level' => $fields['user_group_level'],
                         'id_menu'          => $val['id_menu']

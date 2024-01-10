@@ -16,6 +16,7 @@ return new class extends Migration
             Schema::create('system_user_group', function (Blueprint $table) {
                 $table->id('user_group_id');
                 $table->unsignedBigInteger('company_id')->nullable();
+                $table->unsignedBigInteger('id_menu')->nullable();
                 $table->integer('user_group_level')->nullable();
                 $table->string('user_group_name')->nullable();
                 $table->boolean('user_group_status')->nullable();
