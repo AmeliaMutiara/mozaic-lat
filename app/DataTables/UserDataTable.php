@@ -22,7 +22,8 @@ class UserDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'user.action')
+            ->addIndexColumn()
+            ->addColumn('action', 'content.SystemUser.List._action-menu')
             ->setRowId('id');
     }
 
