@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvtItemCategoryController;
 use App\Http\Controllers\InvtItemUnitController;
 use App\Http\Controllers\InvtWarehouseController;
+use App\Http\Controllers\SystemUserController;
 use App\Http\Controllers\SystemUserGroupController;
 use App\Models\CoreBank;
 use App\Models\InvtItemCategory;
@@ -120,5 +121,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/{item_unit_id}', [InvtItemUnitController::class, 'editInvtItemUnit'])->name('edit');
         Route::post('/edit-process', [InvtItemUnitController::class, 'processEditInvtItemUnit'])->name('edit-process');
         Route::get('/delete/{item_unit_id}', [InvtItemUnitController::class, 'deleteInvtItemUnit'])->name('delete');
+    });
+    Route::prefix('system-user')->name('user.')->group(function() {
+        Route::get('/', [SystemUserController::class, 'index'])->name('index');
+        Route::get('/add', [SystemUserController::class, 'addSystemUser'])->name('add');
+        Route::post('/add-process', [SystemUserController::class, 'processAddSystemUser'])->name('add-process');
+        Route::get('/edit/{user_id}', [SystemUserController::class, 'editSystemUser'])->name('edit');
+        Route::post('/edit-process', [SystemUserController::class, 'processEditSystemUser'])->name('edit-process');
+        Route::get('/delete/{user_id}', [SystemUserController::class, 'deleteSystemUser'])->name('delete');
+        Route::get('/changepw/{user_id}', [SystemUserController::class, 'changePassword'])->name('changepw');
+        Route::post('/changepw-process', [SystemUserController::class, 'processChangePassword'])->name('changepw-process');
     });
 });

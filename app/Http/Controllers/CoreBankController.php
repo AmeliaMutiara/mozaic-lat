@@ -45,6 +45,7 @@ class CoreBankController extends Controller
         ->where('company_id', Auth::user()->company_id)
         ->get()
         ->pluck('full_account', 'account_id');
+        // dd($accountlist);
         return view('content.CoreBank.Add.index', compact('databank', 'accountlist'));
     }
 

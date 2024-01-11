@@ -7,7 +7,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('systemuser.index') }}">Daftar System User</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Daftar System User</a></li>
         <li class="breadcrumb-item active" aria-current="page">Tambah System User</li>
     </ol>
   </nav>
@@ -31,18 +31,18 @@
             Form Tambah
         </h5>
         <div class="float-right">
-            <button onclick="location.href='{{ route('systemuser') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
+            <button onclick="location.href='{{ route('user.index') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
         </div>
     </div>
 
-    <form method="post" action="{{ route('systemuser.add-process') }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('user.add-process') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">
                 <div class="col-md-3">
                     <div class="form-group">
                         <a class="text-dark">Nama<a class='red'> *</a></a>
-                        <input class="form-control input-bb" type="text" name="name" id="name" value=""/>
+                        <input class="form-control input-bb" type="text" name="username" id="username" value=""/>
                     </div>
                 </div>
                 <div class="col-md-3">

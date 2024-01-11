@@ -23,6 +23,7 @@ class UserDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
+            ->editColumn('user_group_id', fn($query)=>"{$query->userGroup->user_group_name}")
             ->addColumn('action', 'content.SystemUser.List._action-menu')
             ->setRowId('id');
     }
@@ -32,7 +33,7 @@ class UserDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->with('userGroup');
     }
 
     /**
@@ -41,7 +42,7 @@ class UserDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('invtwarehouse-table')
+            ->setTableId('user-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bflrtip')
