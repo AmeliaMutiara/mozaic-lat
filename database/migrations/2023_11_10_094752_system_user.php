@@ -26,7 +26,9 @@ return new class extends Migration
             $table->string('full_name')->nullable();
             $table->string('password')->nullable();
             $table->dateTime('password_date')->nullable();
+            $table->dateTime('remember_token')->nullable();
             $table->string('phone_number')->nullable();
+            $table->string('section_id')->nullable();
             $table->string('email')->nullable();
             $table->dateTime('email_verified_at')->nullable();
             $table->dateTime('verified_at')->nullable();
