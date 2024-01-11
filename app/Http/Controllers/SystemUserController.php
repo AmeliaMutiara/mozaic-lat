@@ -49,6 +49,7 @@ class SystemUserController extends Controller
             'user_group_id.required'     => 'Harus Memilih Salah Satu User Group',
         ]);
 
+        // dd($request->all());
         try {
             DB::beginTransaction();
             $user = User::create([

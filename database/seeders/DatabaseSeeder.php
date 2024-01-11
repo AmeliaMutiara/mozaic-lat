@@ -27,7 +27,8 @@ class DatabaseSeeder extends Seeder
             SupplierSeeder::class,
             AccountSeeder::class,
             BankSeeder::class,
-            UnitSeeder::class
+            UnitSeeder::class,
+            UserSeeder::class
         ]);
     }
 }
