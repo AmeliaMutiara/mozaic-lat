@@ -22,7 +22,7 @@
     function reset_add(){
 		$.ajax({
 				type: "GET",
-				url : "{{route('pv.reset-elements')}}",
+				url : "{{route('pv.add-reset')}}",
 				success: function(msg){
                     location.reload();
 			}
@@ -50,7 +50,8 @@
     Form Tambah Voucher
 </h3>
 <br/>
-if (session('msg'))
+
+@if (session('msg'))
 <div class="alert alert-{{session('type')??'info'}}" role="alert">
     {{ session('msg') }}
 </div>
@@ -58,14 +59,13 @@ if (session('msg'))
 
 @if (count($errors) > 0)
 <div class="alert alert-danger" role="alert">
-    <ul>
-        @foreach ($errors->all() as $error)
+    @foreach ($errors->all() as $error)
         <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-    </div>
+    @endforeach
+</div>
 @endif
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+{{-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -80,7 +80,8 @@ if (session('msg'))
             </div>
         </div>
     </div>
-</div>
+</div> --}}
+
     <div class="card border border-dark">
     <div class="card-header border-dark bg-dark">
         <h5 class="mb-0 float-left">

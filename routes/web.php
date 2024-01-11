@@ -10,10 +10,12 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvtItemCategoryController;
 use App\Http\Controllers\InvtItemUnitController;
 use App\Http\Controllers\InvtWarehouseController;
+use App\Http\Controllers\PreferenceVoucherController;
 use App\Http\Controllers\SystemUserController;
 use App\Http\Controllers\SystemUserGroupController;
 use App\Models\CoreBank;
 use App\Models\InvtItemCategory;
+use App\Models\PreferenceVoucher;
 
 /*
 |--------------------------------------------------------------------------
@@ -131,5 +133,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/delete/{user_id}', [SystemUserController::class, 'deleteSystemUser'])->name('delete');
         Route::get('/changepw/{user_id}', [SystemUserController::class, 'changePassword'])->name('changepw');
         Route::post('/changepw-process', [SystemUserController::class, 'processChangePassword'])->name('changepw-process');
+    });
+    Route::prefix('preference-voucher')->name('pv.')->group(function() {
+        Route::get('/', [PreferenceVoucherController::class, 'index'])->name('index');
+        Route::get('/add', [PreferenceVoucherController::class, 'addPreferenceVoucher'])->name('add');
+        Route::post('/add-process', [PreferenceVoucherController::class, 'addProcessPreferenceVoucher'])->name('add-process');
+        Route::post('/add-elements', [PreferenceVoucherController::class, 'addElementsPreferenceVoucher'])->name('add-elements');
+        Route::get('/add-reset', [PreferenceVoucherController::class, 'resetElementsPreferenceVoucher'])->name('add-reset');
+        Route::get('/edit/{voucher_id}', [PreferenceVoucherController::class, 'editPreferenceVoucher'])->name('edit');
+        Route::post('/edit-process', [PreferenceVoucherController::class, 'editProcessPreferenceVoucher'])->name('edit-process');
+        Route::get('/delete/{voucher_id}', [PreferenceVoucherController::class, 'deletePreferenceVoucher'])->name('delete');
     });
 });

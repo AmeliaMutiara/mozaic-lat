@@ -23,7 +23,7 @@ class PreferenceVoucherDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
-            ->addColumn('action', 'preferencevoucher.action')
+            ->addColumn('action', 'content.PreferenceVoucher.List._action-menu')
             ->setRowId('id');
     }
 
@@ -41,7 +41,7 @@ class PreferenceVoucherDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('invtwarehouse-table')
+            ->setTableId('preferencevoucher-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bflrtip')
@@ -62,9 +62,9 @@ class PreferenceVoucherDataTable extends DataTable
         return [
             Column::make('voucher_id')->title(__('No'))->data('DT_RowIndex')->addClass('text-center')->width(10),
             Column::make('voucher_code')->title('Kode Voucher'),
-            Column::make('voucher_amount')->title('Tanggal Mulai'),
-            Column::make('start_voucher')->title('Tanggal Akhir'),
-            Column::make('end_voucher')->title('Nominal'),
+            Column::make('start_voucher')->title('Tanggal Mulai'),
+            Column::make('end_voucher')->title('Tanggal Akhir'),
+            Column::make('voucher_amount')->title('Nominal'),
             Column::computed('action')->title('Aksi')
                 ->exportable(false)
                 ->printable(false)

@@ -80,6 +80,7 @@ class SystemUserController extends Controller
         ->get()
         ->pluck('section_name', 'section_id');
         $coresection[0]     = "Multi Section";
+        dd($systemuser);
         return view('content.SystemUser.Edit.index', compact('systemusergroup', 'systemuser', 'coresection', 'user_id'));
     }
 
