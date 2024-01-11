@@ -7,7 +7,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('systemuser') }}">Daftar System User</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('user.index') }}">Daftar System User</a></li>
         <li class="breadcrumb-item active" aria-current="page">Edit System User</li>
     </ol>
   </nav>
@@ -31,18 +31,19 @@
             Form Edit
         </h5>
         <div class="float-right">
-            <button onclick="location.href='{{ route('systemuser') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
+            <button onclick="location.href='{{ route('user.index') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
         </div>
     </div>
 
-    <form method="post" action="{{ route('systemuser.process-edit') }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('user.edit-process') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">
                 <div class="col-md-4">
                     <div class="form-group">
+                        
                         <a class="text-dark">Nama<a class='red'> *</a></a>
-                        <input class="form-control input-bb" type="text" name="name" id="name" value="{{$systemuser['name']}}"/>
+                        <input class="form-control input-bb" type="text" name="username" id="username" value="{{$systemuser['username']}}"/>
                         <input class="form-control input-bb" type="hidden" name="user_id" id="user_id" value="{{$user_id}}"/>
                     </div>
                 </div>
@@ -50,12 +51,6 @@
                     <div class="form-group">
                         <a class="text-dark">Nama Panjang<a class='red'> *</a></a>
                         <input class="form-control input-bb" type="text" name="full_name" id="full_name" value="{{$systemuser['full_name']}}"/>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <a class="text-dark">Password<a class='red'> *</a></a>
-                        <input class="form-control input-bb" type="password" name="password" id="password" value=""/>
                     </div>
                 </div>
                 <div class="col-md-4">

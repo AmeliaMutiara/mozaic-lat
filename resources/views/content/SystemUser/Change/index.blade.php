@@ -7,7 +7,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('systemuser.change-password', Auth::id()) }}">Ubah Password</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('user.changepw', Auth::id()) }}">Ubah Password</a></li>
     </ol>
   </nav>
 
@@ -30,11 +30,11 @@
             Form Ubah Password
         </h5>
         <div class="float-right">
-            <button onclick="location.href='{{ url('home') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
+            <button onclick="location.href='{{ route('user.index') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
         </div>
     </div>
 
-    <form method="post" action="{{ url('system-user/process-change-password') }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('user.changepw-process') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">

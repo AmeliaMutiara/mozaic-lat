@@ -36,6 +36,10 @@ class User extends Authenticatable
         'full_name',
     ];
 
+    public function userGroup() {
+        return $this->belongsTo(SystemUserGroup::class,'user_group_id','user_group_id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
