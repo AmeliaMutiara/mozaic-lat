@@ -22,6 +22,7 @@ class PreferenceVoucherDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addIndexColumn()
             ->addColumn('action', 'preferencevoucher.action')
             ->setRowId('id');
     }
@@ -40,20 +41,17 @@ class PreferenceVoucherDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('preferencevoucher-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    //->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->selectStyleSingle()
-                    ->buttons([
-                        Button::make('excel'),
-                        Button::make('csv'),
-                        Button::make('pdf'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    ]);
+            ->setTableId('invtwarehouse-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->dom('Bflrtip')
+            ->parameters(["lengthMenu" => [5, 10, 25, 50, 75, 100]])
+            ->orderBy(0, 'asc')
+            ->autoWidth(false)
+            ->responsive()
+            ->parameters(['scrollX' => true])
+            ->buttons([Button::make('reload')]) // * <-- Penting
+        ;
     }
 
     /**
@@ -62,15 +60,16 @@ class PreferenceVoucherDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+            Column::make('voucher_id')->title(__('No'))->data('DT_RowIndex')->addClass('text-center')->width(10),
+            Column::make('voucher_code')->title('Kode Voucher'),
+            Column::make('voucher_amount')->title('Tanggal Mulai'),
+            Column::make('start_voucher')->title('Tanggal Akhir'),
+            Column::make('end_voucher')->title('Nominal'),
+            Column::computed('action')->title('Aksi')
+                ->exportable(false)
+                ->printable(false)
+                ->width(60)
+                ->addClass('text-center'),
         ];
     }
 
