@@ -23,7 +23,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('usergroup.index') }}">Daftar System User Group</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('usergroup.index') }}">Daftar System User Group</a></li>
         <li class="breadcrumb-item active" aria-current="page">Tambah System User Group</li>
     </ol>
   </nav>
