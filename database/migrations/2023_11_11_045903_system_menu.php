@@ -39,8 +39,9 @@ return new class extends Migration
                [ 'id_menu' => 324,'id' => 'system-user',             'type' => 'file','text' => 'User','parent' => "32",'menu_level' => "3",],
                [ 'id_menu' => 33, 'id' => 'preference-voucher',             'type' => 'file','text' => 'Voucher','parent' => "3",'menu_level' => "2",],
                [ 'id_menu' => 4,  'id' => '#',             'type' => 'folder','text' => 'Akutansi','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 41, 'id' => '#',             'type' => 'folder','text' => 'Akutansi','parent' => "4",'menu_level' => "2",],
+               [ 'id_menu' => 41, 'id' => '#',             'type' => 'folder','text' => 'Preferensi','parent' => "4",'menu_level' => "2",],
                [ 'id_menu' => 411,'id' => 'acct-account',             'type' => 'file','text' => 'No Perkiraan','parent' => "41",'menu_level' => "3",],
+               [ 'id_menu' => 42, 'id' => 'journal-voucher',             'type' => 'file','text' => 'Jurnal Umum','parent' => "4",'menu_level' => "2",],
             ]);
         }
     }

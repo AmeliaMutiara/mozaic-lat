@@ -22,7 +22,8 @@ class JournalVoucherDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'journalvoucher.action')
+            ->addIndexColumn()
+            ->addColumn('action', 'content.JournalVoucher.List._action-menu')
             ->setRowId('id');
     }
 
@@ -43,17 +44,21 @@ class JournalVoucherDataTable extends DataTable
                     ->setTableId('journalvoucher-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    //->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->selectStyleSingle()
-                    ->buttons([
-                        Button::make('excel'),
-                        Button::make('csv'),
-                        Button::make('pdf'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    ]);
+                    ->dom('Bflrtip')
+                    ->parameters(["lengthMenu" => [5, 10, 25, 50, 75, 100]])
+                    ->orderBy(0, 'asc')
+                    ->autoWidth(false)
+                    ->responsive()
+                    ->parameters(['scrollX' => true])
+                    ->buttons([Button::make('reload')]); // * <-- Penting
+                    // ->buttons([
+                    //     Button::make('excel'),
+                    //     Button::make('csv'),
+                    //     Button::make('pdf'),
+                    //     Button::make('print'),
+                    //     Button::make('reset'),
+                    //     Button::make('reload')
+                    // ]);
     }
 
     /**
@@ -62,15 +67,19 @@ class JournalVoucherDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::computed('action')
+            Column::make('journal_voucher_id')->title(__('No'))->data('DT_RowIndex')->addClass('text-center')->width(10),
+            Column::make('add your columns')->title('Tanggal'),
+            Column::make('add your columns')->title('Dibuat'),
+            Column::make('add your columns')->title('Uraian'),
+            Column::make('add your columns')->title('No. Perkiraan'),
+            Column::make('add your columns')->title('Nama Perkiraan'),
+            Column::make('add your columns')->title('Jumlah'),
+            Column::make('add your columns')->title('D/K'),
+            Column::computed('action')->title('Aksi')
                   ->exportable(false)
                   ->printable(false)
                   ->width(60)
                   ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
         ];
     }
 

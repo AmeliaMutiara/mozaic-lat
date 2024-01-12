@@ -20,21 +20,9 @@
     <b>Daftar Jurnal Umum </b> <small>Kelola Daftar Jurnal Umum  </small>
 </h3>
 <br/>
-@if (session('msg'))
-<div class="alert alert-{{session('type')??'info'}}" role="alert">
-    {{ session('msg') }}
-</div>
-@endif
-@if (count($errors) > 0)
-<div class="alert alert-danger" role="alert">
-    @foreach ($errors->all() as $error)
-        {{ $error }}
-    @endforeach
-</div>
-@endif
 
 <div id="accordion">
-    <form  method="post" action="{{ route('jv-filter') }}" enctype="multipart/form-data">
+    <form  method="post" action="{{ route('jv.filter') }}" enctype="multipart/form-data">
     @csrf
         <div class="card border border-dark">
         <div class="card-header bg-dark" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -67,37 +55,11 @@
                             <input type ="date" class="form-control form-control-inline input-medium date-picker input-date" data-date-format="dd-mm-yyyy" type="text" name="end_date" id="end_date" value="{{ $end_date }}" style="width: 15rem;"/>
                         </div>
                     </div>
-
-                    {{-- <div class = "col-md-6">
-                        <div class="form-group form-md-line-input">
-                            <section class="control-label">Nama Supplier
-                                <span class="required text-danger">
-                                    *
-                                </span>
-                            </section>
-                            <select  class="form-control "  type="text" name="end_date" id="end_date" onChange="function_elements_add(this.name, this.value);" value="" >
-                                <option value=""></option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class = "col-md-6">
-                        <div class="form-group form-md-line-input">
-                            <section class="control-label">Nama Gudang
-                                <span class="required text-danger">
-                                    *
-                                </span>
-                            </section>
-                            <select class="form-control"  type="text" name="end_date" id="end_date" onChange="function_elements_add(this.name, this.value);" value="">
-                                <option value=""></option>
-                            </select>
-                        </div>
-                    </div> --}}
                 </div>
             </div>
             <div class="card-footer text-muted">
                 <div class="form-actions float-right">
-                    <a href="{{ route('jv.reset-filter') }}" type="reset" name="Reset" class="btn btn-danger"><i class="fa fa-times"></i> Batal</a>
+                    <a href="{{ route('jv.filter-reset') }}" type="reset" name="Reset" class="btn btn-danger"><i class="fa fa-times"></i> Batal</a>
                     <button type="submit" name="Find" class="btn btn-primary" title="Search Data"><i class="fa fa-search"></i> Cari</button>
                 </div>
             </div>
@@ -106,6 +68,20 @@
     </form>
 </div>
 <br/>
+
+@if (session('msg'))
+<div class="alert alert-{{session('type')??'info'}}" role="alert">
+    {{ session('msg') }}
+</div>
+@endif
+@if (count($errors) > 0)
+<div class="alert alert-danger" role="alert">
+    @foreach ($errors->all() as $error)
+        {{ $error }}
+    @endforeach
+</div>
+@endif
+
 
 <div class="card border border-dark">
   <div class="card-header bg-dark clearfix">
@@ -116,97 +92,6 @@
         <button onclick="location.href='{{ url('/journal-voucher/add') }}'" name="Find" class="btn btn-sm btn-info" title="Add Data"><i class="fa fa-plus"></i> Tambah Jurnal Umum </button>
     </div>
   </div>
-
-    <div class="card-body">
-        <div class="table-responsive">
-            <table  style="width:100%" class="table table-striped table-bordered table-hover table-full-width">
-                <thead>
-                    <tr>
-                        <th style="text-align: center; width: 5%">No </th>
-                        <th style="text-align: center;">Tanggal</th>
-                        <th style="text-align: center;">Dibuat</th>
-                        <th style="text-align: center;">Uraian</th>
-                        <th style="text-align: center;">No. Perkiraan</th>
-                        <th style="text-align: center;">Nama Perkiraan</th>
-                        <th style="text-align: center;">Jumlah</th>
-                        <th style="text-align: center;">D/K</th>
-                        <th style="text-align: center;">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                        $no = 1;
-                        if(empty($data)){
-                            echo "
-                                <tr>
-                                    <td colspan='8' align='center'>Data Kosong</td>
-                                </tr>
-                            ";
-                        } else {
-                            foreach ($data as $key=>$val){
-                                $id = $JournalVoucher->getMinID($val['journal_voucher_id']);
-
-                                    if($val['journal_voucher_debit_amount'] <> 0 ){
-                                        $nominal = $val['journal_voucher_debit_amount'];
-                                        $status = 'D';
-                                    } else if($val['journal_voucher_credit_amount'] <> 0){
-                                        $nominal = $val['journal_voucher_credit_amount'];
-                                        $status = 'K';
-                                    } else {
-                                        $nominal = 0;
-                                        $status = 'Kosong';
-                                    }
-
-
-                                if($val['journal_voucher_item_id'] == $id){
-                                    $delete = ' ';
-                                    $now = Carbon\Carbon::now()->format('Y-m');
-                                    if($val['reverse_state']==0&&(Auth::id()==55||Auth::id()==58||Auth::id()==61)){
-                                    $delete = "<button type='button' class='btn my-3 btn-outline-danger btn-sm' onclick=\"check('".$val['journal_voucher_date']."','".route('reverse-journal-voucher',['journal_voucher_id'=>$val['journal_voucher_id']])."')"."\">Hapus</button>";}
-                                    echo"
-                                        <tr class='table-active'>
-                                            <td style='text-align:center'>$no.</td>
-                                            <td>".date('d-m-Y', strtotime($val['journal_voucher_date']))."</td>
-                                            <td>".$JournalVoucher->getUserName($val['created_id'])."</td>
-                                            <td>".$val['journal_voucher_description']."</td>
-                                            <td>".$JournalVoucher->getAccountCode($val['account_id'])."</td>
-                                            <td>".$JournalVoucher->getAccountName($val['account_id'])."</td>
-                                            <td style='text-align: right'>".number_format($nominal,2,'.',',')."</td>
-                                            <td>".$status."</td>
-                                            <td  style='text-align:center'>
-                                                <a href='".url('journal-voucher/print/'.$val['journal_voucher_id'])."' class='btn btn-secondary btn-sm' >Cetak Bukti</a>
-                                            ".$delete."
-                                            </td>
-                                        </tr>
-                                    ";
-                                    $no++;
-                                } else {
-                                    echo"
-                                        <tr>
-                                            <td style='text-align:center'></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>".$JournalVoucher->getAccountCode($val['account_id'])."</td>
-                                            <td>".$JournalVoucher->getAccountName($val['account_id'])."</td>
-                                            <td style='text-align: right'>".number_format($nominal,2,'.',',')."</td>
-                                            <td>".$status."</td>
-                                            <td></td>
-                                        </tr>
-                                    ";
-                                }
-                            }
-                        }
-
-                    ?>          
-
-                </tbody>
-            </table>
-        </div>
-    </div>
-  </div>
-</div>
-
 <div class="card-body">
     <div class="table-responsive">
         <!--begin::Table-->
