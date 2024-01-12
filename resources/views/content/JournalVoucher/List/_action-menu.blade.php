@@ -1,8 +1,8 @@
 
 <td class="text-center">
-    <a type="button" href="{{route('jv.edit',$model->journal_voucher_id)}}" class="btn btn-sm btn-primary btn-active-light-primary">
+    {{-- <a type="button" href="{{route('jv.edit',$model->journal_voucher_id)}}" class="btn btn-sm btn-primary btn-active-light-primary">
        Edit
-    </a>
+    </a> --}}
     <button type="button" data-bs-toggle="modal" data-bs-target="#modal_delete_{{ $model->journal_voucher_id }}" class="btn btn-sm btn-danger btn-active-light-danger">
         Hapus
     </button>
