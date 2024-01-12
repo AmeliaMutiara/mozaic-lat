@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'full_name' => fake()->name(),
             'password' => static::$password ??= Hash::make('password'),
             'phone_number' => fake()->randomNumber(),
-            'user_group_id' => mt_rand(1,4),
+            // 'user_group_id' => mt_rand(1,4),
         ];
     }
 

@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvtItemCategoryController;
 use App\Http\Controllers\InvtItemUnitController;
 use App\Http\Controllers\InvtWarehouseController;
+use App\Http\Controllers\JournalVoucherController;
 use App\Http\Controllers\PreferenceVoucherController;
 use App\Http\Controllers\SystemUserController;
 use App\Http\Controllers\SystemUserGroupController;
@@ -143,5 +144,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/{voucher_id}', [PreferenceVoucherController::class, 'editPreferenceVoucher'])->name('edit');
         Route::post('/edit-process', [PreferenceVoucherController::class, 'editProcessPreferenceVoucher'])->name('edit-process');
         Route::get('/delete/{voucher_id}', [PreferenceVoucherController::class, 'deletePreferenceVoucher'])->name('delete');
+    });
+    Route::prefix('journal-voucher')->name('jv.')->group(function() {
+        Route::get('/', [JournalVoucherController::class, 'index'])->name('index');
+        Route::get('/add', [JournalVoucherController::class, 'addJournalVoucher'])->name('add');
+        Route::post('/add-process', [JournalVoucherController::class, 'processAddJournalVoucher'])->name('add-process');
+        Route::post('/add-elements', [JournalVoucherController::class, 'addElementsJournalVoucher'])->name('add-elements');
+        Route::get('/add-reset', [JournalVoucherController::class, 'resetAddJournalVoucher'])->name('add-reset');
+        Route::post('/add-array', [JournalVoucherController::class, 'addArrayJournalVoucher'])->name('add-array');
+        Route::post('/filter', [JournalVoucherController::class, 'filterJournalVoucher'])->name('filter');
+        Route::post('/filter-reset', [JournalVoucherController::class, 'resetFilterJournalVoucher'])->name('filter-reset');
+        Route::get('/print/{journal_voucher_id}', [JournalVoucherController::class, 'printJournalVoucher'])->name('print');
+        Route::get('/delete/{journal_voucher_id}', [JournalVoucherController::class, 'reverseJournalVoucher'])->name('delete');
     });
 });
