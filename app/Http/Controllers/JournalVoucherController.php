@@ -1,26 +1,30 @@
 <?php
+
 namespace App\Http\Controllers;
+
+use Carbon\Carbon;
+use App\Models\User;
 use App\Models\AcctAccount;
 use Illuminate\Http\Request;
+use App\Models\JournalVoucher;
+use Elibyy\TCPDF\Facades\TCPDF;
 use App\Models\JournalVoucherItem;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\DataTables\JournalVoucherDataTable;
-use App\Models\JournalVoucher;
 use App\Models\PreferenceTransactionModule;
-use Carbon\Carbon;
-use Elibyy\TCPDF\Facades\TCPDF;
+
 class JournalVoucherController extends Controller
 {
-    public function index(JournalVoucherDataTable $table)
+    public function index()
     {
-        if(!$start_date = Session::get('start_date')) {
+        if (!$start_date = Session::get('start_date')) {
             $start_date = date('Y-m-d');
         } else {
             $start_date = Session::get('start_date');
         }
-        if(!$end_date = Session::get('end_date')) {
+        if (!$end_date = Session::get('end_date')) {
             $end_date = date('Y-m-d');
         } else {
             $end_date = date('end_date');
@@ -35,7 +39,7 @@ class JournalVoucherController extends Controller
             ->orderByDesc('acct_journal_voucher.created_at')
             ->get();
         // dd($data);
-        return $table->render('content.JournalVoucher.List.index', compact('data', 'start_date', 'end_date'));
+        return view('content.JournalVoucher.List.index', compact('data', 'start_date', 'end_date'));
     }
     public function addJournalVoucher()
     {
@@ -54,7 +58,7 @@ class JournalVoucherController extends Controller
     public function addElementsJournalVoucher(Request $request)
     {
         $journal = Session::get('journal');
-        if(!$journal || $journal == '') {
+        if (!$journal || $journal == '') {
             $journal['journal_voucher_date']        = '';
             $journal['journal_voucher_description'] = '';
         }
@@ -74,7 +78,7 @@ class JournalVoucherController extends Controller
             'journalvoucher_amount'     => $request->journalvoucher_amount
         );
         $lastdatases = Session::get('arraydatases');
-        if($lastdatases !== null) {
+        if ($lastdatases !== null) {
             array_push($lastdatases, $arraydatases);
             Session::put('arraydatases', $lastdatases);
         } else {
@@ -109,25 +113,22 @@ class JournalVoucherController extends Controller
                 'transaction_module_id'          => $transaction_module_id,
                 'company_id'                     => Auth::user()->company_id
             );
-            if(JournalVoucher::create($datases)) {
+            $journal=JournalVoucher::create($datases);
                 $journal_voucher_id = JournalVoucher::orderBy('created_at', 'DESC')
-                ->where('company_id', Auth::user()->company_id)
-                ->first();
+                    ->where('company_id', Auth::user()->company_id)
+                    ->first();
                 $arraydata = Session::get('arraydatases');
                 foreach ($arraydata as $val) {
-                    if ($val['account_status'] == 0) {
-                        $data = array(
-                            'journal_voucher_id'                => $journal_voucher_id['journal_voucher_id'],
+                    if ($val['account_status']) {
+                        $journal->items()->create([
                             'account_id'                        => $val['account_id'],
                             'account_status'                    => $val['account_status'],
                             'journal_voucher_amount'            => $val['journal_voucher_amount'],
                             'journal_voucher_debit_amount'      => $val['journal_voucher_amount'],
                             'company_id'                        => Auth::user()->company_id
-                        );
-                        JournalVoucherItem::create($data);
+                        ]);
                     } else {
                         $data = array(
-                            'journal_voucher_id'                => $journal_voucher_id['journal_voucher_id'],
                             'account_id'                        => $val['account_id'],
                             'account_status'                    => $val['account_status'],
                             'journal_voucher_amount'            => $val['journal_voucher_amount'],
@@ -137,9 +138,8 @@ class JournalVoucherController extends Controller
                         JournalVoucherItem::create($data);
                     }
                 }
-            }
             DB::commit();
-            return redirect()->route('jv.add')->with(['msg' => 'Berhasil Menambahkan Jurnal Umum', 'type' => 'success']);
+            return redirect()->route('jv.index')->with(['msg' => 'Berhasil Menambahkan Jurnal Umum', 'type' => 'success']);
         } catch (\Exception $e) {
             DB::rollBack();
             dd($e);
@@ -187,14 +187,21 @@ class JournalVoucherController extends Controller
     public function getTransactionModuleID($transaction_module_code)
     {
         $data = PreferenceTransactionModule::where('transaction_module_code', $transaction_module_code)->first();
-        return $data['transaction_module_code'];
+        return $data['transaction_module_id'];
     }
+
+    public function getUserName($user_id)
+    {
+        $data = User::where('user_id', $user_id)->first();
+        return $data['full_name'];
+    }
+
     public function printJournalVoucher($journal_voucher_id)
     {
         $data = JournalVoucher::join('acct_journal_voucher_item', 'acct_journal_voucher.journal_voucher_id', '=', 'acct_journal_voucher.journal_voucher_id')
-        ->join('preference_company', 'preference_company.company_id', '=', 'acct_journal_voucher.company_id')
-        ->where('acct_journal_voucher.journal_voucher_id', $journal_voucher_id)
-        ->first();
+            ->join('preference_company', 'preference_company.company_id', '=', 'acct_journal_voucher.company_id')
+            ->where('acct_journal_voucher.journal_voucher_id', $journal_voucher_id)
+            ->first();
         $data1 = JournalVoucherItem::where('journal_voucher_id', $journal_voucher_id)->get();
         $pdf = new TCPDF('P', PDF_UNIT, 'F4', true, 'UTF-8', false);
         $pdf::setHeaderCallback(function ($pdf) {
@@ -290,8 +297,8 @@ class JournalVoucherController extends Controller
         $no = 1;
         $total_debet = 0;
         $total_kredit = 0;
-        foreach ($data as $key => $val){
-            $tbl3 .="
+        foreach ($data as $key => $val) {
+            $tbl3 .= "
             <tr nobr=\"true\">
                 <td width=\"5%\"><div style=\"text-align: center;\">" . $no . "</div></td>
                 <td width=\"45%\"><div style=\"text-align: center;\">" . $this->getAccountCode($val['account_id']) . "-" . $this->getAccountName($val['account_id']) . "</div></td>
@@ -299,9 +306,9 @@ class JournalVoucherController extends Controller
                 <td width=\"25%\"><div style=\"text-align: center;\">" . number_format($val['journal_voucher_credit_amount'], 2, '.', ',') . "</div></td>
             </tr>
         ";
-        $total_debet += $val['journal_voucher_debit_amount'];
-        $total_kredit += $val['journal_voucher_credit_amount'];
-        $no++;
+            $total_debet += $val['journal_voucher_debit_amount'];
+            $total_kredit += $val['journal_voucher_credit_amount'];
+            $no++;
         }
         $tbl4 = "
         </table>
@@ -309,8 +316,8 @@ class JournalVoucherController extends Controller
         <table cellspacing=\"0\" cellpadding=\"1\" border=\"1\" width=\"100%\"
             <tr>
                 <td colspan=\"2\" width=\"50%\" style=\"text-align: left;font-weight:bold\"> TOTAL</td>
-                <td colspan=\"25%\"><div style=\"text-align: right;font-weight:bold\">" . number_format($total_debet, 2, '.',',') . "</div></td>
-                <td colspan=\"25%\"><div style=\"text-align: right;font-weight:bold\">" . number_format($total_kredit, 2, '.',',') . "</div></td>
+                <td colspan=\"25%\"><div style=\"text-align: right;font-weight:bold\">" . number_format($total_debet, 2, '.', ',') . "</div></td>
+                <td colspan=\"25%\"><div style=\"text-align: right;font-weight:bold\">" . number_format($total_kredit, 2, '.', ',') . "</div></td>
             <tr>
         </table>";
 
@@ -333,7 +340,7 @@ class JournalVoucherController extends Controller
             'journal_voucher_status'         => $journal['journal_voucher_status'],
             'transaction_journal_no'         => $journal['transaction_journal_no'],
             'transaction_module_code'        => $journal['transaction_module_code'],
-            'journal_voucher_date'           => (Carbon::parse($journal->journal_voucher_date)->format('Y-m')==date('Y-m')?date('Y-m-d'):$journal->journal_voucher_date),
+            'journal_voucher_date'           => (Carbon::parse($journal->journal_voucher_date)->format('Y-m') == date('Y-m') ? date('Y-m-d') : $journal->journal_voucher_date),
             'journal_voucher_description'    => 'HAPUS' . $journal['journal_voucher_description'],
             'journal_voucher_period'         => $journal['journal_voucher_period'],
             'journal_voucher_title'          => 'HAPUS' . $journal['journal_voucher_title'],

@@ -22,4 +22,8 @@ class JournalVoucherItem extends Model
     public function account() {
         return $this->belongsTo(AcctAccount::class,'account_id','account_id');
     }
+
+    public function item() {
+        return $this->belongsTo(JournalVoucher::class,'journal_voucher_id','journal_voucher_id');
+    }
 }
