@@ -193,7 +193,7 @@
         </div> 
         <div class="card-footer text-muted">
             <div class="form-actions float-right">
-                <a onclick="addArrayJournalVoucher()" class="btn btn-success" title="Add">Tambah</a>
+                <a onclick="processAddArrayJournalVoucher()" class="btn btn-success" title="Add">Tambah</a>
             </div>
         </div>       
 </div>
