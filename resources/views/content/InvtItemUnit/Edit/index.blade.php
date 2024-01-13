@@ -87,4 +87,4 @@
 
 @section('css')
     
-@stops
+@stop
