@@ -75,7 +75,7 @@ class JournalVoucherController extends Controller
         $arraydatases = array(
             'account_id'                => $request->account_id,
             'account_status'            => $request->account_status,
-            'journalvoucher_amount'     => $request->journalvoucher_amount
+            'journal_voucher_amount'     => $request->journal_voucher_amount
         );
         $lastdatases = Session::get('arraydatases');
         if ($lastdatases !== null) {
