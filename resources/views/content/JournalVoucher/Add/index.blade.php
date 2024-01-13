@@ -96,7 +96,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('jv.index') }}">Daftar Jurnal Umum</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('jv.index') }}">Daftar Jurnal Umum</a></li>
         <li class="breadcrumb-item active" aria-current="page">Tambah Jurnal Umum</li>
     </ol>
   </nav>
@@ -193,7 +193,7 @@
         </div> 
         <div class="card-footer text-muted">
             <div class="form-actions float-right">
-                <a onclick="processAddArrayJournalVoucher()" class="btn btn-success" title="Add">Tambah</a>
+                <a onclick="addArrayJournalVoucher()" class="btn btn-success" title="Add">Tambah</a>
             </div>
         </div>       
 </div>
