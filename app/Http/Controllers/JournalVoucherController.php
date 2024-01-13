@@ -71,7 +71,7 @@ class JournalVoucherController extends Controller
         $arraydatases = array(
             'account_id'                => $request->account_id,
             'account_status'            => $request->account_status,
-            'journal_voucher_amount'     => $request->journal_voucher_amount
+            'journalvoucher_amount'     => $request->journalvoucher_amount
         );
         $lastdatases = Session::get('arraydatases');
         if($lastdatases !== null) {
@@ -121,7 +121,7 @@ class JournalVoucherController extends Controller
                             'account_id'                        => $val['account_id'],
                             'account_status'                    => $val['account_status'],
                             'journal_voucher_amount'            => $val['journal_voucher_amount'],
-                            'journal_voucher_debit_amount'      => $val['journal_voucher_debit_amount'],
+                            'journal_voucher_debit_amount'      => $val['journal_voucher_amount'],
                             'company_id'                        => Auth::user()->company_id
                         );
                         JournalVoucherItem::create($data);
@@ -131,7 +131,7 @@ class JournalVoucherController extends Controller
                             'account_id'                        => $val['account_id'],
                             'account_status'                    => $val['account_status'],
                             'journal_voucher_amount'            => $val['journal_voucher_amount'],
-                            'journal_voucher_credit_amount'     => $val['journal_voucher_credit_amount'],
+                            'journal_voucher_credit_amount'     => $val['journal_voucher_amount'],
                             'company_id'                        => Auth::user()->company_id
                         );
                         JournalVoucherItem::create($data);
