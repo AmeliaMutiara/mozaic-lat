@@ -97,67 +97,85 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
+                    @php
                         $no = 1;
-                            if(empty($data)){
-                                echo "
-                                    <tr>
-                                        <td colspan='8' align='center'>Data Kosong</td>
-                                    </tr>
-                                ";
-                            } else {
-                                foreach ($data as $key=>$val){
-                                    $id = $JournalVoucher->getMinID($val['journal_voucher_id']);
-                                        if($val['journal_voucher_debit_amount'] <> 0 ){
-                                            $nominal = $val['journal_voucher_debit_amount'];
-                                            $status = 'D';
-                                        } else if($val['journal_voucher_credit_amount'] <> 0){
-                                            $nominal = $val['journal_voucher_credit_amount'];
-                                            $status = 'K';
-                                        } else {
-                                            $nominal = 0;
-                                            $status = 'Kosong';
-                                        }
-                                    if($val['journal_voucher_item_id'] == $id){
-                                        $delete = ' ';
-                                        $now = Carbon\Carbon::now()->format('Y-m');
-                                        if($val['reverse_state']==0&&(Auth::id()==55||Auth::id()==58||Auth::id()==61)){
-                                        $delete = "<button type='button' class='btn my-3 btn-outline-danger btn-sm' onclick=\"check('".$val['journal_voucher_date']."','".route('jv.delete',['journal_voucher_id'=>$val['journal_voucher_id']])."')"."\">Hapus</button>";}
-                                        echo"
-                                            <tr class='table-active'>
-                                                <td style='text-align:center'>$no.</td>
-                                                <td>".date('d-m-Y', strtotime($val['journal_voucher_date']))."</td>
-                                                <td>".$JournalVoucher->getUserName($val['created_id'])."</td>
-                                                <td>".$val['journal_voucher_description']."</td>
-                                                <td>".$JournalVoucher->getAccountCode($val['account_id'])."</td>
-                                                <td>".$JournalVoucher->getAccountName($val['account_id'])."</td>
-                                                <td style='text-align: right'>".number_format($nominal,2,'.',',')."</td>
-                                                <td>".$status."</td>
-                                                <td  style='text-align:center'>
-                                                    <a href='".route('jv.print'.$val['journal_voucher_id'])."' class='btn btn-secondary btn-sm' >Cetak Bukti</a>
-                                                ".$delete."
-                                                </td>
-                                            </tr>
-                                        ";
-                                        $no++;
-                                    } else {
-                                        echo"
-                                            <tr>
-                                                <td style='text-align:center'></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>".$JournalVoucher->getAccountCode($val['account_id'])."</td>
-                                                <td>".$JournalVoucher->getAccountName($val['account_id'])."</td>
-                                                <td style='text-align: right'>".number_format($nominal,2,'.',',')."</td>
-                                                <td>".$status."</td>
-                                                <td></td>
-                                            </tr>
-                                        ";
+                        $totaldebet = 0;
+                        $totalkredit = 0;
+                    @endphp
+                    @if (count($acctmemorialjournal) == 0)
+                        <tr>
+                            <td colspan="8" style="text-align: center">Data Kosong</td>
+                        </tr>
+                    @else
+                        @php
+                            $id = 0;
+                        @endphp
+                        @foreach ($acctmemorialjournal as $val)
+                            @php
+                                $i = 1;
+                            @endphp
+                            @foreach ($val->items as $row)
+                                @php
+                                    if ($row['journal_voucher_debit_amount'] != 0) {
+                                        $nominal = $row['journal_voucher_debit_amount'];
+                                        $status = 'D';
+                                    } elseif ($row['journal_voucher_credit_amount'] != 0) {
+                                        $nominal = $row['journal_voucher_credit_amount'];
+                                        $status = 'K';
                                     }
-                                }
-                            }
-                        ?>
+                                @endphp
+                                @if ($i == 1)
+                                    <tr>
+                                        <td style="text-align:center; background-color:lightgrey">
+                                            {{ $no++ }}</td>
+                                        <td style="text-align:left; background-color:lightgrey">
+                                            {{ $val['transaction_module_code'] }}</td>
+                                        <td style="text-align:left; background-color:lightgrey">
+                                            {{ $val['journal_voucher_description'] }}</td>
+                                        <td style="text-align:center; background-color:lightgrey">
+                                            {{ date('d-m-Y', strtotime($val['journal_voucher_date'])) }}</td>
+                                        <td style="text-align:left; background-color:lightgrey">
+                                            {{ $row->account->account_code }}</td>
+                                        <td style="text-align:left; background-color:lightgrey">
+                                            {{ $row->account->account_name }}</td>
+                                        <td style="text-align:right; background-color:lightgrey">
+                                            {{ number_format($nominal, 2) }}</td>
+                                        <td style="text-align:right; background-color:lightgrey">
+                                            {{ $status }}</td>
+                                    </tr>
+                                @else
+                                    <tr>
+                                        <td style="text-align:center"></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;{{ $row->account->account_code }}</td>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;{{ $row->account->account_name }}</td>
+                                        <td style="text-align:right;">{{ number_format($nominal, 2) }}</td>
+                                        <td style="text-align:right;">{{ $status }}</td>
+                                    </tr>
+                                @endif
+                                @php
+                                    $i++;
+                                    $totaldebet += $row['journal_voucher_debit_amount'];
+                                    $totalkredit += $row['journal_voucher_credit_amount'];
+                                    if ($id != $row['journal_voucher_id']) {
+                                        $id = $row['journal_voucher_id'];
+                                    }
+                                @endphp
+                            @endforeach
+                        @endforeach
+                    @endif
+                    <tr>
+                        <td colspan="6" align="right"><b>Total Debet</td>
+                        <td align="right"><b>{{ number_format($totaldebet, 2) }}</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" align="right"><b>Totel Kredit</td>
+                        <td align="right"><b>{{ number_format($totalkredit, 2) }}</b></td>
+                        <td></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
