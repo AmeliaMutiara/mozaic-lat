@@ -148,8 +148,7 @@
                                         <td style="text-align:center"></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;{{ $row->account->account_code }}</td>
+                                        <td></td></td>
                                         <td>&nbsp;&nbsp;&nbsp;&nbsp;{{ $row->account->account_name }}</td>
                                         <td style="text-align:right;">{{ number_format($nominal, 2) }}</td>
                                         <td style="text-align:right;">{{ $status }}</td>
