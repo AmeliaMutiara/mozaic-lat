@@ -73,12 +73,12 @@
 @endif
 <div class="card border border-dark">
     <div class="card-header bg-dark clearfix">
-        <h5 class="mb-0 float-left">
-            Daftar
-        </h5>
-        <div class="form-actions float-right">
-            <button onclick="location.href='{{ route('jv.add') }}'" name="Find" class="btn btn-sm btn-info" title="Add Data"><i class="fa fa-plus"></i> Tambah Jurnal Umum </button>
-        </div>
+      <h5 class="mb-0 float-left">
+          Daftar
+      </h5>
+      <div class="form-actions float-right">
+          <button onclick="location.href='{{ route('jv.add') }}'" name="Find" class="btn btn-sm btn-info" title="Add Data"><i class="fa fa-plus"></i> Tambah Jurnal Umum </button>
+      </div>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -97,58 +97,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php
+                    <?php
                         $no = 1;
-                        $totaldebet = 0;
-                        $totalkredit = 0;
-                    @endphp
-                    @if (count($acctmemorialjournal) == 0)
-                        <tr>
-                            <td colspan="8" style="text-align: center">Data Kosong</td>
-                        </tr>
-                    @else
-                        @php
-                            $id = 0;
-                        @endphp
-                        @foreach ($acctmemorialjournal as $val)
-                            @php
-                                $i = 1;
-                            @endphp
-                            @foreach ($val->items as $row)
-                                @php
-                                    if ($row['journal_voucher_debit_amount'] != 0) {
-                                        $nominal = $row['journal_voucher_debit_amount'];
-                                        $status = 'D';
-                                    } elseif ($row['journal_voucher_credit_amount'] != 0) {
-                                        $nominal = $row['journal_voucher_credit_amount'];
-                                        $status = 'K';
-                                    }
-                                @endphp
-                                @if ($i == 1)
+                            if(empty($data)){
+                                echo "
                                     <tr>
-                                        <td style="text-align:center; background-color:lightgrey">
-                                            {{ $no++ }}</td>
-                                        <td style="text-align:left; background-color:lightgrey">
-                                            {{ $val['transaction_module_code'] }}</td>
-                                        <td style="text-align:left; background-color:lightgrey">
-                                            {{ $val['journal_voucher_description'] }}</td>
-                                        <td style="text-align:center; background-color:lightgrey">
-                                            {{ date('d-m-Y', strtotime($val['journal_voucher_date'])) }}</td>
-                                        <td style="text-align:left; background-color:lightgrey">
-                                            {{ $row->account->account_code }}</td>
-                                        <td style="text-align:left; background-color:lightgrey">
-                                            {{ $row->account->account_name }}</td>
-                                        <td style="text-align:right; background-color:lightgrey">
-                                            {{ number_format($nominal, 2) }}</td>
-                                        <td style="text-align:right; background-color:lightgrey">
-                                            {{ $status }}</td>
+                                        <td colspan='8' align='center'>Data Kosong</td>
                                     </tr>
                                 @else
                                     <tr>
                                         <td style="text-align:center"></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td></td>
+                                        <td></td>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;{{ $row->account->account_code }}</td>
                                         <td>&nbsp;&nbsp;&nbsp;&nbsp;{{ $row->account->account_name }}</td>
                                         <td style="text-align:right;">{{ number_format($nominal, 2) }}</td>
                                         <td style="text-align:right;">{{ $status }}</td>
@@ -161,25 +123,14 @@
                                     if ($id != $row['journal_voucher_id']) {
                                         $id = $row['journal_voucher_id'];
                                     }
-                                @endphp
-                            @endforeach
-                        @endforeach
-                    @endif
-                    <tr>
-                        <td colspan="6" align="right"><b>Total Debet</td>
-                        <td align="right"><b>{{ number_format($totaldebet, 2) }}</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td colspan="6" align="right"><b>Totel Kredit</td>
-                        <td align="right"><b>{{ number_format($totalkredit, 2) }}</b></td>
-                        <td></td>
-                    </tr>
+                                }
+                            }
+                        ?>
                 </tbody>
             </table>
         </div>
     </div>
-</div>
+  </div>
   <!-- Modal -->
   <div class="modal fade" id="confirmModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
     <div class="modal-dialog">
