@@ -33,7 +33,7 @@
                                     *
                                 </span>
                             </section>
-                            <input type ="date" class="form-control form-control-inline input-medium date-picker input-date" data-date-format="dd-mm-yyyy" type="text" name="start_date" id="start_date" value="{{ $start_date }}" style="width: 15rem;"/>
+                            <input type ="date" class="form-control form-control-inline input-medium date-picker input-date" data-date-format="dd-mm-yyyy" type="text" name="start_date" id="start_date" value="{{ $session['start_date'] ?? date('Y-m-d') }}" style="width: 15rem;"/>
                         </div>
                     </div>
                     <div class = "col-md-6">
@@ -43,7 +43,7 @@
                                     *
                                 </span>
                             </section>
-                            <input type ="date" class="form-control form-control-inline input-medium date-picker input-date" data-date-format="dd-mm-yyyy" type="text" name="end_date" id="end_date" value="{{ $end_date }}" style="width: 15rem;"/>
+                            <input type ="date" class="form-control form-control-inline input-medium date-picker input-date" data-date-format="dd-mm-yyyy" type="text" name="end_date" id="end_date" value="{{ $session['end_date'] ?? date('Y-m-d') }}" style="width: 15rem;"/>
                         </div>
                     </div>
                 </div>
@@ -86,9 +86,9 @@
                 <thead>
                     <tr>
                         <th style="text-align: center; width: 5%">No</th>
-                        <th style="text-align: center;">Tanggal</th>
-                        <th style="text-align: center;">Dibuat</th>
+                        <th style="text-align: center;">Kode</th>
                         <th style="text-align: center;">Uraian</th>
+                        <th style="text-align: center;">Tanggal</th>
                         <th style="text-align: center;">No. Perkiraan</th>
                         <th style="text-align: center;">Nama Perkiraan</th>
                         <th style="text-align: center;">Jumlah</th>
@@ -104,7 +104,7 @@
                             @endphp
                             @if (count($acctmemorialjournal) == 0)
                                 <tr>
-                                    <td colspan="8" style="text-align: center">Data Kosong</td>
+                                    <td colspan="9" style="text-align: center">Data Kosong</td>
                                 </tr>
                             @else
                                 @php
@@ -115,7 +115,7 @@
                                         $i = 1;
                                     @endphp
                                     @foreach ($val->items as $row)
-                                        @php
+                                        {{-- @php
                                             if ($row['journal_voucher_debit_amount'] != 0) {
                                                 $nominal = $row['journal_voucher_debit_amount'];
                                                 $status = 'D';
@@ -123,13 +123,13 @@
                                                 $nominal = $row['journal_voucher_credit_amount'];
                                                 $status = 'K';
                                             }
-                                        @endphp
+                                        @endphp --}}
                                         @if ($i == 1)
-                                            <tr>
+                                             <tr>
                                                 <td style="text-align:center; background-color:lightgrey">
                                                     {{ $no++ }}</td>
                                                 <td style="text-align:left; background-color:lightgrey">
-                                                    {{ $val['transaction_module_code'] }}</td>
+                                                    {{ $val['transaction_module_code']??'' }}</td>
                                                 <td style="text-align:left; background-color:lightgrey">
                                                     {{ $val['journal_voucher_description'] }}</td>
                                                 <td style="text-align:center; background-color:lightgrey">
@@ -139,9 +139,31 @@
                                                 <td style="text-align:left; background-color:lightgrey">
                                                     {{ $row->account->account_name }}</td>
                                                 <td style="text-align:right; background-color:lightgrey">
-                                                    {{ number_format($nominal, 2) }}</td>
+                                                    @php
+                                                        $id = $JournalVoucher->getMinID($val['journal_voucher_id']);
+
+                                                        if($val['journal_voucher_debit_amount'] <> 0 ){
+                                                            $nominal = $val['journal_voucher_debit_amount'];
+                                                            $status = 'D';
+                                                        } else if($val['journal_voucher_credit_amount'] <> 0){
+                                                            $nominal = $val['journal_voucher_credit_amount'];
+                                                            $status = 'K';
+                                                        } else {
+                                                            $nominal = 0;
+                                                            $status = 'Kosong';
+                                                        }
+                                                    @endphp
+                                                    {{ number_format($nominal, 2) }}
+                                                </td>
                                                 <td style="text-align:right; background-color:lightgrey">
                                                     {{ $status }}</td>
+                                                <td style="text-align:center;background-color:lightgrey">
+                                                    <a href="{{ route('jv.print', $row->journal_voucher_id) }}" class="btn btn-secondary btn-sm ">
+                                                        Cetak Bukti</a>
+                                                    @if ($val['reverse_state']==0&&(Auth::id()==1))
+                                                        <button type="button" class="btn my-3 btn-outline-danger btn-sm" onclick="check('{{ $val['journal_voucher_date'] }}','{{ route('jv.delete', ['journal_voucher_id'=>$val['journal_voucher_id']]) }}')">Hapus</button>
+                                                    @endif
+                                                </td>
                                             </tr>
                                         @else
                                             <tr>
@@ -153,6 +175,7 @@
                                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;{{ $row->account->account_name }}</td>
                                                 <td style="text-align:right;">{{ number_format($nominal, 2) }}</td>
                                                 <td style="text-align:right;">{{ $status }}</td>
+                                                <td></td>
                                             </tr>
                                         @endif
                                         @php
@@ -166,17 +189,17 @@
                                     @endforeach
                                 @endforeach
                             @endif
-                            <tr>
-                                <td colspan="6" align="right"><b>Total Debet</td>
+                            {{-- <tr>
+                                <td colspan="7" align="right"><b>Total Debet</td>
                                 <td align="right"><b>{{ number_format($totaldebet, 2) }}</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td colspan="6" align="right"><b>Totel Kredit</td>
+                                <td colspan="7" align="right"><b>Totel Kredit</td>
                                 <td align="right"><b>{{ number_format($totalkredit, 2) }}</b></td>
                                 <td></td>
-                            </tr>
-                        </tbody>
+                            </tr> --}}
+                    </tbody>
             </table>
         </div>
     </div>
@@ -196,7 +219,7 @@
           <div id="modal-content"></div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-success" data-dismiss="modal">Batal</button>
           <a type="button" id="reverse-journal" class="btn row btn-danger">Ya</a>
         </div>
       </div>

@@ -29,7 +29,8 @@ class DatabaseSeeder extends Seeder
             BankSeeder::class,
             UnitSeeder::class,
             UserSeeder::class,
-            VoucherSeeder::class
+            VoucherSeeder::class,
+            JournalVoucherSeeder::class
         ]);
     }
 }

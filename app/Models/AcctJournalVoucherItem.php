@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class JournalVoucherItem extends Model
+class AcctJournalVoucherItem extends Model
 {
     use HasFactory, SoftDeletes, CreatedUpdatedID;
     protected $table        = 'acct_journal_voucher_item';
@@ -24,6 +24,6 @@ class JournalVoucherItem extends Model
     }
 
     public function item() {
-        return $this->belongsTo(JournalVoucher::class,'journal_voucher_id','journal_voucher_id');
+        return $this->belongsTo(AcctJournalVoucher::class,'journal_voucher_id','journal_voucher_id');
     }
 }

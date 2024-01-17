@@ -16,7 +16,7 @@ return new class extends Migration
                 $table->id('journal_voucher_id');
                 $table->unsignedBigInteger('company_id')->nullable();
                 $table->unsignedBigInteger('transaction_module_id')->nullable();
-                $table->unsignedBigInteger('journal_voucher_status')->nullable();
+                $table->unsignedBigInteger('journal_voucher_status')->nullable()->default(0);
                 $table->string('transaction_journal_no')->nullable();
                 $table->string('transaction_module_code')->nullable();
                 $table->string('journal_voucher_date')->nullable();
@@ -24,9 +24,7 @@ return new class extends Migration
                 $table->string('journal_voucher_period')->nullable();
                 $table->string('journal_voucher_no')->nullable();
                 $table->string('journal_voucher_title')->nullable();
-                $table->unsignedBigInteger('voided')->nullable();
-                $table->unsignedBigInteger('voided_id')->nullable();
-                $table->dateTime('voided_on')->nullable();
+                $table->tinyInteger('reverse_state')->nullable();
                 $table->string('voided_remark')->nullable();
                 $table->unsignedBigInteger('created_id')->nullable();
                 $table->unsignedBigInteger('updated_id')->nullable();
