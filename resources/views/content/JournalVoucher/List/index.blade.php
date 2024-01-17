@@ -115,7 +115,7 @@
                                         $i = 1;
                                     @endphp
                                     @foreach ($val->items as $row)
-                                        {{-- @php
+                                        @php
                                             if ($row['journal_voucher_debit_amount'] != 0) {
                                                 $nominal = $row['journal_voucher_debit_amount'];
                                                 $status = 'D';
@@ -123,7 +123,7 @@
                                                 $nominal = $row['journal_voucher_credit_amount'];
                                                 $status = 'K';
                                             }
-                                        @endphp --}}
+                                        @endphp
                                         @if ($i == 1)
                                              <tr>
                                                 <td style="text-align:center; background-color:lightgrey">
@@ -139,21 +139,21 @@
                                                 <td style="text-align:left; background-color:lightgrey">
                                                     {{ $row->account->account_name }}</td>
                                                 <td style="text-align:right; background-color:lightgrey">
-                                                    @php
-                                                        $id = $JournalVoucher->getMinID($val['journal_voucher_id']);
+                                                    {{-- @php
+                                                        $id = $JournalVoucher->getMinID($row['journal_voucher_id']);
 
-                                                        if($val['journal_voucher_debit_amount'] <> 0 ){
-                                                            $nominal = $val['journal_voucher_debit_amount'];
+                                                        if($row['journal_voucher_debit_amount'] <> 0 ){
+                                                            $nominal = $row['journal_voucher_debit_amount'];
                                                             $status = 'D';
-                                                        } else if($val['journal_voucher_credit_amount'] <> 0){
-                                                            $nominal = $val['journal_voucher_credit_amount'];
+                                                        } else if($row['journal_voucher_credit_amount'] <> 0){
+                                                            $nominal = $row['journal_voucher_credit_amount'];
                                                             $status = 'K';
                                                         } else {
                                                             $nominal = 0;
                                                             $status = 'Kosong';
                                                         }
-                                                    @endphp
-                                                    {{ number_format($nominal, 2) }}
+                                                    @endphp --}}
+                                                    {{ number_format($nominal,2,'.',',') }}
                                                 </td>
                                                 <td style="text-align:right; background-color:lightgrey">
                                                     {{ $status }}</td>

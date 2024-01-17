@@ -24,7 +24,7 @@ return new class extends Migration
                 $table->string('journal_voucher_period')->nullable();
                 $table->string('journal_voucher_no')->nullable();
                 $table->string('journal_voucher_title')->nullable();
-                $table->tinyInteger('reverse_state')->nullable();
+                $table->tinyInteger('reverse_state')->nullable()->default(0);
                 $table->string('voided_remark')->nullable();
                 $table->unsignedBigInteger('created_id')->nullable();
                 $table->unsignedBigInteger('updated_id')->nullable();
