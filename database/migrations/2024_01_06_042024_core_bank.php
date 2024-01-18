@@ -16,7 +16,11 @@ return new class extends Migration
                 $table->id('bank_id');
                 $table->unsignedBigInteger('company_id')->nullable();
                 $table->unsignedBigInteger('account_id')->nullable();
+                $table->string('account_no')->nullable();
+                $table->string('bank_code')->nullable();
                 $table->string('bank_name')->nullable();
+                $table->string('bank_remark')->nullable();
+                $table->string('onbehalf')->nullable();
                 $table->unsignedBigInteger('created_id')->nullable();
                 $table->unsignedBigInteger('updated_id')->nullable();
                 $table->unsignedBigInteger('deleted_id')->nullable();

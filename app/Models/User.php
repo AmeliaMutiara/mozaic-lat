@@ -24,7 +24,7 @@ class User extends Authenticatable
     protected $primaryKey   = 'user_id';
     protected $fillable = [
         'user_id',
-        'name',
+        'username',
         'email',
         'password',
         'user_group_id',
@@ -35,6 +35,10 @@ class User extends Authenticatable
         'phone_number',
         'full_name',
     ];
+
+    public function userGroup() {
+        return $this->belongsTo(SystemUserGroup::class,'user_group_id','user_group_id');
+    }
 
     /**
      * The attributes that should be hidden for serialization.

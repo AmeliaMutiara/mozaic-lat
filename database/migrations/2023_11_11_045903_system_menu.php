@@ -27,13 +27,21 @@ return new class extends Migration
             DB::table('system_menu')->insert([
                [ 'id_menu' => 1,  'id' => 'home',          'type' => 'file','text' => 'Beranda','parent' => "#",'menu_level' => "1",],
                [ 'id_menu' => 2,  'id' => 'example',             'type' => 'folder','text' => 'Contoh Table','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 3,  'id' => 'item-category',             'type' => 'file','text' => 'Kategori Barang','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 4,  'id' => 'warehouse',             'type' => 'file','text' => 'Gudang','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 5,  'id' => 'core-supplier',             'type' => 'file','text' => 'Supplier','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 6,  'id' => 'acct-account',             'type' => 'file','text' => 'No Perkiraan','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 7, 'id' => '#',              'type' => 'folder','text' => 'Level 1','parent' => "#",'menu_level' => "1",],
-               [ 'id_menu' => 71, 'id' => 'level',         'type' => 'file','text' => 'Level 2','parent' => "4",'menu_level' => "2",],
-               [ 'id_menu' => 711, 'id' => 'level',         'type' => 'file','text' => 'Level 3','parent' => "41",'menu_level' => "3",],
+               [ 'id_menu' => 3,  'id' => '#',             'type' => 'folder','text' => 'Preferensi','parent' => "#",'menu_level' => "1",],
+               [ 'id_menu' => 31, 'id' => '#',             'type' => 'folder','text' => 'Preferensi Barang','parent' => "3",'menu_level' => "2",],
+               [ 'id_menu' => 311,'id' => 'item-category',             'type' => 'file','text' => 'Kategori Barang','parent' => "31",'menu_level' => "3",],
+               [ 'id_menu' => 312,'id' => 'warehouse',             'type' => 'file','text' => 'Gudang','parent' => "31",'menu_level' => "3",],
+               [ 'id_menu' => 313,'id' => 'item-unit',             'type' => 'file','text' => 'Preferensi Satuan Barang','parent' => "31",'menu_level' => "3",],
+               [ 'id_menu' => 32, 'id' => '#',             'type' => 'folder','text' => 'Set Up Data','parent' => "3",'menu_level' => "2",],
+               [ 'id_menu' => 321,'id' => 'system-user-group',             'type' => 'file','text' => 'User Group','parent' => "32",'menu_level' => "3",],
+               [ 'id_menu' => 322,'id' => 'core-bank',             'type' => 'file','text' => 'Bank','parent' => "32",'menu_level' => "3",],
+               [ 'id_menu' => 323,'id' => 'core-supplier',             'type' => 'file','text' => 'Supplier','parent' => "32",'menu_level' => "3",],
+               [ 'id_menu' => 324,'id' => 'system-user',             'type' => 'file','text' => 'User','parent' => "32",'menu_level' => "3",],
+               [ 'id_menu' => 33, 'id' => 'preference-voucher',             'type' => 'file','text' => 'Voucher','parent' => "3",'menu_level' => "2",],
+               [ 'id_menu' => 4,  'id' => '#',             'type' => 'folder','text' => 'Akutansi','parent' => "#",'menu_level' => "1",],
+               [ 'id_menu' => 41, 'id' => '#',             'type' => 'folder','text' => 'Preferensi','parent' => "4",'menu_level' => "2",],
+               [ 'id_menu' => 411,'id' => 'acct-account',             'type' => 'file','text' => 'No Perkiraan','parent' => "41",'menu_level' => "3",],
+               [ 'id_menu' => 42, 'id' => 'journal-voucher',             'type' => 'file','text' => 'Jurnal Umum','parent' => "4",'menu_level' => "2",],
             ]);
         }
     }

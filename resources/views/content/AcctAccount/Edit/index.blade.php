@@ -35,7 +35,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('acct-account') }}">Daftar Perkiraan</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('account.index') }}">Daftar Perkiraan</a></li>
         <li class="breadcrumb-item active" aria-current="page">Ubah Perkiraan</li>
     </ol>
   </nav>
@@ -48,6 +48,7 @@
     Form Ubah Perkiraan
 </h3>
 <br/>
+
 @if (session('msg'))
 <div class="alert alert-{{session('type')??'info'}}" role="alert">
     {{ session('msg') }}
@@ -60,6 +61,7 @@
     @endforeach
 </div>
 @endif
+
     <div class="card border border-dark">
     <div class="card-header border-dark bg-dark">
         <h5 class="mb-0 float-left">
@@ -70,7 +72,7 @@
         </div>
     </div>
 
-    <form method="post" action="{{ route('account.process-edit') }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('account.edit-process') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">

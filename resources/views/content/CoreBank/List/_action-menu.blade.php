@@ -1,6 +1,6 @@
 
 <td class="text-center">
-    <a type="button" href="{{route('core-bank.edit',$model->supplier_id)}}" class="btn btn-sm btn-primary btn-active-light-primary">
+    <a type="button" href="{{route('bank.edit',$model->bank_id)}}" class="btn btn-sm btn-primary btn-active-light-primary">
        Edit
     </a>
     <button type="button" data-bs-toggle="modal" data-bs-target="#modal_delete_{{ $model->bank_id }}" class="btn btn-sm btn-danger btn-active-light-danger">
@@ -21,8 +21,8 @@
                 <p>Apakah anda yakin ingin menghapus?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Tidak</button>
-                <a type="button" href="{{route('core-bank.delete',$model->bank_id)}}" class="btn btn-danger">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tidak</button>
+                <a type="button" href="{{route('bank.delete',$model->bank_id)}}" class="btn btn-success">
                     Ya
                  </a>
             </div>
