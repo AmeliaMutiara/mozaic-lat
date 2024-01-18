@@ -22,7 +22,7 @@ return new class extends Migration
                 $table->unsignedBigInteger('account_id_default_status')->nullable();
                 $table->string('journal_voucher_debit_amount')->nullable();
                 $table->string('journal_voucher_credit_amount')->nullable();
-                $table->tinyInteger('reverse_state')->nullable();
+                $table->tinyInteger('reverse_state')->nullable()->default(0);
                 $table->unsignedBigInteger('created_id')->nullable();
                 $table->unsignedBigInteger('updated_id')->nullable();
                 $table->unsignedBigInteger('deleted_id')->nullable();
