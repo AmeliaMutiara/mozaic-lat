@@ -46,7 +46,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('acct-account') }}">Daftar Perkiraan</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('account.index') }}">Daftar Perkiraan</a></li>
         <li class="breadcrumb-item active" aria-current="page">Tambah Perkiraan</li>
     </ol>
   </nav>
@@ -118,13 +118,13 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <a class="text-dark">Kelompok Perkiraan<a class='red'> *</a></a>
-                        {{-- {!! Form::select(0, $account_type, $datases['account_type_id'] ??'',['class' => 'selection-search-clear select-form','name'=>'account_type_id','id'=>'account_type_id', 'onchange' => 'function_elements_add(this.name, this.value)']) !!}  --}}
-                        <select name="account_type_id" id="account_type_id" class="selection-search-clear    select-form">
+                        {!! Form::select(0, $account_type, $datases['account_type_id'] ??'',['class' => 'selection-search-clear select-form','name'=>'account_type_id','id'=>'account_type_id', 'onchange' => 'function_elements_add(this.name, this.value)']) !!} 
+                        {{-- <select name="account_type_id" id="account_type_id" class="selection-search-clear    select-form">
                             <option value="0">NA - Neraca Aktif</option>
                             <option value="1">NP - Neraca Pasif</option>
                             <option value="2">RA - Rugi Laba (A)</option>
                             <option value="3">RP - Rugi Laba (B)</option>
-                        </select>
+                        </select> --}}
                     </div>
                 </div>
             </div>

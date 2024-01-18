@@ -21,8 +21,8 @@
                 <p>Apakah anda yakin ingin menghapus Produk?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Tidak</button>
-                <a type="button" href="{{route('supplier.delete',$model->supplier_id)}}" class="btn btn-danger">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tidak</button>
+                <a type="button" href="{{route('supplier.delete',$model->supplier_id)}}" class="btn btn-success">
                     Ya
                  </a>
             </div>

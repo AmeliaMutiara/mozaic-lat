@@ -7,7 +7,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('warehouse') }}">Daftar Gudang</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('warehouse.index') }}">Daftar Gudang</a></li>
         <li class="breadcrumb-item active" aria-current="page"> Ubah Gudang</li>
     </ol>
   </nav>
@@ -44,7 +44,7 @@
         </div>
     </div>
 
-    <form method="post" action="{{ route('warehouse.process-edit-warehouse') }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('warehouse.edit-process') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">

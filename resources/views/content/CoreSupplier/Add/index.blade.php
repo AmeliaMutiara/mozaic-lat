@@ -22,7 +22,7 @@
     function reset_add(){
 		$.ajax({
 				type: "GET",
-				url : "{{ route('supplier.reset-elements') }}",
+				url : "{{ route('supplier.add-reset') }}",
 				success: function(msg){
                     location.reload();
 			}
@@ -36,7 +36,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('/core-supplier') }}">Daftar Supplier</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('supplier.index') }}">Daftar Supplier</a></li>
         <li class="breadcrumb-item active" aria-current="page">Tambah Supplier</li>
     </ol>
   </nav>

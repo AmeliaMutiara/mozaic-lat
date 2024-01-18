@@ -7,7 +7,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('core-supplier') }}">Daftar Supplier</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('supplier.index') }}">Daftar Supplier</a></li>
         <li class="breadcrumb-item active" aria-current="page"> Ubah Supplier</li>
     </ol>
   </nav>
@@ -20,18 +20,21 @@
     Form Ubah Supplier
 </h3>
 <br/>
-@if(session('msg'))
-<div class="alert alert-info" role="alert">
-    {{session('msg')}}
+
+@if (session('msg'))
+<div class="alert alert-{{session('type')??'info'}}" role="alert">
+    {{ session('msg') }}
 </div>
 @endif
 
-@if(count($errors) > 0)
+@if (count($errors) > 0)
 <div class="alert alert-danger" role="alert">
     @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
+        {{ $error }}
     @endforeach
+</div>
 @endif
+
 </div>
     <div class="card border border-dark">
     <div class="card-header border-dark bg-dark">
@@ -39,11 +42,11 @@
             Form Ubah
         </h5>
         <div class="float-right">
-            <button onclick="location.href='{{ url('core-supplier') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
+            <button onclick="location.href='{{ route('supplier.index') }}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left"></i>  Kembali</button>
         </div>
     </div>
 
-    <form method="post" action="{{ url('core-supplier/process-edit') }}" enctype="multipart/form-data">
+    <form method="post" action="{{ route('supplier.edit-process') }}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="row form-group">

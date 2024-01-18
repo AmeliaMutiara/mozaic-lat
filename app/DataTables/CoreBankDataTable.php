@@ -22,7 +22,9 @@ class CoreBankDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'corebank.action')
+            ->addIndexColumn()
+            ->editColumn('account_id', fn($query)=>"{$query->account->account_code} - {$query->account->account_name}")
+            ->addColumn('action', 'content.CoreBank.List._action-menu')
             ->setRowId('id');
     }
 
@@ -31,7 +33,7 @@ class CoreBankDataTable extends DataTable
      */
     public function query(CoreBank $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->with('account');
     }
 
     /**
@@ -61,8 +63,10 @@ class CoreBankDataTable extends DataTable
     {
         return [
             Column::make('bank_id')->title(__('No'))->data('DT_RowIndex')->addClass('text-center')->width(10),
-            Column::make('supplier_name')->title('Name Bank'),
-            Column::make('account_id')->tittle('Perkiraan'),
+            Column::make('bank_code')->title('Kode Bank'),
+            Column::make('bank_name')->title('Nama Bank'),
+            Column::make('account_no')->title('No. Rek'),
+            Column::make('account_id')->title('Perkiraan'),
             Column::computed('action')->title('Aksi')
                 ->exportable(false)
                 ->printable(false)

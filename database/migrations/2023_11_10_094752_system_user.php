@@ -22,11 +22,13 @@ return new class extends Migration
             $table->foreign('branch_id')->references('branch_id')->on('core_branch')->onUpdate('cascade')->onDelete('set null');
             $table->unsignedBigInteger('company_id')->nullable();
             $table->foreign('company_id')->references('company_id')->on('preference_company')->onUpdate('cascade')->onDelete('set null');
-            $table->string('username');
+            $table->string('username')->nullable();
             $table->string('full_name')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->dateTime('password_date')->nullable();
-            $table->string('phone')->nullable();
+            $table->dateTime('remember_token')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('section_id')->nullable();
             $table->string('email')->nullable();
             $table->dateTime('email_verified_at')->nullable();
             $table->dateTime('verified_at')->nullable();

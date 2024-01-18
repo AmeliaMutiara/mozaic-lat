@@ -15,9 +15,13 @@ return new class extends Migration
         if(!Schema::hasTable('system_menu_mapping')) {
             Schema::create('system_menu_mapping', function (Blueprint $table) {
                 $table->id('menu_mapping_id');
+                $table->unsignedBigInteger('company_id')->nullable();
                 $table->integer('user_group_level')->nullable();
                 $table->string('id_menu')->nullable();
                 $table->foreign('id_menu')->references('id_menu')->on('system_menu')->onUpdate('cascade')->onDelete('cascade');
+                $table->unsignedBigInteger('created_id')->nullable();
+                $table->unsignedBigInteger('updated_id')->nullable();
+                $table->unsignedBigInteger('deleted_id')->nullable();
                 $table->timestamps();
                 $table->softDeletesTz();
             });
@@ -26,12 +30,20 @@ return new class extends Migration
                 ['user_group_level' => 1,'id_menu' => 1  ],
                 ['user_group_level' => 1,'id_menu' => 2  ],
                 ['user_group_level' => 1,'id_menu' => 3  ],
+                ['user_group_level' => 1,'id_menu' => 31 ],
+                ['user_group_level' => 1,'id_menu' => 311],
+                ['user_group_level' => 1,'id_menu' => 312],
+                ['user_group_level' => 1,'id_menu' => 313],
+                ['user_group_level' => 1,'id_menu' => 32 ],
+                ['user_group_level' => 1,'id_menu' => 321],
+                ['user_group_level' => 1,'id_menu' => 322],
+                ['user_group_level' => 1,'id_menu' => 323],
+                ['user_group_level' => 1,'id_menu' => 324],
+                ['user_group_level' => 1,'id_menu' => 33 ],
                 ['user_group_level' => 1,'id_menu' => 4  ],
-                ['user_group_level' => 1,'id_menu' => 5  ],
-                ['user_group_level' => 1,'id_menu' => 6  ],
-                ['user_group_level' => 1,'id_menu' => 7  ],
-                ['user_group_level' => 1,'id_menu' => 71 ],
-                ['user_group_level' => 1,'id_menu' => 711 ],
+                ['user_group_level' => 1,'id_menu' => 41 ],
+                ['user_group_level' => 1,'id_menu' => 411],
+                ['user_group_level' => 1,'id_menu' => 42 ],
             ]);
         }
     }
