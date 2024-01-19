@@ -96,9 +96,13 @@
                     <tr>
                         <th style="text-align: left !important; width: 40% !important">Hutang</th>
                         <td>
-
+                            {!! Form::select(0, $accountlist, $AccountSetting->getAccountId('purchase_cash_payable_account'),['class' => 'selection-search-clear select-form','name' =>'purchase_cash_payable_account_id','id'=>purchase_cash_payable_account_id])!!}
+                        </td>
+                        <td>
+                            {!! Form::select(0, $status, $AccountSetting->getAccountSettingStatus('purchase_cash_payable_account'),['class' => 'selection-search-clear select-form','name' =>'purchase_cash_payable_account_id','id'=>purchase_cash_payable_account_id])!!}
                         </td>
                     </tr>
+
                 </table>
             </div>
         </div>
