@@ -32,6 +32,7 @@ return new class extends Migration
                [ 'id_menu' => 311,'id' => 'item-category',             'type' => 'file','text' => 'Kategori Barang','parent' => "31",'menu_level' => "3",],
                [ 'id_menu' => 312,'id' => 'warehouse',             'type' => 'file','text' => 'Gudang','parent' => "31",'menu_level' => "3",],
                [ 'id_menu' => 313,'id' => 'item-unit',             'type' => 'file','text' => 'Preferensi Satuan Barang','parent' => "31",'menu_level' => "3",],
+               [ 'id_menu' => 314,'id' => 'invt-item',             'type' => 'file','text' => 'Barang','parent' => "31",'menu_level' => "3",],
                [ 'id_menu' => 32, 'id' => '#',             'type' => 'folder','text' => 'Set Up Data','parent' => "3",'menu_level' => "2",],
                [ 'id_menu' => 321,'id' => 'system-user-group',             'type' => 'file','text' => 'User Group','parent' => "32",'menu_level' => "3",],
                [ 'id_menu' => 322,'id' => 'core-bank',             'type' => 'file','text' => 'Bank','parent' => "32",'menu_level' => "3",],

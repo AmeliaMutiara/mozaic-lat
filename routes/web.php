@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvtItemCategoryController;
+use App\Http\Controllers\InvtItemController;
 use App\Http\Controllers\InvtItemUnitController;
 use App\Http\Controllers\InvtWarehouseController;
 use App\Http\Controllers\JournalVoucherController;
@@ -156,5 +157,18 @@ Route::middleware('auth')->group(function () {
         Route::post('/filter-reset', [JournalVoucherController::class, 'resetFilterJournalVoucher'])->name('filter-reset');
         Route::get('/print/{journal_voucher_id}', [JournalVoucherController::class, 'printJournalVoucher'])->name('print');
         Route::get('/delete/{journal_voucher_id}', [JournalVoucherController::class, 'reverseJournalVoucher'])->name('delete');
+    });
+    Route::prefix('invt-item')->name('item.')->group(function() {
+        Route::get('/', [InvtItemController::class, 'index'])->name('index');
+        Route::get('/print', [InvtItemController::class, 'print'])->name('print');
+        Route::get('/export', [InvtItemController::class, 'export'])->name('export');
+        Route::get('/add', [InvtItemController::class, 'addItem'])->name('add');
+        Route::post('/add-process', [InvtItemController::class, 'processAddItem'])->name('add-process');
+        Route::post('/add-elements', [InvtItemController::class, 'addItemElements'])->name('add-elements');
+        Route::get('/add-reset', [InvtItemController::class, 'addResetItem'])->name('add-reset');
+        Route::get('/edit/{item_id}/{origin?}', [InvtItemController::class, 'editItem'])->name('edit');
+        Route::post('/edit-process/{origin?}', [InvtItemController::class, 'processEditItem'])->name('edit-process');
+        Route::get('/delete/{item_id}', [InvtItemController::class, 'deleteItem'])->name('delete');
+        Route::get('/count-margin', [InvtItemController::class, 'countMarginAddItem'])->name('count-margin');
     });
 });

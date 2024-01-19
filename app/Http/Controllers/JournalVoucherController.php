@@ -328,44 +328,9 @@ class JournalVoucherController extends Controller
     }
     public function reverseJournalVoucher($journal_voucher_id)
     {
-        // $journal = JournalVoucher::find($journal_voucher_id);
-        // $journalItem = JournalVoucher::join('acct_journal_voucher_item', 'acct_journal_voucher_item.journal_voucher_id', '=', 'acct_journal_voucher.journal_voucher_id')
-        //     ->select('acct_journal_voucher_item.*')
-        //     ->where('acct_journal_voucher.company_id', Auth::user()->company_id)
-        //     ->where('acct_journal_voucher.journal_voucher_id', $journal_voucher_id);
-        // $data = array(
-        //     'company_id'                     => $journal['company_id'],
-        //     'transaction_module_id'          => $journal['transaction_module_id'],
-        //     'journal_voucher_status'         => $journal['journal_voucher_status'],
-        //     'transaction_journal_no'         => $journal['transaction_journal_no'],
-        //     'transaction_module_code'        => $journal['transaction_module_code'],
-        //     'journal_voucher_date'           => (Carbon::parse($journal->journal_voucher_date)->format('Y-m')==date('Y-m')?date('Y-m-d'):$journal->journal_voucher_date),
-        //     'journal_voucher_description'    => 'HAPUS' . $journal['journal_voucher_description'],
-        //     'journal_voucher_period'         => $journal['journal_voucher_period'],
-        //     'journal_voucher_title'          => 'HAPUS' . $journal['journal_voucher_title'],
-        //     "reverse_state"                  => 1,
-        // );
+        
         try {
             DB::beginTransaction();
-            // JournalVoucher::create($data);
-            // $journal->reverse_state = 1;
-            // $journal->save();
-            // $journalVoucherId = JournalVoucher::orderBy('journal_voucher_id', 'DESC')->where('company_id', $journal['company_id'])->first();
-            // foreach ($journalItem->get() as $key) {
-            //     $reverse_journal = array(
-            //         'company_id'                    => $key['company_id'],
-            //         'journal_voucher_id'            => $journalVoucherId['journal_voucher_id'],
-            //         'account_id'                    => $key['account_id'],
-            //         'journal_voucher_amount'        => $key['journal_voucher_amount'],
-            //         'account_id_status'             => (1 - $key['account_id_status']),
-            //         'account_id_default_status'     => $key['account_id_default_status'],
-            //         'journal_voucher_debit_amount'  => $key['journal_voucher_debit_amount'],
-            //         'journal_voucher_credit_amount' => $key['journal_voucher_credit_amount'],
-            //         "reverse_state"                 => 1
-            //     );
-            //     AcctJournalVoucherItem::create($reverse_journal);
-            // }
-            // $journalItem->update(['acct_journal_voucher_item.reverse_state' => 1]);
             JournalHelper::reverse((int) $journal_voucher_id);
             DB::commit();
             return redirect()->route('jv.index')->with(['msg' => 'Berhasil Menghapus Jurnal Umum', 'type' => 'success']);
