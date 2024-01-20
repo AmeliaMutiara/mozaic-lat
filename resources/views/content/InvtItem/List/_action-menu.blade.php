@@ -1,3 +1,8 @@
+<td class="text-center">
+    <a type="button" href="{{route('item-barcode.index',$model->item_id)}}" class="btn btn-sm btn-primary btn-active-light-primary">
+        Barcode
+     </a>
+</td>
 
 <td class="text-center">
     <a type="button" href="{{route('item.edit',$model->item_id)}}" class="btn btn-sm btn-primary btn-active-light-primary">
