@@ -2,18 +2,17 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\InvtItem;
-use App\Models\SystemMenu;
 use App\Helpers\ItemHelper;
 use App\Models\InvtItemUnit;
 use Illuminate\Http\Request;
 use App\Models\InvtItemStock;
 use App\Models\InvtWarehouse;
 use App\Models\SalesMerchant;
-use App\Models\InvtItemPackge;
 use App\Models\InvtItemCategory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\DataTables\InvtItemDataTable;
+use App\Models\InvtItemPackage;
 use Illuminate\Support\Facades\Session;
 class InvtItemController extends Controller
 {
@@ -151,7 +150,7 @@ class InvtItemController extends Controller
                 $itm = "Paket";
                 $paket = collect(Session::get('paket'));
                 foreach($paket as $val) {
-                    InvtItemPackge::create([
+                    InvtItemPackage::create([
                         'item_id'           => $item['item_id'],
                         'package_item_id'   => array_keys($val)[0],
                         'item_quantity'     => $val[array_keys($val)[0]][0],
@@ -179,8 +178,8 @@ class InvtItemController extends Controller
         $counts = collect();
         $items = Session::get('items');
         $msg = '';
-        $invtpaket = InvtItemPackge::where('item_id', $item_id)->get();
-        $pkg = InvtItemPackge::where('package_item_id', $item_id)->get()->count();
+        $invtpaket = InvtItemPackage::where('item_id', $item_id)->get();
+        $pkg = InvtItemPackage::where('package_item_id', $item_id)->get()->count();
         if($pkg){
             $msg = 'Ada paket yang menggunakan item ini';
         }
@@ -229,7 +228,7 @@ class InvtItemController extends Controller
         ], [
             'item_category_id.integer'  => 'Wahana / Merchant Tidak Memiliki Kategori'
         ]);
-        $paket = InvtItemPackge::where('item_id', $fields['item_id']);
+        $paket = InvtItemPackage::where('item_id', $fields['item_id']);
         try {
         $merchant = SalesMerchant::find($request->merchant_id);
         $warehousecode = preg_replace('/[^A-Z]/', '', $merchant->merchant_name);
@@ -248,7 +247,7 @@ class InvtItemController extends Controller
         }
         DB::beginTransaction();
         $table                           = InvtItem::findOrFail($fields['item_id']);
-        $packageitem                     = InvtItemPackge::with('unit')->where('package_item_id', $fields['item_id']);
+        $packageitem                     = InvtItemPackage::with('unit')->where('package_item_id', $fields['item_id']);
         for ($l = 0; $l <= 4; $l++) {
             if($table['item_unit_id'.$l] != $request['item_unit_id'.$l]) {
                 if($table['item_unit_id'.$l] !=null && $request['item_unit_id'.$l]==null) {
@@ -300,7 +299,7 @@ class InvtItemController extends Controller
             $itm = "Paket";
             $paket->delete();
             foreach($paket as $val) {
-                InvtItemPackge::create([
+                InvtItemPackage::create([
                     'item_id'           => $item['item_id'],
                     'package_item_id'   => array_keys($val)[0],
                     'item_quantity'     => $val[array_keys($val)[0]][0],
@@ -430,7 +429,7 @@ class InvtItemController extends Controller
 
     public function checkDeleteItem($item_id)
     {
-        $pkg = InvtItemPackge::where('item_id', $item_id)->get()->count();
+        $pkg = InvtItemPackage::where('item_id', $item_id)->get()->count();
         if ($pkg) {
             return response(1);
         }

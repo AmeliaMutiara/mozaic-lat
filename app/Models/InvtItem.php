@@ -21,7 +21,7 @@ class InvtItem extends Model
         return $this->belongsTo(InvtItemCategory::class,'item_category_id','item_category_id');
     }
     public function packge(){
-        return $this->hasOne(InvtItemPackge::class,'item_id','item_id');
+        return $this->hasOne(InvtItemPackage::class,'item_id','item_id');
     }
     public function barcode(){
         return $this->hasMany(InvtItemBarcode::class,'item_id','item_id');

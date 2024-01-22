@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvtItemCategoryController;
 use App\Http\Controllers\InvtItemController;
+use App\Http\Controllers\InvtItemPackageController;
 use App\Http\Controllers\InvtItemUnitController;
 use App\Http\Controllers\InvtWarehouseController;
 use App\Http\Controllers\JournalVoucherController;
@@ -160,10 +161,10 @@ Route::middleware('auth')->group(function () {
     });
     Route::prefix('invt-item')->name('item.')->group(function() {
         Route::get('/', [InvtItemController::class, 'index'])->name('index');
-        Route::get('/unit', [InvtItemController::class, 'getItemUnit'])->name('unit');
-        Route::get('/cost', [InvtItemController::class, 'getItemCost'])->name('cost');
-        Route::get('/category', [InvtItemController::class, 'getCategory'])->name('category');
-        Route::get('/merchant-item', [InvtItemController::class, 'getMerchantItem'])->name('merchant-item');
+        Route::post('/unit', [InvtItemController::class, 'getItemUnit'])->name('unit');
+        Route::post('/cost', [InvtItemController::class, 'getItemCost'])->name('cost');
+        Route::post('/category', [InvtItemController::class, 'getCategory'])->name('category');
+        Route::post('/merchant-item', [InvtItemController::class, 'getMerchantItem'])->name('merchant-item');
         Route::get('/add-kemasan', [InvtItemController::class, 'addKemasan'])->name('add-kemasan');
         Route::get('/remove-kemasan', [InvtItemController::class, 'removeKemasan'])->name('remove-kemasan');
         Route::get('/add-item', [InvtItemController::class, 'addItem'])->name('add-item');
@@ -174,5 +175,16 @@ Route::middleware('auth')->group(function () {
         Route::post('/edit-process', [InvtItemController::class, 'processEditItem'])->name('edit-process');
         Route::get('/delete-check/{item_id}', [InvtItemController::class, 'checkDeleteItem'])->name('delete-check');
         Route::get('/delete/{item_id}', [InvtItemController::class, 'deleteItem'])->name('delete');
+        Route::post('/add-item', [InvtItemPackageController::class, 'processAddItem'])->name('add-package');
+        Route::post('/clear-item', [InvtItemPackageController::class, 'clearItem'])->name('clear-package');
+        Route::get('/delete-item/{item_id}/{item_unit}', [InvtItemPackageController::class, 'processDeleteItem'])->name('delete-package');
+        Route::get('/change-qty/{item_id}/{unit_id}/{value}', [InvtItemPackageController::class, 'changeItemQty'])->name('change-qty');
+    });
+    Route::prefix('item-package')->name('package')->group(function() {
+        Route::post('/add-item', [InvtItemPackageController::class, 'processAddItem'])->name('process-add-item');
+        
+        
+        Route::get('/delete-item/{item_id}/{item_unit}', [InvtItemPackageController::class, 'processDeleteItem'])->name('delete-item');
+        Route::get('/delete/{item_id}', [InvtItemPackageController::class, 'deleteItem'])->name('delete');
     });
 });

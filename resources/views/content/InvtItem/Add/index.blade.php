@@ -174,7 +174,7 @@ if(empty($paket)){
             }
             $.ajax({
                 type: "post",
-                url: "{{ route('package.process-add-item') }}",
+                url: "{{ route('item.add-package') }}",
                 dataType: "html",
                 data: {
                     'item_id': package_item_id,
@@ -212,7 +212,7 @@ if(empty($paket)){
         function clearIsiPaket() {
             $.ajax({
                 type: "get",
-                url: "{{ route('package.clear-item') }}",
+                url: "{{ route('item.clear-package') }}",
                 dataType: "html",
                 success: function(return_data) {
                     $('.pkg-itm').each(function(index) {
@@ -228,13 +228,13 @@ if(empty($paket)){
             });
         }
 
-        function deleteIsiPaket(item_id) {
+        function deleteIsiPaket(item_id, item_unit) {
             $.ajax({
                 type: "get",
-                url: "{{ route('package/delete-item/') }}" + '/' + item_id,
+                url: "{{ route('item.delete-package', item_id, item_unit) }}" + '/' + item_id+ '/' + item_unit,
                 dataType: "html",
                 success: function(return_data) {
-                    $('#col-package-item-' + item_id).remove();
+                    $('#col-package-item-' + item_id + item_unit).remove();
                 },
                 error: function(data) {
                     console.log(data);
@@ -246,7 +246,7 @@ if(empty($paket)){
             if (value != '') {
                 $("#simpan-brg").prop('disabled', true);
                 $.ajax({
-                    url: "{{ route('package/item/change-qty') }}" + '/' + item_packge_id + '/' + unit_id + '/' +
+                    url: "{{ route('item.change-qty') }}" + '/' + item_packge_id + '/' + unit_id + '/' +
                         value,
                     type: "GET",
                     dataType: "json",
@@ -391,7 +391,7 @@ if(empty($paket)){
             </div>
         </div>
 
-        <form method="post" id="form-barang" action="{{ route('process-add-item') }}" enctype="multipart/form-data">
+        <form method="post" id="form-barang" action="{{ route('item.add-process') }}" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
                 <ul class="nav nav-tabs" id="navigator-itm" role="tablist">
