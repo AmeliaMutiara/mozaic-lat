@@ -22,7 +22,7 @@ class InvtItemDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
-            ->addColumn('action', 'invtitem.action')
+            ->addColumn('action', 'content.InvtItem.List._action-menu')
             ->setRowId('id');
     }
 
@@ -49,6 +49,7 @@ class InvtItemDataTable extends DataTable
                     ->autoWidth(false)
                     ->responsive()
                     ->parameters(['scrollX' => true])
+                    ->addTableClass('align-middle table table-row-dashed gy-4')
                     ->buttons([Button::make('reload')])
                     ;
     }
@@ -60,10 +61,10 @@ class InvtItemDataTable extends DataTable
     {
         return [
             Column::make('item_id')->title(__('No'))->data('DT_RowIndex')->addClass('text-center')->width(10),
-            Column::make('item_category_name')->title('Nama Kategori'),
+            Column::make('item_category_name')->title('Nama Kategori Barag'),
             Column::make('item_code')->title('Kode Barang'),
+            Column::make('merchant_name')->title('Wahana / Merchant'),
             Column::make('item_name')->title('Nama Barang'),
-            Column::make('barcode')->title('Barcode'),
             Column::computed('action')->title('Aksi')
                   ->exportable(false)
                   ->printable(false)

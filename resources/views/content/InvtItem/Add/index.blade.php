@@ -23,7 +23,7 @@ if(empty($paket)){
         function function_elements_add(name, value) {
             $.ajax({
                 type: "POST",
-                url: "{{ route('item.add-elemets') }}",
+                url: "{{ route('item.add-elements') }}",
                 data: {
                     'name': name,
                     'value': value,
@@ -56,7 +56,7 @@ if(empty($paket)){
             console.log(id);
             $.ajax({
                 type: "POST",
-                url: "{{ route('item.get-category') }}",
+                url: "{{ route('item.category') }}",
                 dataType: "html",
                 data: {
                     'merchant_id': merchant_id,
@@ -90,7 +90,7 @@ if(empty($paket)){
             var no = $('.pkg-itm').length;
             $.ajax({
                 type: "POST",
-                url: "{{ route('get-merchant-item') }}",
+                url: "{{ route('item.merchant-item') }}",
                 dataType: "html",
                 data: {
                     'no': no,
@@ -128,7 +128,7 @@ if(empty($paket)){
             if (no != max) {
                 $.ajax({
                     type: "get",
-                    url: "{{ route('add-kemasan') }}",
+                    url: "{{ route('item.add-kemasan') }}",
                     dataType: "html",
                     success: function(return_data) {
                         location.reload();
@@ -143,7 +143,7 @@ if(empty($paket)){
         function removeKemasan(el) {
             $.ajax({
                 type: "get",
-                url: "{{ route('remove-kemasan') }}",
+                url: "{{ route('item.remove-kemasan') }}",
                 dataType: "html",
                 success: function(return_data) {
                     $('#' + el).remove();
@@ -156,7 +156,7 @@ if(empty($paket)){
         }
 
         function addCategory() {
-            location.href = '{{ route('add-item-category') }}' + '/' + $('#merchant_id').val();
+            location.href = '{{ route('item.add-item') }}' + '/' + $('#merchant_id').val();
         }
 
         function addPackageItem(qty = 1) {
@@ -372,7 +372,6 @@ if(empty($paket)){
 <div class="alert alert-{{session('type')??'info'}}" role="alert">
     {{ session('msg') }}
 </div>
-@endif
 
 @if (count($errors) > 0)
 <div class="alert alert-danger" role="alert">
