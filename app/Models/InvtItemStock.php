@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class InvtItemStock extends Model
 {
     use HasFactory, SoftDeletes, CreatedUpdatedID;
-    protected $table        = 'invt_item_stock';
+    protected $table       = 'invt_item_stock';
     protected $primaryKey   = 'item_stock_id';
     public function item(){
         return $this->belongsTo(InvtItem::class,'item_id','item_id');
