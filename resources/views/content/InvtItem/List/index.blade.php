@@ -4,21 +4,21 @@
 
 @section('title',  "MOZAIC Practice")
 @section('js')
-<script>
+{{-- <script>
  function deleteItem(id,name){
     $.ajax({
 				type: "GET",
-				url : "{{route('/item/check-delete-item/')}}"+'/'+id,
+				url : "{{ route('item.delete-check') }}"+'/'+item_id,
 				success: function(msg){
                     console.log(msg);
                     if(msg!=0){
                         if(confirm('Barang "'+name+'" dipakai di paket. Anda yakin ingin tetap menghapus?')){
-                         window.location.href = "{{ route('/item/delete-item/') }}"+'/'+id;
+                         window.location.href = "{{ route('item.delete') }}"+'/'+id;
                         }
                         return 0;
                     }
                     if(confirm(`Yakin Ingin Menghapus Item dengan nama '`+name+`' ?`)){
-                      window.location.href = "{{ route('/item/delete-item/') }}"+'/'+id;
+                      window.location.href = "{{ route('item.delete') }}"+'/'+id;
                     }
                     return 0;
 			}
@@ -31,7 +31,7 @@ function check(name,uri){
    window.location.href = uri;
  }
 }
-</script>
+</script> --}}
 @stop
 @section('content_header')
 
@@ -79,8 +79,8 @@ function check(name,uri){
         {{$dataTable->table()}}
         <!--end::Table-->
         {{-- Inject Script --}}
-        @push('script')
-        {{$dataTable->script()}}
+        @push('scripts')
+            {{$dataTable->scripts()}}
         @endpush
     </div>
   </div>

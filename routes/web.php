@@ -160,15 +160,19 @@ Route::middleware('auth')->group(function () {
     });
     Route::prefix('invt-item')->name('item.')->group(function() {
         Route::get('/', [InvtItemController::class, 'index'])->name('index');
-        Route::get('/print', [InvtItemController::class, 'print'])->name('print');
-        Route::get('/export', [InvtItemController::class, 'export'])->name('export');
-        Route::get('/add', [InvtItemController::class, 'addItem'])->name('add');
+        Route::get('/unit', [InvtItemController::class, 'getItemUnit'])->name('unit');
+        Route::get('/cost', [InvtItemController::class, 'getItemCost'])->name('cost');
+        Route::get('/category', [InvtItemController::class, 'getCategory'])->name('category');
+        Route::get('/merchant-item', [InvtItemController::class, 'getMerchantItem'])->name('merchant-item');
+        Route::get('/add-kemasan', [InvtItemController::class, 'addKemasan'])->name('add-kemasan');
+        Route::get('/remove-kemasan', [InvtItemController::class, 'removeKemasan'])->name('remove-kemasan');
+        Route::get('/add-item', [InvtItemController::class, 'addItem'])->name('add-item');
         Route::post('/add-process', [InvtItemController::class, 'processAddItem'])->name('add-process');
         Route::post('/add-elements', [InvtItemController::class, 'addItemElements'])->name('add-elements');
         Route::get('/add-reset', [InvtItemController::class, 'addResetItem'])->name('add-reset');
-        Route::get('/edit/{item_id}/{origin?}', [InvtItemController::class, 'editItem'])->name('edit');
-        Route::post('/edit-process/{origin?}', [InvtItemController::class, 'processEditItem'])->name('edit-process');
+        Route::get('/edit/{item_id}', [InvtItemController::class, 'editItem'])->name('edit');
+        Route::post('/edit-process', [InvtItemController::class, 'processEditItem'])->name('edit-process');
+        Route::get('/delete-check/{item_id}', [InvtItemController::class, 'checkDeleteItem'])->name('delete-check');
         Route::get('/delete/{item_id}', [InvtItemController::class, 'deleteItem'])->name('delete');
-        Route::get('/count-margin', [InvtItemController::class, 'countMarginAddItem'])->name('count-margin');
     });
 });
