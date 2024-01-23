@@ -17,4 +17,8 @@ class InvtWarehouse extends Model
         'updated_at',
         'created_at'
     ];
+
+    public function merchant() {
+        return $this->belongsTo(SalesMerchant::class,'merchant_id','merchant_id');
+    }
 }
