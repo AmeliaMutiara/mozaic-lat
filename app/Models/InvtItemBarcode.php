@@ -19,4 +19,7 @@ class InvtItemBarcode extends Model
     public function unit(){
         return $this->belongsTo(InvtItemUnit::class,'item_unit_id','item_unit_id');
     }
+    public function item() {
+        return $this->belongsTo(InvtItem::class,'item_id','item_id');
+    }
 }

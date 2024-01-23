@@ -18,15 +18,12 @@ class InvtItem extends Model
         'created_at'
     ];
     public function category(){
-        return $this->belongsTo(InvtItemCategory::class,'item_category_id','item_category_id');
+        return $this->belongsTo(InvtItemCategory::class,'item_category_id','item_category_id')->withDefault();
     }
-    public function packge(){
-        return $this->hasOne(InvtItemPackage::class,'item_id','item_id');
+    public function merchant() {
+        return $this->belongsTo(SalesMerchant::class,'merchant_id');
     }
-    public function barcode(){
-        return $this->hasMany(InvtItemBarcode::class,'item_id','item_id');
-    }
-    public function unit(){
-        return $this->belongsTo(InvtItemUnit::class,'item_unit_id','item_unit_id');
+    public function packets() {
+        return $this->hasMany(InvtItemPackage::class,'item_id','item_id');
     }
 }

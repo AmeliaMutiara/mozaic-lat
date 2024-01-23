@@ -1,5 +1,5 @@
+@inject('InvtItemPackage','App\Http\Controllers\InvtItemPackageController')
 @extends('adminlte::page')
-
 <?php
 if(empty($items)){
     $items['item_code'] = '';
@@ -35,7 +35,6 @@ if(empty($paket)){
                 }
             });
         }
-
         function reset_add() {
             $.ajax({
                 type: "GET",
@@ -43,10 +42,8 @@ if(empty($paket)){
                 success: function(msg) {
                     location.reload();
                 }
-
             });
         }
-
         function changeCategory(id, el, from_paket = 0) {
             loading();
             if($('#'+id).val()!=''){
@@ -83,7 +80,6 @@ if(empty($paket)){
                 }
             });
         }
-
         function changeItem(category) {
             loading();
             var id = $("#package_merchant_id").val();
@@ -108,7 +104,7 @@ if(empty($paket)){
             });
         }
         //* salah nama (sebaiknya dianti ke 'checkKemasan', jangan lupa ubah kode yg lain)
-        function checkCategory() {
+        function checkKemasan() {
             const max = {{ $items['max_kemasan'] ?? 4 }};
             var no = $('.input-kemasan').length;
             while (no > max) {
@@ -120,7 +116,6 @@ if(empty($paket)){
                 $('#add-kmsn').removeClass('disabled');
             }
         }
-
         function addKemasan() {
             const max = {{ $items['max_kemasan'] ?? 4 }};
             var no = $('.input-kemasan').length;
@@ -139,7 +134,6 @@ if(empty($paket)){
                 });
             }
         }
-
         function removeKemasan(el) {
             $.ajax({
                 type: "get",
@@ -147,18 +141,16 @@ if(empty($paket)){
                 dataType: "html",
                 success: function(return_data) {
                     $('#' + el).remove();
-                    checkCategory()
+                    checkKemasan()
                 },
                 error: function(data) {
                     console.log(data);
                 }
             });
         }
-
         function addCategory() {
             location.href = '{{ route('item.add-item') }}' + '/' + $('#merchant_id').val();
         }
-
         function addPackageItem(qty = 1) {
             loading();
             var package_item_id = $('#package_item_id').val();
@@ -174,7 +166,7 @@ if(empty($paket)){
             }
             $.ajax({
                 type: "post",
-                url: "{{ route('item.add-package') }}",
+                url: "{{ url('item-package/add-item') }}",
                 dataType: "html",
                 data: {
                     'item_id': package_item_id,
@@ -199,7 +191,6 @@ if(empty($paket)){
                 }
             });
         }
-
         function checkIsiPaket() {
             var length = $('.pkg-itm').length;
             if (length == null || length == 0 || length == '') {
@@ -208,11 +199,10 @@ if(empty($paket)){
             }
             $('#form-paket').submit();
         }
-
         function clearIsiPaket() {
             $.ajax({
                 type: "get",
-                url: "{{ route('item.clear-package') }}",
+                url: "{{ url('item-package/clear-item') }}",
                 dataType: "html",
                 success: function(return_data) {
                     $('.pkg-itm').each(function(index) {
@@ -227,31 +217,28 @@ if(empty($paket)){
                 }
             });
         }
-
-        function deleteIsiPaket(item_id, item_unit) {
+        function deleteIsiPaket(item_id) {
             $.ajax({
                 type: "get",
-                url: "{{ route('item.delete-package', item_id, item_unit) }}" + '/' + item_id+ '/' + item_unit,
+                url: "{{ url('item-package/delete') }}" + '/' + item_id,
                 dataType: "html",
                 success: function(return_data) {
-                    $('#col-package-item-' + item_id + item_unit).remove();
+                    $('#col-package-item-' + item_id).remove();
                 },
                 error: function(data) {
                     console.log(data);
                 }
             });
         }
-
         function function_change_quantity(item_packge_id, unit_id, value) {
             if (value != '') {
                 $("#simpan-brg").prop('disabled', true);
                 $.ajax({
-                    url: "{{ route('item.change-qty') }}" + '/' + item_packge_id + '/' + unit_id + '/' +
+                    url: "{{ url('item-package/change-qty') }}" + '/' + item_packge_id + '/' + unit_id + '/' +
                         value,
                     type: "GET",
                     dataType: "json",
                     success: function(data) {
-
                     },
                     complete: function() {
                         $("#simpan-brg").prop('disabled', false);
@@ -262,13 +249,12 @@ if(empty($paket)){
                 });
             }
         }
-
         function changeSatuan() {
             var package_item_id = $("#package_item_id").val();
             loading();
             $.ajax({
                 type: "POST",
-                url: "{{ route('get-item-unit') }}",
+                url: "{{ route('item.unit') }}",
                 dataType: "html",
                 data: {
                     'item_id': package_item_id,
@@ -290,14 +276,13 @@ if(empty($paket)){
                 }
             });
         }
-
         function formatRp() {
             var harga = $('#package_price_view').val();
             function_elements_add('package_price_view', harga);
             $('#package_price_view').val(toRp(harga));
             $('#package_price').val(harga);
         }
-        function checkMerchant() { 
+        function checkMerchant() {
             if($('#item_default_quantity_0').val()=='') {
                 $('#navigator-itm li:nth-child(2) a').tab('show');
                 $('item_default_quantity_0').focus();
@@ -308,7 +293,7 @@ if(empty($paket)){
             $("#create_warehouse").val(0);
             $.ajax({
                 type: "post",
-                url: "{{route('check-warehouse-dtl')}}",
+                url: "{{ url('warehouse/check-warehouse-detail') }}",
                 data: {'merchant_id':id,
                 '_token': '{{ csrf_token() }}'},
                 dataType: "json",
@@ -333,15 +318,15 @@ if(empty($paket)){
         $(document).ready(function() {
             changeCategory('merchant_id', 'item_category_id');
             changeCategory('package_merchant_id', 'package_item_category', 1);
-            checkCategory();
+            checkKemasan();
             if ($('#package_price_view').val() != '') {
                 formatRp();
             }
-            $("#simpan-brg").click(function (e) { 
+            $("#simpan-brg").click(function (e) {
                 e.preventDefault();
                 checkMerchant();
             });
-            $("#confirm-save-w-whs").click(function (e) { 
+            $("#confirm-save-w-whs").click(function (e) {
                 e.preventDefault();
                 save();
             });
@@ -352,7 +337,6 @@ if(empty($paket)){
     </script>
 @stop
 @section('content_header')
-
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
@@ -360,19 +344,16 @@ if(empty($paket)){
             <li class="breadcrumb-item active" aria-current="page">Tambah Barang</li>
         </ol>
     </nav>
-
 @stop
-
 @section('content')
-
     <h3 class="page-title">
         Form Tambah Barang
     </h3>
-    if (session('msg'))
-<div class="alert alert-{{session('type')??'info'}}" role="alert">
-    {{ session('msg') }}
-</div>
-
+@if (session('msg'))
+    <div class="alert alert-{{session('type') ?? 'info'}}" role="alert">
+        {{ session('msg') }}
+    </div>
+@endif
 @if (count($errors) > 0)
 <div class="alert alert-danger" role="alert">
     @foreach ($errors->all() as $error)
@@ -390,7 +371,6 @@ if(empty($paket)){
                     title="Back"><i class="fa fa-angle-left"></i> Kembali</a>
             </div>
         </div>
-
         <form method="post" id="form-barang" action="{{ route('item.add-process') }}" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
@@ -418,30 +398,10 @@ if(empty($paket)){
                                 title="Tambah Kategori"><i class="fa fa-plus"></i> Kategori</button>
                         @endif
                         <div class="row form-group mt-5">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <a class="text-dark">Wahana / Merchant<a class='red'> *</a></a>
-                                    {!! Form::select('merchant_id', $merchant, $items['merchant_id'] ?? '', [
-                                        'class' => 'selection-search-clear required select-form '.($merchant->count()==1?"disabled":""),
-                                        'name' => 'merchant_id_view',
-                                        'id' => 'merchant_id_view',
-                                        'onchange' => 'changeCategory(this.id,`item_category_id`)',
-                                        'form' => 'form-barang',
-                                        'autofocus' => 'autofocus',
-                                        'required',
-                                        $merchant->count()==1?"disabled":''
-                                    ]) !!}
-                                    <input type="hidden" form="form-barang" name="merchant_id" id="merchant_id">
-                                    <input type="hidden" form="form-barang" name="create_warehouse" value="0" id="create_warehouse">
-                                </div>
-                            </div>
                             <div class="col-6">
                                 <div class="form-group">
                                     <a class="text-dark">Nama Kategori Barang / Paket<a class='red'> *</a></a>
-                                    <select class="selection-search-clear required select-form" required form="form-barang"
-                                        placeholder="Masukan Kategori" name="item_category_id" id="item_category_id"
-                                        onchange="function_elements_add(this.name, this.value)">
-                                    </select>
+                                    {{ html()->select('item_category_id', $category,$paket['item_id'] ??'' )->class(['selection-search-clear', 'select-form'])->attributes(['onchange' => 'function_elements_add(this.name, this.value)', 'data-placeholder' => 'Masukkan Kategori', 'data-allow-clear' => 'true', 'autocomplete'=>'off']) }}
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -547,7 +507,7 @@ if(empty($paket)){
                         class="tab-pane fade {{ $items['kemasan'] >= 1 && $counts->count() ? 'show active' : '' }}"
                         id="form-pkt">
                         <div class="row form-group">
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <div class="form-group">
                                     <a class="text-dark">Wahana / Merchant<a class='red'> *</a></a>
                                     {!! Form::select('package_merchant_id', $allmerchant, $items['package_merchant_id'] ?? '', [
@@ -558,7 +518,7 @@ if(empty($paket)){
                                         'form' => 'form-paket',
                                     ]) !!}
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <a class="text-dark">Kategori<a class='red'> *</a></a>
@@ -669,7 +629,6 @@ if(empty($paket)){
             </div>
         </div>
     </div>
-
       <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
@@ -684,18 +643,14 @@ if(empty($paket)){
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-              <a type="button" href="{{route('add-warehouse')}}" class="btn btn-info">Buat Gudang Manual</a>
+              <a type="button" href="{{ route('warehouse.add') }}" class="btn btn-info">Buat Gudang Manual</a>
               <button type="button" class="btn btn-primary" id="confirm-save-w-whs">Ya</button>
             </div>
           </div>
         </div>
       </div>
 @stop
-
 @section('footer')
-
 @stop
-
 @section('css')
-
 @stop

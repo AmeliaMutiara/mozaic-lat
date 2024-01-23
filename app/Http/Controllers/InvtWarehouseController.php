@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\DataTables\InvtWarehouseDataTable;
+use App\Models\SalesMerchant;
+
 class InvtWarehouseController extends Controller
 {
     // public function __construct()
@@ -114,5 +116,32 @@ class InvtWarehouseController extends Controller
     {
         Session::forget('warehouses');
         return redirect('/warehouse/add-warehouse');
+    }
+
+    public function checkWarehouse(Request $request)
+    {
+        $datawarehouse = InvtWarehouse::select('*')
+        ->where('merchant_id', $request->merchant_id)
+        ->first();
+
+        if ($datawarehouse == null) {
+            $return_data = '';
+            return $return_data;
+        } else {
+            $return_data = 1;
+            return $return_data;
+        }
+    }
+
+    public function checkWarehouseDtl(Request $request)
+    {
+        $datawarehouse = InvtWarehouse::where('merchant_id', $request->merchant_id)
+        ->first();
+        if ($datawarehouse == null) {
+            $datamerchant = SalesMerchant::find($request->merchant_id);
+            return response(['count' => 0, 'merchant' => $datamerchant->merchant_name]);
+        } else {
+            return response(['count' => 1]);
+        }
     }
 }

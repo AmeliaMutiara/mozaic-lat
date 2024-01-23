@@ -78,6 +78,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit/{warehouse_id}',[InvtWarehouseController::class, 'editWarehouse'])->name('edit');
         Route::post('/edit-process', [InvtWarehouseController::class, 'processEditWarehouse'])->name('edit-process');
         Route::get('/delete/{warehouse_id}', [InvtWarehouseController::class, 'deleteWarehouse'])->name('delete');
+        Route::post('/check-warehouse', [InvtWarehouseController::class, 'checkWarehouse'])->name('check-warehouse');
+        Route::post('/check-warehouse-detail', [InvtWarehouseController::class, 'checkWarehouseDtl'])->name('check-warehouse-dtl');
     });
     Route::prefix('core-supplier')->name('supplier.')->group(function() {
         Route::get('/', [CoreSupplierController::class, 'index'])->name('index');
@@ -175,15 +177,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/edit-process', [InvtItemController::class, 'processEditItem'])->name('edit-process');
         Route::get('/delete-check/{item_id}', [InvtItemController::class, 'checkDeleteItem'])->name('delete-check');
         Route::get('/delete/{item_id}', [InvtItemController::class, 'deleteItem'])->name('delete');
-        Route::post('/add-item', [InvtItemPackageController::class, 'processAddItem'])->name('add-package');
-        Route::post('/clear-item', [InvtItemPackageController::class, 'clearItem'])->name('clear-package');
-        Route::get('/delete-item/{item_id}/{item_unit}', [InvtItemPackageController::class, 'processDeleteItem'])->name('delete-package');
-        Route::get('/change-qty/{item_id}/{unit_id}/{value}', [InvtItemPackageController::class, 'changeItemQty'])->name('change-qty');
     });
     Route::prefix('item-package')->name('package')->group(function() {
-        Route::post('/add-item', [InvtItemPackageController::class, 'processAddItem'])->name('process-add-item');
-        
-        
+        Route::post('/add-item', [InvtItemPackageController::class, 'processAddItem'])->name('process-add-package');
+        Route::post('/clear-item', [InvtItemPackageController::class, 'clearItem'])->name('clear-item');
+        Route::get('/change-qty/{item_id}/{unit_id}/{value}', [InvtItemPackageController::class, 'changeItemQty'])->name('change-qty');
         Route::get('/delete-item/{item_id}/{item_unit}', [InvtItemPackageController::class, 'processDeleteItem'])->name('delete-item');
         Route::get('/delete/{item_id}', [InvtItemPackageController::class, 'deleteItem'])->name('delete');
     });
