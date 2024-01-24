@@ -1,4 +1,3 @@
-@inject('InvtItemPackage','App\Http\Controllers\InvtItemPackageController')
 @extends('adminlte::page')
 <?php
 if(empty($items)){
@@ -105,7 +104,7 @@ if(empty($paket)){
         }
         //* salah nama (sebaiknya dianti ke 'checkKemasan', jangan lupa ubah kode yg lain)
         function checkKemasan() {
-            const max = {{ $items['max_kemasan'] ?? 4 }};
+            const max = 4;
             var no = $('.input-kemasan').length;
             while (no > max) {
                 removeKemasan('input-kemasan-' + no)
@@ -117,7 +116,7 @@ if(empty($paket)){
             }
         }
         function addKemasan() {
-            const max = {{ $items['max_kemasan'] ?? 4 }};
+            const max = 4;
             var no = $('.input-kemasan').length;
             var noa = $('.input-kemasan').length + 1;
             if (no != max) {
@@ -149,7 +148,7 @@ if(empty($paket)){
             });
         }
         function addCategory() {
-            location.href = '{{ route('item.add-item') }}' + '/' + $('#merchant_id').val();
+            location.href = '{{ route('ic.add') }}' + '/' + $('#merchant_id').val();
         }
         function addPackageItem(qty = 1) {
             loading();
@@ -367,7 +366,7 @@ if(empty($paket)){
                 Form Tambah
             </h5>
             <div class="float-right">
-                <a href="{{url()->previous()}}" name="back" class="btn btn-sm btn-info"
+                <a href="{{ route('item.index') }}" name="back" class="btn btn-sm btn-info"
                     title="Back"><i class="fa fa-angle-left"></i> Kembali</a>
             </div>
         </div>
@@ -450,15 +449,8 @@ if(empty($paket)){
                                     <div class="row form-group mt-2">
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <a class="text-dark">Satuan Barang {{ $x }}<a class='red'>
-                                                        *</a></a>
-                                                {!! Form::select('item_unit_id', $itemunits, $items['item_unit_id' . $x] ?? 0, [
-                                                    'class' => 'selection-search-clear required select-form form-control',
-                                                    'name' => 'item_unit_id' . $x,
-                                                    'id' => 'item_unit_id_' . ($x - 1),
-                                                    'onchange' => 'function_elements_add(this.name, this.value)',
-                                                    'form' => 'form-barang',
-                                                ]) !!}
+                                                <a class="text-dark">Satuan Barang {{ $x }}<a class='red'>*</a></a>
+                                                {{ html()->select('item_unit_id', $itemunits, $items['item_unit_id'] ??'' )->class(['selection-search-clear', 'select-form'])->attributes(['onchange' => 'function_elements_add(this.name, this.value)', 'data-allow-clear' => 'true', 'autocomplete'=>'off']) }}
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -623,32 +615,12 @@ if(empty($paket)){
             <div class="form-actions float-right">
                 <button type="reset" form="form-barang" name="Reset" class="btn btn-danger"
                     onclick="reset_add();"><i class="fa fa-times"></i> Batal</button>
-                <button type="button" form="form-barang" id="simpan-brg" class="btn btn-primary" ><i
+                <button  type="button" form="form-barang" id="simpan-brg" class="btn btn-primary"><i
                         class="fa fa-check"></i>
                     Simpan</button>
             </div>
         </div>
     </div>
-      <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="confirmModalLabel">Perhatian !</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p class="d-inline">Wahana "<b class="d-inline" id="mname">Merchant</b>" tidak memiliki gudang. Apakah anda ingin sistem mebuat gudang otomatis?</p> <small>(Gudang akan diberi nama "<b class="d-inline">Gudang <div class="d-inline" id="wname">Merchant</div></b>")</small>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-              <a type="button" href="{{ route('warehouse.add') }}" class="btn btn-info">Buat Gudang Manual</a>
-              <button type="button" class="btn btn-primary" id="confirm-save-w-whs">Ya</button>
-            </div>
-          </div>
-        </div>
-      </div>
 @stop
 @section('footer')
 @stop

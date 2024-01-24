@@ -13,7 +13,6 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.2",
-        "laravelcollective/html": "^6.4",
         "phpoffice/phpspreadsheet": "^1.29",
         "spatie/laravel-html": "^3.4",
         "yajra/laravel-datatables": "^10.1",
