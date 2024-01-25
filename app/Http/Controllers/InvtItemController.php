@@ -85,10 +85,12 @@ class InvtItemController extends Controller
             return redirect()->route('item.index')->with('msg', 'Tambah Barang Berhasil*');
         }
         $fields = $request->validate([
-            'item_category_id'    => 'required|integer',
+            'item_category_id'    => 'required',
             'item_code'           => 'required',
             'item_name'           => 'required',
             // 'item_unit_id1'       => 'required',
+        ],[
+            'item_category_id.integer'  => 'Wahana / Merchant Tidak Memiliki Kategori',
             // 'item_unit_id1.required'    => 'Harap Masukkan Satuan 1 (Jika satuan 1 susah dimasukkan tapi masih muncul error ini, maka coba refresh halaman web)'
         ]);
         $warehouse = InvtWarehouse::where('company_id', Auth::user()->company_id)->get();
@@ -101,7 +103,7 @@ class InvtItemController extends Controller
                 'item_remark'              => $request->item_remark,
                 // *Kemasan
                 'item_unit_id1'            => $request->item_unit_id1,
-                'item_default_quantity1'   => $request->item_default_quantity,
+                'item_default_quantity1'   => $request->item_default_quantity1,
                 'item_unit_price1'         => $request->item_unit_price1,
                 'item_unit_cost1'          => $request->item_unit_cost1,
                 'item_unit_id2'            => $request->item_unit_id2,
@@ -369,13 +371,12 @@ class InvtItemController extends Controller
         $items['kemasan'] = $items['kemasan'] - 1;
         Session::put('items', $items);
     }
-    public function getMerchantItem(Request $request)
+    public function getItem(Request $request)
     {
         $data = '';
         $items = Session::get('items');
         try {
             $item = InvtItem::select('item_id', 'item_name')
-                ->where('merchant_id', $request->merchant_id)
                 ->where('item_category_id', $request->item_category_id)
                 ->get();
             $items['package_item_id'] ?? $items['package_item_id'] = 1;
