@@ -88,39 +88,38 @@ class InvtItemController extends Controller
             'item_category_id'    => 'required|integer',
             'item_code'           => 'required',
             'item_name'           => 'required',
-            // 'item_unit_id1'       => 'required',
-        ],[
-            'item_category_id.integer'  => 'Wahana / Merchant Tidak Memiliki Kategori',
-            // 'item_unit_id1.required'    => 'Harap Masukkan Satuan 1 (Jika satuan 1 susah dimasukkan tapi masih muncul error ini, maka coba refresh halaman web)'
+            'item_unit_id1'       => 'required'
         ]);
-        $warehouse = InvtWarehouse::where('company_id', Auth::user()->company_id)->get();
+
         try {
             DB::beginTransaction();
             $data = InvtItem::create([
                 'item_category_id'         => $fields['item_category_id'],
                 'item_code'                => $fields['item_code'],
                 'item_name'                => $fields['item_name'],
-                'item_remark'              => $request->item_remark,
+                'item_remark'              => $$fields['item_remark'],
                 // *Kemasan
-                'item_unit_id1'            => $request->item_unit_id1,
-                'item_default_quantity1'   => $request->item_default_quantity,
-                'item_unit_price1'         => $request->item_unit_price1,
-                'item_unit_cost1'          => $request->item_unit_cost1,
-                'item_unit_id2'            => $request->item_unit_id2,
-                'item_default_quantity2'   => $request->item_default_quantity2,
-                'item_unit_price2'         => $request->item_unit_price2,
-                'item_unit_cost2'          => $request->item_unit_cost2,
-                'item_unit_id3'            => $request->item_unit_id3,
-                'item_default_quantity3'   => $request->item_default_quantity3,
-                'item_unit_price3'         => $request->item_unit_price3,
-                'item_unit_cost3'          => $request->item_unit_cost3,
-                'item_unit_id4'            => $request->item_unit_id4,
-                'item_default_quantity4'   => $request->item_default_quantity4,
-                'item_unit_price4'         => $request->item_unit_price4,
-                'item_unit_cost4'          => $request->item_unit_cost4,
+                'item_unit_id'             => $fields['item_unit_id1'],
+                'item_default_quantity'    => $fields['item_default_quantity1'],
+                'item_unit_price'          => $fields['item_unit_price1'],
+                'item_unit_cost'           => $fields['item_unit_cost1'],
                 'company_id'               => Auth::user()->company_id
             ]);
             $item = InvtItem::orderBy('created_at', 'DESC')->where('company_id', Auth::user()->company_id)->first();
+            for ($i = 1; $i <= 4; $i++) {
+                $data_package[$i] = InvtItemPackage::create([
+                    'item_id'                  => $item['item_id'],
+                    'item_unit_id'             => $request['item_unit_id_' . $i],
+                    'item_category_id'         => $request['item_category_id'],
+                    'item_default_quantity'    => $request['item_default_quantity_' . $i],
+                    'item_unit_price'          => $request['item_unit_price_' . $i],
+                    'item_unit_cost'           => $request['item_unit_cost_' . $i],
+                    'order'                    => $i,
+                    'company_id'               => Auth::user()->company_id
+                ]);
+            }
+
+            $warehouse = InvtWarehouse::where('company_id', Auth::user()->company_id)->get();
             foreach ($warehouse as $key => $val) {
                 InvtItemStock::create([
                     'company_id'            => $item['company_id'],
@@ -371,13 +370,12 @@ class InvtItemController extends Controller
         $items['kemasan'] = $items['kemasan'] - 1;
         Session::put('items', $items);
     }
-    public function getMerchantItem(Request $request)
+    public function getItem(Request $request)
     {
         $data = '';
         $items = Session::get('items');
         try {
             $item = InvtItem::select('item_id', 'item_name')
-                ->where('merchant_id', $request->merchant_id)
                 ->where('item_category_id', $request->item_category_id)
                 ->get();
             $items['package_item_id'] ?? $items['package_item_id'] = 1;

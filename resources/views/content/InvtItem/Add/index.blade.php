@@ -81,15 +81,13 @@ if(empty($paket)){
         }
         function changeItem(category) {
             loading();
-            var id = $("#package_merchant_id").val();
             var no = $('.pkg-itm').length;
             $.ajax({
                 type: "POST",
-                url: "{{ route('item.merchant-item') }}",
+                url: "{{ route('item.get-item') }}",
                 dataType: "html",
                 data: {
                     'no': no,
-                    'merchant_id': id,
                     'item_category_id': category,
                     '_token': '{{ csrf_token() }}',
                 },
@@ -97,7 +95,6 @@ if(empty($paket)){
                     $('#package_item_id').val(1);
                     $('#package_item_id').html(return_data);
                     changeSatuan();
-                    function_elements_add('package_merchant_id', id);
                     function_elements_add('package_item_category', category);
                 }
             });
@@ -292,7 +289,7 @@ if(empty($paket)){
             $("#create_warehouse").val(0);
             $.ajax({
                 type: "post",
-                url: "{{ url('warehouse/check-warehouse-detail') }}",
+                url: "{{ url('warehouse/check-warehouse-dtl') }}",
                 data: {'merchant_id':id,
                 '_token': '{{ csrf_token() }}'},
                 dataType: "json",
@@ -323,7 +320,7 @@ if(empty($paket)){
             }
             $("#simpan-brg").click(function (e) {
                 e.preventDefault();
-                checkMerchant();
+                $('#form-barang').submit();
             });
             $("#confirm-save-w-whs").click(function (e) {
                 e.preventDefault();

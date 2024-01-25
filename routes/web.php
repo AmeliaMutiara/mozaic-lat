@@ -166,7 +166,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/unit', [InvtItemController::class, 'getItemUnit'])->name('unit');
         Route::post('/cost', [InvtItemController::class, 'getItemCost'])->name('cost');
         Route::post('/category', [InvtItemController::class, 'getCategory'])->name('category');
-        Route::post('/merchant-item', [InvtItemController::class, 'getMerchantItem'])->name('merchant-item');
+        Route::post('/get-item', [InvtItemController::class, 'getItem'])->name('get-item');
         Route::get('/add-kemasan', [InvtItemController::class, 'addKemasan'])->name('add-kemasan');
         Route::get('/remove-kemasan', [InvtItemController::class, 'removeKemasan'])->name('remove-kemasan');
         Route::get('/add-item', [InvtItemController::class, 'addItem'])->name('add-item');
