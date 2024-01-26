@@ -21,19 +21,20 @@
     Form Daftar Setting Akun
 </h3>
 <br/>
-@if(session('msg'))
-<div class="alert alert-info" role="alert">
-    {{session('msg')}}
+
+@if (session('msg'))
+<div class="alert alert-{{session('type')??'info'}}" role="alert">
+    {{ session('msg') }}
 </div>
 @endif
-
-@if(count($errors) > 0)
+@if (count($errors) > 0)
 <div class="alert alert-danger" role="alert">
-    @@foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
+    @foreach ($errors->all() as $error)
+        {{ $error }}
     @endforeach
 </div>
 @endif
+
 <div class="card border border-dark">
     <div class="card-header border-dark bg-dark">
         <h5 class="mb-0 float-left">
@@ -42,7 +43,7 @@
     </div>
 </div>
 
-<form method="post" action="{{route('AS.add-process')}}" enctype="multipart/form-data">
+<form method="post" action="{{route('as.add-process')}}" enctype="multipart/form-data">
 @csrf
     <div class="card-body">
         <ul class="nav nav-tabs" role="tablist">
