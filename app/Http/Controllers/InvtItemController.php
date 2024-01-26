@@ -88,8 +88,10 @@ class InvtItemController extends Controller
             'item_category_id'    => 'required',
             'item_code'           => 'required',
             'item_name'           => 'required',
-            'item_remark'         => 'required',
-            'item_unit_id1'       => 'required',
+            // 'item_unit_id1'       => 'required',
+        ],[
+            'item_category_id.integer'  => 'Wahana / Merchant Tidak Memiliki Kategori',
+            // 'item_unit_id1.required'    => 'Harap Masukkan Satuan 1 (Jika satuan 1 susah dimasukkan tapi masih muncul error ini, maka coba refresh halaman web)'
         ]);
         $warehouse = InvtWarehouse::where('company_id', Auth::user()->company_id)->get();
         try {
