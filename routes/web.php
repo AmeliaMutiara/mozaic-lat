@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AcctAccountController;
+use App\Http\Controllers\AcctAccountSettingController;
 use App\Http\Controllers\CoreBankController;
 use App\Http\Controllers\CoreSupplierController;
 use App\Http\Controllers\ExampleController;
@@ -184,5 +185,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/change-qty/{item_id}/{unit_id}/{value}', [InvtItemPackageController::class, 'changeItemQty'])->name('change-qty');
         Route::get('/delete-item/{item_id}/{item_unit}', [InvtItemPackageController::class, 'processDeleteItem'])->name('delete-item');
         Route::get('/delete/{item_id}', [InvtItemPackageController::class, 'deleteItem'])->name('delete');
+    });
+    Route::prefix('acct-account-setting')->name('as.')->group(function() {
+        Route::get('/', [AcctAccountSettingController::class, 'index'])->name('index');
+        Route::post('/add-process', [AcctAccountSettingController::class, 'processAddAcctAccountSetting'])->name('add-process');
     });
 });

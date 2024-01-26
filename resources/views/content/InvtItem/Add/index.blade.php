@@ -397,7 +397,7 @@ if(empty($paket)){
                             <div class="col-6">
                                 <div class="form-group">
                                     <a class="text-dark">Nama Kategori Barang / Paket<a class='red'> *</a></a>
-                                    {{ html()->select('item_category_id', $category,$paket['item_id'] ??'' )->class(['selection-search-clear', 'select-form'])->attributes(['onchange' => 'function_elements_add(this.name, this.value)', 'placeholder' => 'Masukkan Kategori', 'data-allow-clear' => 'true', 'autocomplete'=>'off']) }}
+                                    {{ html()->select('item_category_id', $category,$items['item_category_id'] ?? '' )->class(['selection-search-clear', 'select-form'])->attributes(['onchange' => 'function_elements_add(this.name, this.value)', 'placeholder' => 'Masukkan Kategori', 'data-allow-clear' => 'true', 'autocomplete'=>'off']) }}
                                 </div>
                             </div>
                             <div class="col-md-6">
