@@ -22,6 +22,7 @@ class InvtItemDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addIndexColumn()
+            ->editColumn('item_category_name',fn($query)=>$query->category->item_category_name)
             ->addColumn('action', 'content.InvtItem.List._action-menu')
             ->setRowId('id');
     }

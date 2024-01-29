@@ -17,6 +17,7 @@ class InvtItemUnitFactory extends Factory
     public function definition(): array
     {
         return [
+            'company_id'        => 1,
             'item_unit_code'    => fake()->word(5),
             'item_unit_name'    => fake()->word(5),
             'item_unit_remark'  => fake()->sentence(5)

@@ -1,7 +1,6 @@
 @extends('adminlte::page')
 <?php
 if (empty($items)) {
-    $item['merchant_id'] = '';
     $items['kemasan'] = 1;
     $items['max_kemasan'] = 4;
 }
@@ -31,7 +30,6 @@ if (empty($pktitem)) {
                 }
             });
         }
-
         function function_change_quantity(item_packge_id, unit_id, value) {
             if (value != '') {
                 $("#simpan-brg").prop('disabled', true);
@@ -41,7 +39,6 @@ if (empty($pktitem)) {
                     type: "GET",
                     dataType: "json",
                     success: function(data) {
-
                     },
                     complete: function() {
                         $("#simpan-brg").prop('disabled', false);
@@ -52,7 +49,6 @@ if (empty($pktitem)) {
                 });
             }
         }
-
         function changeCategory(id, el, from_paket = 0) {
             console.log($('#'+id).val());
             if($('#'+id).val()!=''){
@@ -65,7 +61,7 @@ if (empty($pktitem)) {
             var merchant_id = $("#" + id).val();
             $.ajax({
                 type: "POST",
-                url: "{{ route('item.get-category') }}",
+                url: "{{ route('item.category') }}",
                 dataType: "html",
                 data: {
                     'merchant_id': merchant_id,
@@ -98,7 +94,7 @@ if (empty($pktitem)) {
             var no = $('.pkg-itm').length;
             $.ajax({
                 type: "POST",
-                url: "{{ route('get-merchant-item') }}",
+                url: "{{ route('item.get-item') }}",
                 dataType: "html",
                 data: {
                     'no': no,
@@ -120,7 +116,7 @@ if (empty($pktitem)) {
             loading();
             $.ajax({
                 type: "POST",
-                url: "{{ route('item.get-unit') }}",
+                url: "{{ route('item.unit') }}",
                 dataType: "html",
                 data: {
                     'item_id': package_item_id,
@@ -142,34 +138,6 @@ if (empty($pktitem)) {
                 }
             });
         }
-           function checkMerchant() { 
-            if($('#item_default_quantity_0').val()=='') {
-                $('#navigator-itm li:nth-child(2) a').tab('show');
-                $('item_default_quantity_0').focus();
-                alert('Harap Masukan Satuan')
-                return 0;
-            }
-            var id = $("#merchant_id").val();
-            $("#create_warehouse").val(0);
-            $.ajax({
-                type: "post",
-                url: "{{route('check-warehouse-dtl')}}",
-                data: {'merchant_id':id,
-                '_token': '{{ csrf_token() }}'},
-                dataType: "json",
-                success: function (response) {
-                    console.log(response);
-                    if (response.count == 0) {
-                        $("#mname").html(response.merchant);
-                        $("#wname").html(response.merchant);
-                        $('#confirmModal').modal('show')
-                    }else{
-                        $("#create_warehouse").val(0);
-                        $('#form-barang').submit();
-                    }
-                }
-            });
-        }
         function save(){
             $("#create_warehouse").val(1);
             $('#confirmModal').modal('hide')
@@ -182,11 +150,11 @@ if (empty($pktitem)) {
             if ($('#package_price_view').val() != '') {
                 formatRp();
             }
-            $("#simpan-brg").click(function (e) { 
+            $("#simpan-brg").click(function (e) {
                 e.preventDefault();
                 checkMerchant();
             });
-            $("#confirm-save-w-whs").click(function (e) { 
+            $("#confirm-save-w-whs").click(function (e) {
                 e.preventDefault();
                 save();
             });
@@ -198,7 +166,6 @@ if (empty($pktitem)) {
     </script>
 @stop
 @section('content_header')
-
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ url('home') }}">Beranda</a></li>
@@ -206,22 +173,17 @@ if (empty($pktitem)) {
             <li class="breadcrumb-item active" aria-current="page">Ubah Barang</li>
         </ol>
     </nav>
-
 @stop
-
 @section('content')
-
     <h3 class="page-title">
         Form Ubah Barang
     </h3>
     <br />
-
     @if (session('msg'))
     <div class="alert alert-{{session('type')??'info'}}" role="alert">
         {{ session('msg') }}
     </div>
     @endif
-
     @if (!empty($msg))
         <div class="alert alert-warning" role="alert">
             <i class="fa fa-exclamation"></i> &nbsp; {{ $msg }}
@@ -244,7 +206,7 @@ if (empty($pktitem)) {
                     title="Back"><i class="fa fa-angle-left"></i> Kembali</button>
             </div>
         </div>
-        <form method="post" id="form-barang" action="{{ route('process-edit-item') }}" enctype="multipart/form-data">
+        <form method="post" id="form-barang" action="{{ route('item.edit-process') }}" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
                 <ul class="nav nav-tabs" role="tablist">
@@ -265,27 +227,6 @@ if (empty($pktitem)) {
                     <div role="tabpanel" class="tab-pane fade in {{ $counts->count() == 0 ? 'show active' : '' }}"
                         id="barang">
                         <div class="row form-group mt-5">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <a class="text-dark">Wahana / Merchant<a class='red'> *</a></a>
-                                    {!! Form::select(
-                                        'merchant_id',
-                                        $merchant,
-                                        isset($items['merchant_id']) ? $items['merchant_id'] : $data['merchant_id'],
-                                        [
-                                            'class' => 'selection-search-clear required select-form '.($merchant->count()==1||!empty($pkg)?"disabled":""),
-                                            'name' => 'merchant_id_view',
-                                            'id' => 'merchant_id_view',
-                                            'onchange' => 'changeCategory(this.id,"item_category_id")',
-                                            'form' => 'form-barang',
-                                            'required',
-                                            $merchant->count()==1||!empty($pkg)?"disabled":''
-                                        ],
-                                    ) !!}
-                                     <input type="hidden" form="form-barang" name="merchant_id" id="merchant_id">
-                                     <input type="hidden" form="form-barang" name="create_warehouse" value="0" id="create_warehouse">
-                                </div>
-                            </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <a class="text-dark">Nama Kategori Barang<a class='red'> *</a></a>
@@ -534,7 +475,6 @@ if (empty($pktitem)) {
     </div>
     </form>
     </div>
-
     <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
@@ -556,11 +496,7 @@ if (empty($pktitem)) {
         </div>
       </div>
 @stop
-
 @section('footer')
-
 @stop
-
 @section('css')
-
 @stop

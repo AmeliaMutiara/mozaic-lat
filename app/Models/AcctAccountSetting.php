@@ -14,7 +14,7 @@ class AcctAccountSetting extends Model
     protected $table        ='acct_account_setting';
     protected $primaryKey   ='account_setting_id';
     protected $guarded      =[
-
+        'updated_at',
+        'created_at'
     ];
-    
 }

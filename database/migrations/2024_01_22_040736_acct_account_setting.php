@@ -14,13 +14,13 @@ return new class extends Migration
         if(!Schema::hasTable('acct_account_setting')){
             Schema::create('acct_account_setting', function (Blueprint $table){
                 $table->id('account_setting_id');
-                $table->unsignedBigInteger('company_id');
-                $table->unsignedBigInteger('account_id');
-                $table->string('account_setting_name');
-                $table->unsignedBigInteger('account_setting_status');
-                $table->unsignedBigInteger('created_id');
-                $table->unsignedBigInteger('updated_id');
-                $table->unsignedBigInteger('deleted_id');
+                $table->unsignedBigInteger('company_id')->nullable();
+                $table->unsignedBigInteger('account_id')->nullable();
+                $table->string('account_setting_name')->nullable();
+                $table->integer('account_setting_status')->nullable();
+                $table->unsignedBigInteger('created_id')->nullable();
+                $table->unsignedBigInteger('updated_id')->nullable();
+                $table->unsignedBigInteger('deleted_id')->nullable();
                 $table->timestamps();
                 $table->softDeletes();
             });

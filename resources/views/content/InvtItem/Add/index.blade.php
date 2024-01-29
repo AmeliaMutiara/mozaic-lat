@@ -1,16 +1,17 @@
 @extends('adminlte::page')
 <?php
 if(empty($items)){
-    $items['item_code'] = '';
-    $items['item_name'] = '';
-    $items['item_barcode'] = '';
-    $items['item_remark'] = '';
-    $items['item_quantity'] = '';
-    $items['item_price'] = '';
-    $items['item_cost'] = '';
-    $items['package_item_id'] = '';
-    $items['kemasan'] = '';
-    $items['max_kemasan'] = '';
+    $items['item_code']             = '';
+    $items['item_name']             = '';
+    $items['item_barcode']          = '';
+    $items['item_remark']           = '';
+    $items['item_quantity']         = '';
+    $items['item_price']            = '';
+    $items['item_cost']             = '';
+    // $items['item_category_id']      = '';
+    $items['package_item_id']       = 1;
+    $items['kemasan']               = 1;
+    $items['max_kemasan']           = 4;
 }
 if(empty($paket)){
     $paket = [];
@@ -101,7 +102,7 @@ if(empty($paket)){
         }
         //* salah nama (sebaiknya dianti ke 'checkKemasan', jangan lupa ubah kode yg lain)
         function checkKemasan() {
-            const max = 4;
+            const max = {{ $items['max_kemasan'] ?? 4 }};
             var no = $('.input-kemasan').length;
             while (no > max) {
                 removeKemasan('input-kemasan-' + no)
@@ -113,7 +114,7 @@ if(empty($paket)){
             }
         }
         function addKemasan() {
-            const max = 4;
+            const max = {{ $items['max_kemasan'] ?? 4 }};
             var no = $('.input-kemasan').length;
             var noa = $('.input-kemasan').length + 1;
             if (no != max) {
@@ -312,8 +313,8 @@ if(empty($paket)){
             $('#form-barang').submit();
         }
         $(document).ready(function() {
-            changeCategory('merchant_id', 'item_category_id');
-            changeCategory('package_merchant_id', 'package_item_category', 1);
+            // changeCategory('merchant_id', 'item_category_id');
+            // changeCategory('package_merchant_id', 'package_item_category', 1);
             checkKemasan();
             if ($('#package_price_view').val() != '') {
                 formatRp();
@@ -397,7 +398,7 @@ if(empty($paket)){
                             <div class="col-6">
                                 <div class="form-group">
                                     <a class="text-dark">Nama Kategori Barang / Paket<a class='red'> *</a></a>
-                                    {{ html()->select('item_category_id', $category,$items['item_category_id'] ?? '' )->class(['selection-search-clear', 'select-form'])->attributes(['onchange' => 'function_elements_add(this.name, this.value)', 'placeholder' => 'Masukkan Kategori', 'data-allow-clear' => 'true', 'autocomplete'=>'off']) }}
+                                    {{ html()->select('item_category_id', $category,$items['item_category_id'] ?? '' )->class(['selection-search-clear', 'select-form'])->attributes(['onchange' => 'function_elements_add(this.name, this.value)', 'form' => 'form-barang','placeholder' => 'Masukkan Kategori', 'data-allow-clear' => 'true', 'autocomplete'=>'off']) }}
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -447,7 +448,7 @@ if(empty($paket)){
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <a class="text-dark">Satuan Barang {{ $x }}<a class='red'>*</a></a>
-                                                {{ html()->select('item_unit_id'.$x, $itemunits, $items['item_unit_id_' .$x] ??'' )->class(['selection-search-clear', 'select-form'])->attributes(['onchange' => 'function_elements_add(this.name, this.value)', 'data-allow-clear' => 'true', 'autocomplete'=>'off']) }}
+                                                {{ html()->select("unit[{$x}][item_unit_id]".$x, $itemunits, $items['item_unit_id' .$x] ??'' )->class(['selection-search-clear', 'select-form'])->attributes(['id'=>"item_unit_id{$x}",'onchange' => 'function_elements_add(this.name, this.value)', 'data-allow-clear' => 'true', 'autocomplete'=>'off']) }}
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -456,8 +457,8 @@ if(empty($paket)){
                                                         class='red'>
                                                         *</a></a>
                                                 <input class="form-control input-bb required" required form="form-barang"
-                                                    name="item_default_quantity{{ $x }}"
-                                                    id="item_default_quantity_{{ $x - 1 }}" type="text"
+                                                    name="unit[{{$x}}][item_default_quantity]"
+                                                    id="item_default_quantity_{{ $x }}" type="text"
                                                     autocomplete="off"
                                                     onchange="function_elements_add(this.name, this.value)"
                                                     value="{{ $items['item_default_quantity' . $x] ?? '' }}" />
@@ -468,7 +469,7 @@ if(empty($paket)){
                                                 <a class="text-dark">Harga Jual {{ $x }}<a class='red'>
                                                         *</a></a>
                                                 <input class="form-control input-bb required" required form="form-barang"
-                                                    name="item_unit_price{{ $x }}"
+                                                    name="unit[{{$x}}][item_unit_price]"
                                                     id="item_unit_price_{{ $x - 1 }}" type="text"
                                                     autocomplete="off"
                                                     onchange="function_elements_add(this.name, this.value)"
@@ -480,7 +481,7 @@ if(empty($paket)){
                                                 <a class="text-dark">Harga Beli {{ $x }}<a class='red'>
                                                         *</a></a>
                                                 <input class="form-control input-bb required" required form="form-barang"
-                                                    name="item_unit_cost{{ $x }}"
+                                                    name="unit[{{$x}}][item_unit_cost]"
                                                     id="item_unit_cost_{{ $x - 1 }}" type="text"
                                                     autocomplete="off"
                                                     onchange="function_elements_add(this.name, this.value)"
@@ -496,18 +497,6 @@ if(empty($paket)){
                         class="tab-pane fade {{ $items['kemasan'] >= 1 && $counts->count() ? 'show active' : '' }}"
                         id="form-pkt">
                         <div class="row form-group">
-                            {{-- <div class="col-md-6">
-                                <div class="form-group">
-                                    <a class="text-dark">Wahana / Merchant<a class='red'> *</a></a>
-                                    {!! Form::select('package_merchant_id', $allmerchant, $items['package_merchant_id'] ?? '', [
-                                        'class' => 'selection-search-clear required select-form',
-                                        'name' => 'package_merchant_id',
-                                        'id' => 'package_merchant_id',
-                                        'onchange' => 'changeCategory(this.id,`package_item_category`,1,1)',
-                                        'form' => 'form-paket',
-                                    ]) !!}
-                                </div>
-                            </div> --}}
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <a class="text-dark">Kategori<a class='red'> *</a></a>

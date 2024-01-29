@@ -17,6 +17,7 @@ class InvtItemCategoryFactory extends Factory
     public function definition(): array
     {
         return [
+            'company_id'        => 1,
             'item_category_code' => fake()->word(),
             'item_category_name' => fake()->word(),
             'item_category_remark' => fake()->sentence(3)

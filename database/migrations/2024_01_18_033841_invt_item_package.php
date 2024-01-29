@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if(!Schema::hasTable('invt_item_packge')){
-            Schema::create('invt_item_packge', function(Blueprint $table){
-                $table->id('item_packge_id');
+        if(!Schema::hasTable('invt_item_package')){
+            Schema::create('invt_item_package', function(Blueprint $table){
+                $table->id('invt_item_package_id');
                 $table->unsignedBigInteger('company_id')->nullable();
                 $table->unsignedBigInteger('item_id')->nullable();
                 $table->unsignedBigInteger('item_unit_id')->nullable();

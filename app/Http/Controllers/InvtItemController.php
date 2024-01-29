@@ -49,6 +49,7 @@ class InvtItemController extends Controller
         $itemunits = InvtItemUnit::where('company_id', Auth::user()->company_id)
             ->get()
         ->pluck('item_unit_name', 'item_unit_id');
+        // dd($itemunits);
         $category = InvtItemCategory::where('company_id', Auth::user()->company_id)
             ->get()
             ->pluck('item_category_name', 'item_category_id');
@@ -84,6 +85,7 @@ class InvtItemController extends Controller
         if(empty(Session::get('token'))){
             return redirect()->route('item.index')->with('msg', 'Tambah Barang Berhasil*');
         }
+        dd($request->all());
         $fields = $request->validate([
             'item_category_id'    => 'required',
             'item_code'           => 'required',
@@ -93,6 +95,7 @@ class InvtItemController extends Controller
             'item_category_id.integer'  => 'Wahana / Merchant Tidak Memiliki Kategori',
             // 'item_unit_id1.required'    => 'Harap Masukkan Satuan 1 (Jika satuan 1 susah dimasukkan tapi masih muncul error ini, maka coba refresh halaman web)'
         ]);
+
         $warehouse = InvtWarehouse::where('company_id', Auth::user()->company_id)->get();
         try {
             DB::beginTransaction();
@@ -165,7 +168,7 @@ class InvtItemController extends Controller
         $items = Session::get('items');
         $msg = '';
         $invtpaket = InvtItemPackage::where('item_id', $item_id)->get();
-        $pkg = InvtItemPackage::where('package_item_id', $item_id)->get()->count();
+        $pkg = InvtItemPackage::where('invt_item_package_id', $item_id)->get()->count();
         if($pkg){
             $msg = 'Ada paket yang menggunakan item ini';
         }
@@ -192,45 +195,22 @@ class InvtItemController extends Controller
         $category  = InvtItemCategory::where('company_id', Auth::user()->company_id)
             ->get()
             ->pluck('item_category_name', 'item_catgeory_id');
-        $merchant = SalesMerchant::where('company_id', Auth::user()->company_id)->get()->pluck('merchant_name', 'merchant_id');
         $data = InvtItem::where('item_id', $item_id)->first();
-        $base_kemasan = 0;
-        for ($n = 0; $n < 4; $n++) {
-            $data['item_unit_id'.$n] != null ? $base_kemasan++ : '';
-        }
-        return view('content.InvtItem.Edit.index', compact('data', 'unit', 'itemunits', 'paket', 'pktitem', 'category', 'items', 'merchant', 'base_kemasan', 'counts', 'msg', 'pkg'));
+
+        return view('content.InvtItem.Edit.index', compact('data', 'unit', 'itemunits', 'paket', 'pktitem', 'category', 'items', 'counts', 'msg', 'pkg'));
     }
     public function processEditItem(Request $request)
     {
         $item = "Barang";
-        $warehouse = InvtWarehouse::where('company_id', Auth::user()->company_id)
-            ->where('merchant_id', $request->merchant_id)
-            ->get();
+        $warehouse = InvtWarehouse::where('company_id', Auth::user()->company_id)->get();
         $fields = $request->validate([
             'item_id'             => 'required',
             'item_category_id'    => 'required|integer',
             'item_code'           => 'required',
             'item_name'           => 'required',
-        ], [
-            'item_category_id.integer'  => 'Wahana / Merchant Tidak Memiliki Kategori'
         ]);
         $paket = InvtItemPackage::where('item_id', $fields['item_id']);
         try {
-        $merchant = SalesMerchant::find($request->merchant_id);
-        $warehousecode = preg_replace('/[^A-Z]/', '', $merchant->merchant_name);
-        if(!$warehouse->count()) {
-            if($request->create_werehouse == 1) {
-                InvtWarehouse::create([
-                    'merchant_id'           => $request->merchant_id,
-                    'warehouse_code'        => "GD{$warehouse}",
-                    'warehouse_name'        => "Gudang {$merchant->merchant_name}",
-                    'created_id'            => Auth::id(),
-                    'company_id'            => Auth::user()->company_id
-                ]);
-            } else {
-                return redirect()->route('item.add')->with('msg', 'Merchant Tidak Memiliki WareHouse, Harap Tambah Warehouse');
-            }
-        }
         DB::beginTransaction();
         $table                           = InvtItem::findOrFail($fields['item_id']);
         $packageitem                     = InvtItemPackage::with('unit')->where('package_item_id', $fields['item_id']);
@@ -277,7 +257,6 @@ class InvtItemController extends Controller
         $table->item_unit_price4         = $request->item_unit_price4;
         $table->item_unit_cost4          = $request->item_unit_cost4;
         $table->updated_id               = Auth::id();
-        $paketarr = collect(Session::get('paket'));
         if($paket->count()&&empty(Session::get('paket'))){
             $itm = "Paket";
             $paket->delete();
