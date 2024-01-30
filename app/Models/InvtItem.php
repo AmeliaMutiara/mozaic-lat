@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class   InvtItem extends Model
+class InvtItem extends Model
 {
     use HasFactory, SoftDeletes, CreatedUpdatedID;
 
@@ -25,5 +25,11 @@ class   InvtItem extends Model
     }
     public function packets() {
         return $this->hasMany(InvtItemPackage::class,'item_id','item_id');
+    }
+    public function packge() {
+        return $this->hasMany(InvtItemPackge::class,'item_id','item_id');
+    }
+    public function stock() {
+        return $this->hasOne(InvtItemStock::class,'item_id','item_id');
     }
 }

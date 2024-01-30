@@ -13,7 +13,7 @@ if (empty($pktitem)) {
 ?>
 @section('title', "MOZAIC Practice")
 @section('js')
-    <script src="{{ asset('resources/js/paketHelper.js') }}"></script>
+    {{-- <script src="{{ asset('resources/js/paketHelper.js') }}"></script> --}}
     <script>
         function function_elements_add(name, value) {
             $.ajax({
@@ -30,11 +30,129 @@ if (empty($pktitem)) {
                 }
             });
         }
+        function reset_add() {
+            $.ajax({
+                type: "GET",
+                url: "{{ route('item.add-reset') }}",
+                success: function(msg) {
+                    location.reload();
+                }
+            });
+        }
+        function changeCategory(id, el, from_paket = 0) {
+            loading();
+            if($('#'+id).val()!=''){
+                $('#merchant_id').val($('#'+id).val());
+            }
+            var merchant_id = $("#" + id).val();
+            console.log(id);
+            $.ajax({
+                type: "POST",
+                url: "{{ route('item.category') }}",
+                dataType: "html",
+                data: {
+                    'merchant_id': merchant_id,
+                    'from_paket': from_paket,
+                    '_token': '{{ csrf_token() }}',
+                },
+                success: function(return_data) {
+                    if (from_paket) {
+                        function_elements_add('package_merchant_id', merchant_id);
+                        $('#' + el).html(return_data);
+                        changeItem($('#' + el).val());
+                        return 0;
+                    } else {
+                        loading(0);
+                        setTimeout(function() {
+                            loading(0);
+                        }, 2000);
+                        $('#' + el).html(return_data);
+                        function_elements_add('merchant_id', merchant_id);
+                    }
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+        }
+        function changeItem(category) {
+            loading();
+            var no = $('.pkg-itm').length;
+            $.ajax({
+                type: "POST",
+                url: "{{ route('item.get-item') }}",
+                dataType: "html",
+                data: {
+                    'no': no,
+                    'item_category_id': category,
+                    '_token': '{{ csrf_token() }}',
+                },
+                success: function(return_data) {
+                    $('#package_item_id').val(1);
+                    $('#package_item_id').html(return_data);
+                    changeSatuan();
+                    function_elements_add('package_item_category', category);
+                }
+            });
+        }
+        function checkKemasan() {
+            const max = {{ $items['max_kemasan'] ?? 4 }};
+            var no = $('.input-kemasan').length;
+            while (no > max) {
+                removeKemasan('input-kemasan-' + no)
+            }
+            if (no >= max) {
+                $('#add-kmsn').addClass('disabled');
+            } else {
+                $('#add-kmsn').removeClass('disabled');
+            }
+        }
+        function addKemasan() {
+            const max = {{ $items['max_kemasan'] ?? 4 }};
+            var no = $('.input-kemasan').length;
+            var noa = $('.input-kemasan').length + 1;
+            if (no != max) {
+                $.ajax({
+                    type: "get",
+                    url: "{{ route('item.add-kemasan') }}",
+                    dataType: "html",
+                    success: function(return_data) {
+                        location.reload();
+                    },
+                    error: function(data) {
+                        console.log(data);
+                    }
+                });
+            }
+        }
+        function removeKemasan(el) {
+            $.ajax({
+                type: "get",
+                url: "{{ route('item.remove-kemasan') }}",
+                dataType: "html",
+                success: function(return_data) {
+                    $('#' + el).remove();
+                    checkKemasan()
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+        }
+        function addCategory() {
+            location.href = '{{ route('ic.add') }}' + '/' + $('#merchant_id').val();
+        }
+        function formatRp() {
+            var harga = $('#package_price_view').val();
+            function_elements_add('package_price_view', harga);
+            $('#package_price_view').val(toRp(harga));
+            $('#package_price').val(harga);
+        }
         function function_change_quantity(item_packge_id, unit_id, value) {
             if (value != '') {
                 $("#simpan-brg").prop('disabled', true);
                 $.ajax({
-                    url: "{{ url('package/item/change-qty') }}" + '/' + item_packge_id + '/' + unit_id + '/' +
+                    url: "{{ url('item-package/change-qty') }}" + '/' + item_packge_id + '/' + unit_id + '/' +
                         value,
                     type: "GET",
                     dataType: "json",
@@ -64,7 +182,6 @@ if (empty($pktitem)) {
                 url: "{{ route('item.category') }}",
                 dataType: "html",
                 data: {
-                    'merchant_id': merchant_id,
                     'from_paket': from_paket,
                     '_token': '{{ csrf_token() }}',
                 },
@@ -144,15 +261,15 @@ if (empty($pktitem)) {
             $('#form-barang').submit();
         }
         $(document).ready(function() {
-            changeCategory('merchant_id', 'item_category_id');
-            changeCategory('package_merchant_id', 'package_item_category', 1);
+            // changeCategory('merchant_id', 'item_category_id');
+            // changeCategory('package_merchant_id', 'package_item_category', 1);
             checkKemasan();
             if ($('#package_price_view').val() != '') {
                 formatRp();
             }
             $("#simpan-brg").click(function (e) {
                 e.preventDefault();
-                checkMerchant();
+                $('#form-barang').submit();
             });
             $("#confirm-save-w-whs").click(function (e) {
                 e.preventDefault();
@@ -202,7 +319,7 @@ if (empty($pktitem)) {
                 Form Ubah
             </h5>
             <div class="float-right">
-                <button onclick="location.href='{{ url('item') }}'" name="Find" class="btn btn-sm btn-info"
+                <button onclick="location.href='{{ route('item.index') }}'" name="Find" class="btn btn-sm btn-info"
                     title="Back"><i class="fa fa-angle-left"></i> Kembali</button>
             </div>
         </div>
@@ -230,10 +347,7 @@ if (empty($pktitem)) {
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <a class="text-dark">Nama Kategori Barang<a class='red'> *</a></a>
-                                    <select class=" required selection-search-clear select-form" required form="form-barang"
-                                        placeholder="Masukan Kategori" name="item_category_id" id="item_category_id"
-                                        onchange="function_elements_add(this.name, this.value)">
-                                    </select>
+                                    {{ html()->select('item_category_id', $category,$items['item_category_id'] ?? '' )->class(['selection-search-clear', 'select-form', 'form-control'])->attributes(['onchange' => 'function_elements_add(this.name, this.value)', 'form' => 'form-barang','placeholder' => 'Masukkan Kategori', 'data-allow-clear' => 'true', 'autocomplete'=>'off']) }}
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -268,7 +382,7 @@ if (empty($pktitem)) {
                         </div>
                     </div>
                     <div role="tabpanel" class="tab-pane fade" id="kemasan">
-                        <button type="button" onclick="addKemasan('{{ route('add-kemasan') }}')" id="add-kmsn"
+                        <button type="button" onclick="addKemasan('{{ route('item.add-kemasan') }}')" id="add-kmsn"
                             data-toggle="tooltip" data-placement="top" name="Add" class="btn mt-4 btn-sm btn-info"
                             title="Tambah Kategori"><i class="fa fa-plus"></i> Tambah Kemasan</button>
                         <div class="div-kemasan" id="div-kemasan">
@@ -293,7 +407,7 @@ if (empty($pktitem)) {
                                                     isset($items['item_unit_id' . $x])
                                                         ? $items['item_unit_id' . $x]
                                                         : ($x <= $base_kemasan
-                                                            ? $data['item_unit_id' . $x]
+                                                            ? $data->packge[$x-1]['item_unit_id' ]
                                                             : ''),
                                                     [
                                                         'class' => 'selection-search-clear required select-form form-control',
@@ -310,11 +424,12 @@ if (empty($pktitem)) {
                                                 <a class="text-dark">Kuantitas Standar {{ $x }}<a
                                                         class='red'> *</a></a>
                                                 <input class="form-control input-bb required" required form="form-barang"
-                                                    name="item_default_quantity{{ $x }}"
+                                                    type="number"
+                                                    name="unit[{{$x}}][item_default_quantity]"
                                                     id="item_default_quantity_{{ $x - 1 }}" type="text"
                                                     autocomplete="off"
                                                     onchange="function_elements_add(this.name, this.value)"
-                                                    value="{{ isset($items['item_default_quantity' . $x]) ? $items['item_default_quantity' . $x] : ($x <= $base_kemasan ? $data['item_default_quantity' . $x] : '') }}" />
+                                                    value="{{ isset($items['item_default_quantity' . $x]) ? $items['item_default_quantity' . $x] : ($x <= $base_kemasan ? $data->packge[$x-1]['item_default_quantity']: '') }}" />
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -322,11 +437,12 @@ if (empty($pktitem)) {
                                                 <a class="text-dark">Harga Jual {{ $x }}<a class='red'>
                                                         *</a></a>
                                                 <input class="form-control input-bb required" required form="form-barang"
+                                                    type="number"
                                                     name="item_unit_price{{ $x }}"
                                                     id="item_unit_price_{{ $x - 1 }}" type="text"
                                                     autocomplete="off"
                                                     onchange="function_elements_add(this.name, this.value)"
-                                                    value="{{ isset($items['item_unit_price' . $x]) ? $items['item_unit_price' . $x] : ($x <= $base_kemasan ? $data['item_unit_price' . $x] : '') }}" />
+                                                    value="{{ isset($items['item_unit_price' . $x]) ? $items['item_unit_price' . $x] : ($x <= $base_kemasan ? $data->packge[$x-1]['item_unit_price']: '') }}" />
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -334,11 +450,12 @@ if (empty($pktitem)) {
                                                 <a class="text-dark">Harga Beli {{ $x }}<a class='red'>
                                                         *</a></a>
                                                 <input class="form-control input-bb required" required form="form-barang"
+                                                    type="number"
                                                     name="item_unit_cost{{ $x }}"
                                                     id="item_unit_cost_{{ $x - 1 }}" type="text"
                                                     autocomplete="off"
                                                     onchange="function_elements_add(this.name, this.value)"
-                                                    value="{{ isset($items['item_unit_cost' . $x]) ? $items['item_unit_cost' . $x] : ($x <= $base_kemasan ? $data['item_unit_cost' . $x] : '') }}" />
+                                                    value="{{ isset($items['item_unit_cost' . $x]) ? $items['item_unit_cost' . $x] : ($x <= $base_kemasan ? $data->packge[$x-1]['item_unit_cost']: '') }}" />
                                             </div>
                                         </div>
                                     </div>
@@ -349,25 +466,6 @@ if (empty($pktitem)) {
                     <div role="tabpanel" class="tab-pane fade {{ $counts->count() >= 1 ? 'show active' : '' }}"
                         id="form-pkt">
                         <div class="row form-group">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <input name="item_package_id" form="form-paket" type="hidden"
-                                        value="{{ $invtpaket->item_package_id ?? '' }}" />
-                                    <a class="text-dark">Wahana / Merchant<a class='red'> *</a></a>
-                                    {!! Form::select(
-                                        'package_merchant_id',
-                                        $merchant,
-                                        isset($items['package_merchant_id']) ? $items['package_merchant_id'] : $invtpaket->merchant_id ?? '',
-                                        [
-                                            'class' => 'selection-search-clear required select-form',
-                                            'name' => 'package_merchant_id',
-                                            'id' => 'package_merchant_id',
-                                            'onchange' => 'changeCategory(this.id,`package_item_category`,1)',
-                                            'form' => 'form-paket',
-                                        ],
-                                    ) !!}
-                                </div>
-                            </div>
                             <div class="col-6">
                                 <div class="form-group">
                                     <a class="text-dark">Nama Kategori Barang / Paket<a class='red'> *</a></a>
@@ -382,13 +480,13 @@ if (empty($pktitem)) {
                                     <a class="text-dark">Nama Barang<a class='red'> *</a></a>
                                     <select class="selection-search-clear required select-form"
                                         placeholder="Masukan Nama Barang" name="package_item_id" id="package_item_id"
-                                        onchange="changeSatuan('{{ route('get-item-unit') }}','{{ csrf_token() }}')">
+                                        onchange="changeSatuan('{{ route('item.unit') }}','{{ csrf_token() }}')">
                                     </select>
                                 </div>
                             </div>
                             <div class="col-auto justify-content-center">
                                 <button class="btn btn-sm btn-primary mt-4" type="button"
-                                    onclick="addPackageItem('{{ route('package.process-add-item') }}','{{ csrf_token() }}','{{ url('package/item/change-qty') }}')"><i
+                                    onclick="addPackageItem('{{ url('item-package/add-item') }}','{{ csrf_token() }}','{{ url('item-package/change-qty') }}')"><i
                                         class="fa fa-plus" id="add-package-item"></i>Tambah Barang</button>
                             </div>
                             <div class="col-md-4 ml-5">
@@ -489,7 +587,7 @@ if (empty($pktitem)) {
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-              <a type="button" href="{{route('add-warehouse')}}" class="btn btn-info">Buat Gudang Manual</a>
+              <a type="button" href="{{url('warehouse/add')}}" class="btn btn-info">Buat Gudang Manual</a>
               <button type="button" class="btn btn-primary" id="confirm-save-w-whs">Ya</button>
             </div>
           </div>
