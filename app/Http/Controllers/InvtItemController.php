@@ -85,7 +85,7 @@ class InvtItemController extends Controller
         if(empty(Session::get('token'))){
             return redirect()->route('item.index')->with('msg', 'Tambah Barang Berhasil*');
         }
-        dd($request->all());
+        // dd($request->all());
         $fields = $request->validate([
             'item_category_id'    => 'required',
             'item_code'           => 'required',
