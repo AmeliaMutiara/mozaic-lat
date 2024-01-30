@@ -14,9 +14,11 @@ class InvtItemPackage extends Model
 
     protected $table        = 'invt_item_package';
     protected $primaryKey   = 'invt_item_package_id';
-    public function merchant(){
-        return $this->belongsTo(SalesMerchant::class,'merchant_id','merchant_id');
-    }
+    protected $guarded = [
+        'updated_at',
+        'created_at',
+        'deleted_at'
+    ];
     public function detail(){
         return $this->belongsTo(InvtItem::class,'item_id','item_id');
     }
@@ -26,10 +28,10 @@ class InvtItemPackage extends Model
     public function items(){
         return $this->belongsTo(InvtItem::class,'package_item_id','package_item_id');
     }
-    protected $guarded = [
-        'updated_at',
-        'created_at',
-        'deleted_at'
-    ];
-
+    public function category() {
+        return $this->belongsTo(InvtItemCategory::class,'item_category_id','item_category_id');
+    }
+    public function packge() {
+        return $this->hasOne(InvtItemPackge::class,'item_id','item_id');
+    }
 }

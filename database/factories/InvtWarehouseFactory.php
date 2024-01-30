@@ -17,6 +17,7 @@ class InvtWarehouseFactory extends Factory
     public function definition(): array
     {
         return [
+            'company_id'    => 1,
             'warehouse_code' => fake()->word(),
             'warehouse_name' => fake()->word(),
             'warehouse_address' => fake()->sentence(3),
