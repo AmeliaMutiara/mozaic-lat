@@ -402,7 +402,7 @@ if (empty($pktitem)) {
                                                 <a class="text-dark">Satuan Barang {{ $x }}<a class='red'>
                                                         *</a></a>
                                                 {!! Form::select(
-                                                    'item_unit_id',
+                                                    'unit[{{ $x }}][item_unit_id]',
                                                     $itemunits,
                                                     isset($items['item_unit_id' . $x])
                                                         ? $items['item_unit_id' . $x]
@@ -438,7 +438,7 @@ if (empty($pktitem)) {
                                                         *</a></a>
                                                 <input class="form-control input-bb required" required form="form-barang"
                                                     type="number"
-                                                    name="item_unit_price{{ $x }}"
+                                                    name="unit[{{$x}}][item_unit_price]"
                                                     id="item_unit_price_{{ $x - 1 }}" type="text"
                                                     autocomplete="off"
                                                     onchange="function_elements_add(this.name, this.value)"
@@ -451,7 +451,7 @@ if (empty($pktitem)) {
                                                         *</a></a>
                                                 <input class="form-control input-bb required" required form="form-barang"
                                                     type="number"
-                                                    name="item_unit_cost{{ $x }}"
+                                                    name="unit[{{$x}}][item_unit_cost]"
                                                     id="item_unit_cost_{{ $x - 1 }}" type="text"
                                                     autocomplete="off"
                                                     onchange="function_elements_add(this.name, this.value)"
