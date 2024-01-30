@@ -232,11 +232,11 @@ class InvtItemController extends Controller
         $i=1;
         foreach ($request as $key=>$val) {
             $table->packge()->update([
-                'item_unit_id'          => $request['item_unit_id'],
+                'item_unit_id'          => $val['item_unit_id'],
                 'item_category_id'      => $request['item_category_id'],
-                'item_default_quantity' => $request['item_default_quantity'],
-                'item_unit_price'       => $request['item_unit_price'],
-                'item_unit_cost'        => $request['item_unit_cost'],
+                'item_default_quantity' => $val['item_default_quantity'],
+                'item_unit_price'       => $val['item_unit_price'],
+                'item_unit_cost'        => $val['item_unit_cost'],
                 'order'                 => $i++,
                 'company_id'            => Auth::user()->company_id
             ]);

@@ -457,6 +457,7 @@ if(empty($paket)){
                                                         class='red'>
                                                         *</a></a>
                                                 <input class="form-control input-bb required" required form="form-barang"
+                                                    type="number"
                                                     name="unit[{{$x}}][item_default_quantity]"
                                                     id="item_default_quantity_{{ $x }}" type="text"
                                                     autocomplete="off"
@@ -469,6 +470,7 @@ if(empty($paket)){
                                                 <a class="text-dark">Harga Jual {{ $x }}<a class='red'>
                                                         *</a></a>
                                                 <input class="form-control input-bb required" required form="form-barang"
+                                                    type="number"
                                                     name="unit[{{$x}}][item_unit_price]"
                                                     id="item_unit_price_{{ $x - 1 }}" type="text"
                                                     autocomplete="off"
@@ -481,6 +483,7 @@ if(empty($paket)){
                                                 <a class="text-dark">Harga Beli {{ $x }}<a class='red'>
                                                         *</a></a>
                                                 <input class="form-control input-bb required" required form="form-barang"
+                                                    type="number"
                                                     name="unit[{{$x}}][item_unit_cost]"
                                                     id="item_unit_cost_{{ $x - 1 }}" type="text"
                                                     autocomplete="off"
