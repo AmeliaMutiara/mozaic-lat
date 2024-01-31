@@ -39,8 +39,12 @@
             var margin_percentage = ((price_new - cost_new) /  cost_new) * 100;
 
                 if(Number.isIntegera(margin_percentage)){
-                    
+                    $('#margin_percentage').val(margin_percentage);
+                } else{
+                    $('#margin_percentage').val(margin_percentage.toFixed(2));
                 }
-        })
+                $('#item_price_new_view').val(toRp(price_new));
+                $('#item_price_new').val(price_new);
+        });
     })
 </script>
