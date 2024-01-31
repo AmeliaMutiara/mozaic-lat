@@ -173,6 +173,10 @@ class AcctAccountSettingController extends Controller
         ->where('account_setting_name', $account_setting_name)
         ->first();
 
-        return $data['account_setting_status'];
+        if($data !== null){
+            return $data['$account_setting_status'];
+        }else {
+            return null;
+        }
     }
 }
