@@ -17,7 +17,8 @@ return new class extends Migration
                 $table->unsignedBigInteger('company_id')->nullable();
                 $table->unsignedBigInteger('account_id')->nullable();
                 $table->string('account_setting_name')->nullable();
-                $table->integer('account_setting_status')->nullable();
+                $table->tinyInteger('account_setting_status')->nullable();
+                $table->tinyInteger('account_default_status')->nullable();
                 $table->unsignedBigInteger('created_id')->nullable();
                 $table->unsignedBigInteger('updated_id')->nullable();
                 $table->unsignedBigInteger('deleted_id')->nullable();
