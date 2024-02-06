@@ -1,7 +1,7 @@
 @inject('PurchaseInvoInvoice','App\Http\Controller','PurchaseInvoiceController')
 @extends('adminlte::page')
 
-@section('title','MOZAIC Minimarket')
+@section('title','MOZAIC Practice')
 @section('js')
 <script>
     function function_elements_add(name, value){
@@ -17,6 +17,94 @@
 
             }
         });
+    }
+    function changeCategory(id, el){
+        loadingWidget();
+        var merchant_id = $("#" + id).val();
+        $('#merchant_id').val(merchant_id);
+        $.ajax({
+            type: "POST",
+            url: "{{ route('pi.get-category')}}",
+            dataType: "html",
+            data: {
+                'merchant_id' : merchant_id,
+                '_token' : '{{csrf_token()}}',
+            }
+            success: function(return_data){
+                function_elements_add(id, merchant_id);
+                $('#' + el).html(return_data);
+                changeItem($('#' + el).val());
+                changeWarehouse(id);
+            }
+        });
+    }
+    function changeItem(category){
+        loadingWidget();
+        var id = $("#merchant_id").val();
+        var no = $('.pkg-itm').length;
+        $.ajax({
+            type: "POST",
+            url: "{{ route(pi.get-item) }}",
+            dataType: "html",
+            data: {
+                'no': no,
+                'merchant_id' : id,
+                'item_category_id' : category,
+                '_token' : '{{csrf_token() }}',
+            },
+            success: function(return_data){
+                $('#item_id').val(1);
+                $('#item_id').html(return_data);
+                changeSatuan();
+                function_elements_add('item_category_id', category);
+            }
+        });
+    }
+    function changeSatuan(){
+        var item_id = $("#item_id").val();
+        loadingWidget();
+        $.ajax({
+            type: "POST",
+            url: "{{ route('pi.get-unit') }}",
+            dataType: "html",
+            data: {
+                'item_id' : item_id,
+                '_token' : '{{csrf_token() }}',
+            },
+            success: function(return_data){
+                $('#item_unit').val(1);
+                $('#item_unit').html(return_data);
+                changeCost();
+                function_elements_add('item_id',item_id);
+            },
+            complete: function(){
+                loadingWidget(0);
+                setTimeout(function(){
+                    loadingWidget(0);
+                }, 200);
+            },
+            error: function(data){
+                console.log(data);
+            }
+        });
+    }
+    function changeCost(){
+        loadingWidget();
+        var item_unit = $("#item_unit").val();
+        var item_id = $("item_id").val();
+        $.ajax({
+            type: "POST",
+            url: "{{ route('get-item-cost')}}",
+            dataType: "json",
+            data: {
+                'item_id': item_id,
+                'item_unit': item_unit,
+                '_token': '{{ csrf_token() }}';
+            },
+            success: function(return_data){
+                
+            }
+        })
     }
 
     $(document).ready(function(){
