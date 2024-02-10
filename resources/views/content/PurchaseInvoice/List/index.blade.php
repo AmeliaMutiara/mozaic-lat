@@ -7,7 +7,7 @@
     function reset_add(){
 		$.ajax({
 				type: "GET",
-				url : "{{route('filter-reset-purchase-invoice')}}",
+				url : "{{ url('/add-reset') }}",
 				success: function(msg){
                     location.reload();
 			}
@@ -28,10 +28,10 @@
             $(this).find('#expenditure').addClass('disabled');
             $(this).find('#expenditure').prop('disabled',true);
         }
-        $(this).find('#note').attr('href', "{{route('purchase-note')}}"+'/'+purchase_invoice_id)
-        $(this).find('#acceptance').attr('href', "{{route('print-proof-acceptance-item')}}"+'/'+purchase_invoice_id)
-        $(this).find('#expenditure').attr('href', "{{route('print-proof-expenditure-cash')}}"+'/'+purchase_invoice_id)
-        $(this).find('#purchase').attr('href', "{{route('print-proof-purchase')}}"+'/'+purchase_invoice_id)
+        // $(this).find('#note').attr('href', "{{route('purchase-note')}}"+'/'+purchase_invoice_id)
+        // $(this).find('#acceptance').attr('href', "{{route('print-proof-acceptance-item')}}"+'/'+purchase_invoice_id)
+        // $(this).find('#expenditure').attr('href', "{{route('print-proof-expenditure-cash')}}"+'/'+purchase_invoice_id)
+        // $(this).find('#purchase').attr('href', "{{route('print-proof-purchase')}}"+'/'+purchase_invoice_id)
     });
 </script>
 @stop

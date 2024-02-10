@@ -32,4 +32,7 @@ class InvtItem extends Model
     public function stock() {
         return $this->hasOne(InvtItemStock::class,'item_id','item_id');
     }
+    public function item() {
+        return $this->hasMany(PurchaseInvoiceItem::class,'item_id','item_id');
+    }
 }

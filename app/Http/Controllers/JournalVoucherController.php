@@ -9,7 +9,6 @@ use App\Models\AcctJournalVoucherItem;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use App\DataTables\JournalVoucherDataTable;
 use App\Helpers\JournalHelper;
 use App\Models\AcctJournalVoucher;
 use App\Models\PreferenceTransactionModule;

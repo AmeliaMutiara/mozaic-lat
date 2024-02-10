@@ -44,6 +44,7 @@ return new class extends Migration
                [ 'id_menu' => 411,'id' => 'acct-account',             'type' => 'file','text' => 'No Perkiraan','parent' => "41",'menu_level' => "3",],
                [ 'id_menu' => 412,'id' => 'acct-account-setting',             'type' => 'file','text' => 'Setting Jurnal','parent' => "41",'menu_level' => "3",],
                [ 'id_menu' => 42, 'id' => 'journal-voucher',             'type' => 'file','text' => 'Jurnal Umum','parent' => "4",'menu_level' => "2",],
+               [ 'id_menu' => 43, 'id' => 'purchase-invoice',             'type' => 'file','text' => 'Pembelian','parent' => "4",'menu_level' => "2",],
             ]);
         }
     }
