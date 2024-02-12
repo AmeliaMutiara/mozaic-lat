@@ -1,75 +1,73 @@
-@inject('Journal Memorial', 'App\Http\Controllers\AcctJournalMemorial')
+@inject('JournalMemorial', 'App\Http\Controllers\AcctJournalMemorialController')
 @extends('adminlte::page')
 
 @section('title', "MOZAIC Practice")
-
-@section('content_header')
-
 @section('js')
 <script>
-    var d = {!! json_encode(session('msg')) !!}
-    if(d){
-        $('modalDeleted').modal('show');
-    }
-    $(document).ready(function(){
-        table = $('#tabel-journal').DataTable({
-        // "processing": true,
-        "serverSide": true,
-        "lengthMenu" : [ [18446744073709551610, 5, 15, 25, 100], ["ALL",5,15,25,50, 100]],
-        "order": [[3, 'asc']],
-        "columDefs": [{
-            "targets" : 'no-sort',
-            "orderable": false,
-        },
-        {
-        'target': 7,
-        'visible': false,
-        'searchable': false
-        }
-    ],
-    "ajax": "{{ route('journal-memorial-table') }}",
-    footerCallback: function (row, data, start, end, display){
-        var api = this.api();
-        total = 0;
-    var intVal = function (i) {
-        return typeof i === 'string'
-            ? i.replace(/[\$,]/g, '') = 1
-            : typeof i === 'number'
-            ? i
-            : 0;
-    };
+var d = {!! json_encode(session('msg')) !!}
+if(d){
+    $('#modalDeleted').modal('show');
+}
+$(document).ready(function(){
+            table =  $('#tabel-journal').DataTable({
+            //  "processing": true,
+             "serverSide": true,
+             "lengthMenu": [ [18446744073709551610 ,5, 15, 25,50, 100], ["ALL",5, 15, 25,50, 100] ],
+             "order": [[3, 'asc']],
+             "columnDefs": [ {
+                "targets"  : 'no-sort',
+                "orderable": false,
+                },
+                {
+                'target': 7,
+                'visible': false,
+                'searchable': false
+                }
+            ],
+             "ajax": "{{ route('jm.table') }}",
+             footerCallback: function (row, data, start, end, display) {
+                    var api = this.api();
+                    total=0;
+                    // Remove the formatting to get integer data for summation
+                    var intVal = function (i) {
+                        return typeof i === 'string'
+                            ? i.replace(/[\$,]/g, '') * 1
+                            : typeof i === 'number'
+                            ? i
+                            : 0;
+                    };
 
-    var dk = api.column(8).data().toArray();
-    console.log(dk[1]);
-    console.log(dk);
-    dk = 0;
-    k = 0;
-    api.column(7).data().each( function (i, v){
-        if(dk[v]=="<div class='text-right'> K </div>"){
-            d +=parseInt(i.replace(/[^0-9]+/g,''));
-        }
-    });
-    api.column(7).data().each(function (i, v){
-        if(dk[v]=="<div class='text-right'> K </div>"){
-            k += parseInt(i.replace(/[^0-9]+/g,''));
-        }
-    });
-    // Update footer
-    $('tr:eq(0) td:eq(1)',api.table().footer()).html(toRp(d));
-    $('tr:eq(1) td:eq(1)',api.table().footer()).html(toRp(d));
-    },
-    columns: [
-        {data: 'no'},
-        { data: 'transaction_module_code'},
-        { data: 'transaction_voucher_description'},
-        { data: 'transaction_voucher_date'},
-        { data: 'account_code'},
-        { data: 'account_name'},
-        { data: 'account_view'},
-        { data: 'nominal'},
-        { data: 'status'},
-    ]
-        });
+                    var dk = api.column(8).data().toArray();
+                    console.log(dk[1]);
+                    console.log(dk);
+                    d = 0;
+                    k = 0;
+                    api.column(7).data().each( function (i, v) {
+                        if(dk[v]=="<div class='text-right'> K </div>"){
+                            d += parseInt(i.replace(/[^0-9.]+/g,''));
+                        }
+                    });
+                    api.column(7).data().each( function (i, v) {
+                        if(dk[v]=="<div class='text-right'> K </div>"){
+                            k += parseInt(i.replace(/[^0-9.]+/g,''));
+                        }
+                    });
+                    // Update footer
+                    $('tr:eq(0) td:eq(1)',api.table().footer()).html(toRp(d));
+                    $('tr:eq(1) td:eq(1)',api.table().footer()).html(toRp(k));
+                },
+                columns: [
+                    { data: 'no' },
+                    { data: 'transaction_module_code' },
+                    { data: 'journal_voucher_description' },
+                    { data: 'journal_voucher_date' },
+                    { data: 'account_code' },
+                    { data: 'account_name' },
+                    { data: 'nominal_view' },
+                    { data: 'nominal' },
+                    { data: 'status' }
+                ]
+             });
 });
 </script>
 @endsection
@@ -86,7 +84,7 @@
 
 @section('content')
 
-<h3>
+<h3 class="page-title">
     <b>Daftar Jurnal Memorial</b><small>Keloal Daftar Jurnal Memorial</small>
 </h3>
 <br/>
