@@ -15,6 +15,7 @@ use App\Http\Controllers\InvtItemUnitController;
 use App\Http\Controllers\InvtWarehouseController;
 use App\Http\Controllers\JournalVoucherController;
 use App\Http\Controllers\PreferenceVoucherController;
+use App\Http\Controllers\PurchaseInvoiceController;
 use App\Http\Controllers\SystemUserController;
 use App\Http\Controllers\SystemUserGroupController;
 use App\Models\CoreBank;
@@ -189,5 +190,25 @@ Route::middleware('auth')->group(function () {
     Route::prefix('acct-account-setting')->name('as.')->group(function() {
         Route::get('/', [AcctAccountSettingController::class, 'index'])->name('index');
         Route::post('/add-process', [AcctAccountSettingController::class, 'processAddAcctAccountSetting'])->name('add-process');
+    });
+    Route::prefix('purchase-invoice')->name('pi')->group(function() {
+        Route::get('/', [PurchaseInvoiceController::class, 'index'])->name('index');
+        Route::get('/add', [PurchaseInvoiceController::class, 'addPurchaseInvoice'])->name('add');
+        Route::get('/delete/{purchase_invoice_id}', [PurchaseInvoiceController::class, 'deletePurchaseInvoice'])->name('delete');
+        Route::get('/add-reset', [PurchaseInvoiceController::class, 'addPurchaseInvoice'])->name('add-reset');
+        Route::post('/add-elements', [PurchaseInvoiceController::class, 'addElementsPurchaseInvoice'])->name('add-elements');
+        Route::post('/add-array', [PurchaseInvoiceController::class, 'addArrayPurchaseInvoice'])->name('add-array');
+        Route::get('/delete-array/{record_id}', [PurchaseInvoiceController::class, 'deleteArrayPurchaseInvoice'])->name('delete-array');
+        Route::post('/add-process', [PurchaseInvoiceController::class, 'processAddPurchaseInvoice'])->name('add-process');
+        Route::get('/detail/{purchase_invoice_id}', [PurchaseInvoiceController::class, 'detailPurchaseInvoice'])->name('detail');
+        Route::post('/filter', [PurchaseInvoiceController::class, 'filterPurchaseInvoice'])->name('filter');
+        Route::get('/filter-reset', [PurchaseInvoiceController::class, 'filterResetPurchaseInvoice'])->name('filter-reset');
+        Route::post('/process-change-cost', [PurchaseInvoiceController::class, 'processChangeCostPurchaseInvoice'])->name('change-cost');
+        Route::get('/edit-date/{purchase_invoice_id}', [PurchaseInvoiceController::class, 'editDate'])->name('edd');
+        Route::post('/process-edit-date/{purchase_invoice_id}', [PurchaseInvoiceController::class, 'processEditDate'])->name('edit-edd');
+        Route::get('/note/{purchase_invoice_id}', [PurchaseInvoiceController::class, 'printNote'])->name('print-note');
+        Route::get('/acceptance-item/{purchase_invoice_id}', [PurchaseInvoiceController::class, 'printProofAcceptanceItem'])->name('print-item');
+        Route::get('/expenditure-cash/{purchase_invoice_id}', [PurchaseInvoiceController::class, 'printProofExpenditureCash'])->name('print-expend');
+        Route::get('/purchase/{purchase_invoice_id}', [PurchaseInvoiceController::class, 'printProofPurchaseItem'])->name('print-purchase');
     });
 });
