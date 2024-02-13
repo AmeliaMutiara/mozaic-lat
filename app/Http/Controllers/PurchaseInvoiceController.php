@@ -54,7 +54,8 @@ class PurchaseInvoiceController extends Controller
         $categorys = InvtItemCategory::where('company_id', Auth::user()->company_id)
         ->get()
         ->pluck('item_category_name', 'item_category_id');
-        $items     = InvtItemPackge::with('item.unit')
+        $items     = InvtItemPackge::join('invt_item', 'invt_item_packge.item_id', '=', 'invt_item.item_id')
+        ->join('invt_item_unit', 'invt_item_packge.item_unit_id', '=', 'invt_item_unit.item_unit_id')
         ->select(DB::raw("CONCAT(item_name,' - ',item_unit_name) AS full_name"), 'invt_item_packge.item_packge_id')
         ->where('invt_item_packge.item_unit_id', '!=', null)
         ->where('invt_item.company_id', Auth::user()->company_id)
@@ -68,7 +69,7 @@ class PurchaseInvoiceController extends Controller
         ->pluck('warehouse_name', 'warehouse_id');
         $datases = Session::get('datases');
         $arraydatases = Session::get('arraydatases');
-        $supliers = CoreSupplier::where('company_id', Auth::user()->company_id)
+        $suppliers = CoreSupplier::where('company_id', Auth::user()->company_id)
         ->get()
         ->pluck('supplier_name', 'supplier_id');
         $purchase_payment_method = array(

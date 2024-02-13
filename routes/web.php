@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AcctAccountController;
 use App\Http\Controllers\AcctAccountSettingController;
+use App\Http\Controllers\AcctJournalMemorialController;
 use App\Http\Controllers\CoreBankController;
 use App\Http\Controllers\CoreSupplierController;
 use App\Http\Controllers\ExampleController;
@@ -191,7 +192,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [AcctAccountSettingController::class, 'index'])->name('index');
         Route::post('/add-process', [AcctAccountSettingController::class, 'processAddAcctAccountSetting'])->name('add-process');
     });
-    Route::prefix('purchase-invoice')->name('pi')->group(function() {
+    Route::prefix('purchase-invoice')->name('pi.')->group(function() {
         Route::get('/', [PurchaseInvoiceController::class, 'index'])->name('index');
         Route::get('/add', [PurchaseInvoiceController::class, 'addPurchaseInvoice'])->name('add');
         Route::get('/delete/{purchase_invoice_id}', [PurchaseInvoiceController::class, 'deletePurchaseInvoice'])->name('delete');
@@ -210,5 +211,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/acceptance-item/{purchase_invoice_id}', [PurchaseInvoiceController::class, 'printProofAcceptanceItem'])->name('print-item');
         Route::get('/expenditure-cash/{purchase_invoice_id}', [PurchaseInvoiceController::class, 'printProofExpenditureCash'])->name('print-expend');
         Route::get('/purchase/{purchase_invoice_id}', [PurchaseInvoiceController::class, 'printProofPurchaseItem'])->name('print-purchase');
+    });
+    Route::prefix('journal-memorial')->name('jm.')->group(function() {
+        Route::get('/', [AcctJournalMemorialController::class, 'index'])->name('index');
+        Route::get('\table', [AcctJournalMemorialController::class, 'table'])->name('table');
+        Route::get('/reverse/{journal_voucher_id}//{fromPurchaseReturn?}', [AcctJournalMemorialController::class, 'reverseJournalMemorial'])->name('reverse');
+        Route::post('/filter', [AcctJournalMemorialController::class, 'filterJournalMemorial'])->name('filter');
+        Route::get('/filter-reset', [AcctJournalMemorialController::class, 'resetFilterJournalMemorial'])->name('filter-reset');
     });
 });

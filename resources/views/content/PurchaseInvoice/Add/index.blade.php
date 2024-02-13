@@ -1,4 +1,4 @@
-@inject('PurchaseInvoInvoice','App\Http\Controller','PurchaseInvoiceController')
+@inject('PurchaseInvoice','App\Http\Controllers\PurchaseInvoiceController')
 @extends('adminlte::page')
 
 @section('title','MOZAIC Practice')
@@ -7,7 +7,7 @@
     function function_elements_add(name, value){
         $.ajax({
             type: "POST",
-            url:  "{{route('PI.add-elements')}}",
+            url:  "{{ url('purchase-invoice/add-elements') }}",
             data: {
                 'name'  :name,
                 'value' :value,

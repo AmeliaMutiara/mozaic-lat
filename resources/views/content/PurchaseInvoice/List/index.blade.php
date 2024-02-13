@@ -7,7 +7,7 @@
     function reset_add(){
 		$.ajax({
 				type: "GET",
-				url : "{{ url('/add-reset') }}",
+				url : "{{ route('pi.add-reset') }}",
 				success: function(msg){
                     location.reload();
 			}
@@ -28,10 +28,10 @@
             $(this).find('#expenditure').addClass('disabled');
             $(this).find('#expenditure').prop('disabled',true);
         }
-        // $(this).find('#note').attr('href', "{{route('purchase-note')}}"+'/'+purchase_invoice_id)
-        // $(this).find('#acceptance').attr('href', "{{route('print-proof-acceptance-item')}}"+'/'+purchase_invoice_id)
-        // $(this).find('#expenditure').attr('href', "{{route('print-proof-expenditure-cash')}}"+'/'+purchase_invoice_id)
-        // $(this).find('#purchase').attr('href', "{{route('print-proof-purchase')}}"+'/'+purchase_invoice_id)
+        $(this).find('#note').attr('href', "{{ url('note') }}"+'/'+purchase_invoice_id)
+        $(this).find('#acceptance').attr('href', "{{ url('acceptance-item') }}"+'/'+purchase_invoice_id)
+        $(this).find('#expenditure').attr('href', "{{ url('expenditure-cash') }}"+'/'+purchase_invoice_id)
+        $(this).find('#purchase').attr('href', "{{ url('purchase') }}"+'/'+purchase_invoice_id)
     });
 </script>
 @stop
@@ -53,7 +53,7 @@
 </h3>
 <br/>
 <div id="accordion">
-    <form  method="post" action="{{ route('filter-purchase-invoice') }}" enctype="multipart/form-data">
+    <form  method="post" action="{{ url('filter') }}" enctype="multipart/form-data">
     @csrf
         <div class="card border border-dark">
         <div class="card-header bg-dark" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -110,7 +110,7 @@
         Daftar
     </h5>
     <div class="form-actions float-right">
-        <button onclick="location.href='{{ route('/purchase-invoice/add') }}'" name="Find" class="btn btn-sm btn-info" title="Add Data"><i class="fa fa-plus"></i> Tambah Pembelian </button>
+        <button onclick="location.href='{{ url('purchase-invoice/add') }}'" name="Find" class="btn btn-sm btn-info" title="Add Data"><i class="fa fa-plus"></i> Tambah Pembelian </button>
     </div>
   </div>
 
