@@ -7,7 +7,7 @@
     function function_elements_add(name, value){
         $.ajax({
             type: "POST",
-            url:  "{{ url('purchase-invoice/add-elements') }}",
+            url:  "{{ url('pi.add-elements') }}",
             data: {
                 'name'  :name,
                 'value' :value,
@@ -68,7 +68,7 @@
             var cost_new            = $("#item_unit_cost_view").val();
             var cost                = $("item_unit_cost").val();
             $.ajax({
-                url::"{{route(PI.index) }}"+'/'+item_package_id,
+                url::"{{ route('pi.index') }}"+'/'+item_package_id,
                 type: "GET",
                 dataType: "html",
                 success:function(price)
@@ -166,7 +166,7 @@
 
         $.ajax({
             type: "POST",
-            url: "{{route('process-change-cost-purchase-invoice')}}",
+            url: "{{route('pi.change-cost')}}",
             data: {
                 'item_package_id'           : item_package_id,
                 'item_cost_new'             : item_cost_new,
@@ -193,7 +193,7 @@
 
         $.ajax({
             type: "POST",
-            url: "{{route('add-array-purchase-invoice')}}",
+            url: "{{route('pi.add-array')}}",
             data: {
                 'item_package_id'                   : item_package_id,
                 'item_unit_cost'                    : item_unit_cost,
@@ -213,7 +213,7 @@
     function reset_add(){
         $.ajax({
             type: "GET",
-            url: "{{route('add-reset-purchase-invoice')}}",
+            url: "{{route('pi.add-reset')}}",
             success: function(msg){
                 location.reload();
             }
@@ -381,10 +381,10 @@
         var payment_method = {!! json_encode(session('purchase_payment')) !!};
 
         if (payment_method == 0){
-            window.open("{{route('print-proof-acceptance-item')}}",'_blank');
-            window.open("{{route('print-proof-expenditure-cash')}}",'_blank');
+            window.open("{{ url('purchase-invoice/acceptance-item') }}",'_blank');
+            window.open("{{ url('purchase-invoice/expenditure-cash') }}",'_blank');
         } else if(payment_method ==1){
-            window.open("{{route('print-proof-acceptance-item')}}",'_blank');
+            window.open("{{ url('purchase-invoice/acceptance-item') }}",'_blank');
         }
 
         $('#item_unit_id_2').select2('val','0');
@@ -394,7 +394,7 @@
         $('#item_cost_1').change(function(){
             $.ajax({
                 type: "POST",
-                url: "{{route('count-margin-add-item')}}",
+                url: "{{ route('pi.count-margin') }}",
                 data: {
                     'item_unit_cost'        : this.value,
                     'item_category_id'      :$('#item_category_id').val(),
@@ -409,7 +409,7 @@
         $('#item_cost_2').change(function() {
             $.ajax({
                     type: "POST",
-                    url : "{{route('count-margin-add-item')}}",
+                    url : "{{ route('pi.count-margin') }}",
                     data : {
                         'item_unit_cost'    : this.value,
                         'item_category_id'  : $('#item_category_id').val(),
@@ -424,7 +424,7 @@
         $('#item_cost_3').change(function() {
             $.ajax({
                     type: "POST",
-                    url : "{{route('count-margin-add-item')}}",
+                    url : "{{ route('pi.count-margin') }}",
                     data : {
                         'item_unit_cost'    : this.value,
                         'item_category_id'  : $('#item_category_id').val(),
@@ -439,7 +439,7 @@
         $('#item_cost_4').change(function() {
             $.ajax({
                     type: "POST",
-                    url : "{{route('count-margin-add-item')}}",
+                    url : "{{ route('pi.count-margin') }}",
                     data : {
                         'item_unit_cost'    : this.value,
                         'item_category_id'  : $('#item_category_id').val(),
@@ -515,7 +515,7 @@
 <nav arial-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{url('home') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{route('purchase_invoice')}}">Daftar Pembelian</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('pi.index') }}">Daftar Pembelian</a></li>
         <li class="breadcrumb-item" aria-current="page">Tambah Pembelian</li>
     </ol>
   </nav>

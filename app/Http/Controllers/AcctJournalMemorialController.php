@@ -26,8 +26,14 @@ class AcctJournalMemorialController extends Controller
         } else {
             $end_date = Session::get('end_date');
         }
-
-        return view('content.AcctJournalMemorial.List.index', compact('start_date', 'end_date'));
+        // dd(Session::get('start_date'));
+        $data = JournalVoucher::with('items.account')
+        ->where('journal_voucher_date', '>=', $start_date)
+        ->where('journal_voucher_date', '<=', $end_date)
+        ->where('company_id', Auth::user()->company_id)
+        ->where('journal_voucher_status', 1)
+        ->orderByDesc('created_at')->get();
+        return view('content.AcctJournalMemorial.List.index', compact('start_date','data', 'end_date'));
     }
 
     public function filterJournalMemorial(Request $request)
@@ -35,6 +41,7 @@ class AcctJournalMemorialController extends Controller
         $start_date = $request->start_date;
         $end_date = $request->end_date;
 
+        // dd($request->all());
         Session::put('start_date', $start_date);
         Session::put('end_date', $end_date);
 

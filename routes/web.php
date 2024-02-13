@@ -211,10 +211,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/acceptance-item/{purchase_invoice_id}', [PurchaseInvoiceController::class, 'printProofAcceptanceItem'])->name('print-item');
         Route::get('/expenditure-cash/{purchase_invoice_id}', [PurchaseInvoiceController::class, 'printProofExpenditureCash'])->name('print-expend');
         Route::get('/purchase/{purchase_invoice_id}', [PurchaseInvoiceController::class, 'printProofPurchaseItem'])->name('print-purchase');
+        Route::post('/count-margin', [PurchaseInvoiceController::class, 'countMarginAddItem'])->name('count-margin');
     });
     Route::prefix('journal-memorial')->name('jm.')->group(function() {
         Route::get('/', [AcctJournalMemorialController::class, 'index'])->name('index');
-        Route::get('\table', [AcctJournalMemorialController::class, 'table'])->name('table');
+        Route::get('/table', [AcctJournalMemorialController::class, 'table'])->name('table');
         Route::get('/reverse/{journal_voucher_id}//{fromPurchaseReturn?}', [AcctJournalMemorialController::class, 'reverseJournalMemorial'])->name('reverse');
         Route::post('/filter', [AcctJournalMemorialController::class, 'filterJournalMemorial'])->name('filter');
         Route::get('/filter-reset', [AcctJournalMemorialController::class, 'resetFilterJournalMemorial'])->name('filter-reset');

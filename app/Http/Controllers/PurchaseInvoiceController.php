@@ -1404,4 +1404,12 @@ class PurchaseInvoiceController extends Controller
         $pdf::SetTitle('Nota Pembelian');
         $pdf::Output($filename, 'I');
     }
+
+    public function countMarginAddItem(Request $request)
+    {
+        $item_category = InvtItemCategory::where('item_category_id', $request->item_category_id)->first();
+        $data = (($request->item_unit_cost * $item_category['margin_percentage']) / 100) + $request->item_unit_cost;
+
+        return $data;
+    }
 }

@@ -8,67 +8,6 @@ var d = {!! json_encode(session('msg')) !!}
 if(d){
     $('#modalDeleted').modal('show');
 }
-$(document).ready(function(){
-            table =  $('#tabel-journal').DataTable({
-            //  "processing": true,
-             "serverSide": true,
-             "lengthMenu": [ [18446744073709551610 ,5, 15, 25,50, 100], ["ALL",5, 15, 25,50, 100] ],
-             "order": [[3, 'asc']],
-             "columnDefs": [ {
-                "targets"  : 'no-sort',
-                "orderable": false,
-                },
-                {
-                'target': 7,
-                'visible': false,
-                'searchable': false
-                }
-            ],
-             "ajax": "{{ route('jm.table') }}",
-             footerCallback: function (row, data, start, end, display) {
-                    var api = this.api();
-                    total=0;
-                    // Remove the formatting to get integer data for summation
-                    var intVal = function (i) {
-                        return typeof i === 'string'
-                            ? i.replace(/[\$,]/g, '') * 1
-                            : typeof i === 'number'
-                            ? i
-                            : 0;
-                    };
-
-                    var dk = api.column(8).data().toArray();
-                    console.log(dk[1]);
-                    console.log(dk);
-                    d = 0;
-                    k = 0;
-                    api.column(7).data().each( function (i, v) {
-                        if(dk[v]=="<div class='text-right'> K </div>"){
-                            d += parseInt(i.replace(/[^0-9.]+/g,''));
-                        }
-                    });
-                    api.column(7).data().each( function (i, v) {
-                        if(dk[v]=="<div class='text-right'> K </div>"){
-                            k += parseInt(i.replace(/[^0-9.]+/g,''));
-                        }
-                    });
-                    // Update footer
-                    $('tr:eq(0) td:eq(1)',api.table().footer()).html(toRp(d));
-                    $('tr:eq(1) td:eq(1)',api.table().footer()).html(toRp(k));
-                },
-                columns: [
-                    { data: 'no' },
-                    { data: 'transaction_module_code' },
-                    { data: 'journal_voucher_description' },
-                    { data: 'journal_voucher_date' },
-                    { data: 'account_code' },
-                    { data: 'account_name' },
-                    { data: 'nominal_view' },
-                    { data: 'nominal' },
-                    { data: 'status' }
-                ]
-             });
-});
 </script>
 @endsection
 
@@ -79,7 +18,7 @@ $(document).ready(function(){
         <li class="breadcrumb-item active" aria-current="page">Daftar Jurnal Memorial</li>
     </ol>
 </nav>
-
+    
 @stop
 
 @section('content')
@@ -106,7 +45,7 @@ $(document).ready(function(){
             </div>
         </div>
     </div>
-    <form method="post" action="{{route('filter-journal-memorial')}}" enctype="multipart/form-data">
+    <form method="post" action="{{route('jm.filter')}}" enctype="multipart/form-data">
     @csrf
         <div class="card border border-dark">
         <div class="card-header bg-dark" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -124,7 +63,7 @@ $(document).ready(function(){
                                     *
                                 </span>
                             </section>
-                            <input style="width: 50%" class="form-control input-bb" name="start_date" id="start_date" type="date" data-date-format="dd-mm-yy" autocomplete="off" onchange="function_elements_add(this.name, this.value)" value="{{ $start_date}}"/>  >
+                            <input style="width: 50%" class="form-control input-bb" name="start_date" id="start_date" type="date" data-date-format="dd-mm-yy" autocomplete="off" onchange="function_elements_add(this.name, this.value)" value="{{ $start_date}}"/>  
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -134,7 +73,7 @@ $(document).ready(function(){
                                     *
                                 </span>
                             </section>
-                            <input style="width: 50%" class="form-control input-bb" name="start_date" id="start_date" type="date" data-date-format="dd-mm-yy" autocomplete="off" onchange="function_elements_add(this.name, this.value)" value="{{ $start_date}}"/>  >
+                            <input style="width: 50%" class="form-control input-bb" name="end_date" id="end_date" type="date" data-date-format="dd-mm-yy" autocomplete="off" onchange="function_elements_add(this.name, this.value)" value="{{ $start_date}}"/>  
                         </div>
                     </div>
                     
@@ -142,7 +81,7 @@ $(document).ready(function(){
             </div>
             <div class="card-footer text-muted">
                 <div class="form-actions float-right">
-                    <a href="{{ route('reset-filter-journal-memorial')}}" type="reset" name="Reset" class="btn btn-danger"><i class="fa fa-times"></i>Batal</a>
+                    <a href="{{ route('jm.filter-reset')}}" type="reset" name="Reset" class="btn btn-danger"><i class="fa fa-times"></i>Batal</a>
                     <button type="submit" name="find" class="btn btn-primary" title="Search Data"><i class="fa fa-search"></i>Cari</button>
                 </div>
             </div>
@@ -173,87 +112,156 @@ $(document).ready(function(){
                         <th width="15%" style="vertical-align: middle;text-align:center;">Tanggal</th>
                         <th width="15%" style="vertical-align: middle;text-align:center;">No. Per</th>
                         <th width="15%" class="no-sort" style="vertical-align: middle;text-align:center;">Perkiraan</th>
-                        <th width="15%" class="no-sort" style="vertical-align: middle;text-align:center;">Nomianal</th>
-                        <th width="15%" class="no-sort" style="vertical-align: middle;text-align:center;">Nominal_val</th>
-                        <th width="10%" class="no-sort" style="vertical-align: middle;text-align:center;">D / K</th>
+                        <th width="15%" class="no-sort" style="vertical-align: middle;text-align:center;">Nominal</th>
+                        <th width="15%" class="no-sort" style="vertical-align: middle;text-align:center;">D/K</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                        $no = 1;
-                        $total_debit = 0;
-                        $total_credit = 0;
-                        if(empty($data)){
-                            echo "
-                                <tr>
-                                    <td colspan='8' align='center'>Data Kosong</td>
-                                </tr>
-                                ";
-                        } else{
-                            foreach ($data as $key => $val) {
-                                $id = $JournalMemorial->getMinID($val['journal_voucher_id']);
-
-                                    if ($val['journal_voucher_debit_amount'] <> 0) {
-                                        $nominal = $val['journal_voucher_debit_amount'];
-                                        $status = 'D';
-                                    } else if ($val['journal_voucher_credit_amount'] <> 0){
-                                        $nominal = $val['journal_voucher_credit_amount'];
-                                        $status = 'K';
-                                    } else {
-                                        $nominal = 0;
-                                        $status = 'Kosong';
-                                    }
-
-                                if ($val['journal_voucher_item_id'] == $id) {
-                                    $delete = '<td> </td>';
-                                    $now = Carbon\Carbon::now()->format('Y-m');
-                                    if ($val['reverse_state']==0&&(Auth::id()=='55'||Auth::id()==58||Auth::id()==61)&&$now==Carbon\Carbon::parse($val['journal_voucher_date'])->format('Y-m')) {
-                                    $delete = "
-                                    <td>
-                                    <a type='button' class='btn my-3 btn-outline-danger btn-sm' href='".route('reverse-journal-memorial',['journal_voucher_id'=>$val['journal_voucher_id']])."' onclick='".'return confirm("Apakah Anda Yakin Menghapus Data Ini ? ")'."'>Hapus</a>
-                                    </td>";}
-                                    echo"
-                                        <tr class='table-active'>
-                                            <td style='text-align:center'>$no.</td>
-                                            <td>".$val['transaction_module_code']."</td>
-                                            <td>".$val['journal_voucher_description']."</td>
-                                            <td>".date('d-m-Y', strtotime($val['journal_voucher_date']))."</td>
-                                            <td>".$JournalMemorial->getAccountCode($val['account_id'])."</td>
-                                            <td>".$JournalMemorial->getAccountName($val['account_id'])."</td>
-                                            <td style='text-align: right'>".number_format($nominal,2,'.',',')."</td>
-                                            <td style='text-align: right'>".$status."</td>
-                                    ";
-                                    $no++;
-                                } else{
-                                    echo "
-                                        <tr>
-                                            <td style='text-align:center'></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td> ".$JournalMemorial->getAccountCode($val['account_id'])."</td>
-                                            <td> ".$JournalMemorial->getAccountName($val['account_id'])."</td>
-                                            <td style='text-align: right'>".number_format($nominal,2,'.',',')."</td>
-                                            <td style='text-align: right'>".$status."</td>
-                                        </tr>
-                                    ";
+                    @php
+                    $no = 1;
+                    $totaldebet = 0;
+                    $totalkredit = 0;
+                @endphp
+                @if (count($data) == 0)
+                    <tr>
+                        <td colspan="9" style="text-align: center">Data Kosong</td>
+                    </tr>
+                @else
+                    @php
+                        $id = 0;
+                    @endphp
+                    @foreach ($data as $val)
+                        @php
+                            $i = 1;
+                        @endphp
+                        @foreach ($val->items as $row)
+                            @php
+                                if ($row['journal_voucher_debit_amount'] != 0) {
+                                    $nominal = $row['journal_voucher_debit_amount'];
+                                    $status = 'D';
+                                } elseif ($row['journal_voucher_credit_amount'] != 0) {
+                                    $nominal = $row['journal_voucher_credit_amount'];
+                                    $status = 'K';
                                 }
-                                $total_debit += $val['journal_voucher_debit_amount'];
-                                $total_credit += $val['journal_voucher_credit_amount'];
+                            @endphp
+                            @if ($i == 1)
+                                 <tr>
+                                    <td style="text-align:center; background-color:lightgrey">
+                                        {{ $no++ }}</td>
+                                    <td style="text-align:left; background-color:lightgrey">
+                                        {{ $val['transaction_module_code']??'' }}</td>
+                                    <td style="text-align:left; background-color:lightgrey">
+                                        {{ $val['journal_voucher_description'] }}</td>
+                                    <td style="text-align:center; background-color:lightgrey">
+                                        {{ date('d-m-Y', strtotime($val['journal_voucher_date'])) }}</td>
+                                    <td style="text-align:left; background-color:lightgrey">
+                                        {{ $row->account->account_code }}</td>
+                                    <td style="text-align:left; background-color:lightgrey">
+                                        {{ $row->account->account_name }}</td>
+                                    <td style="text-align:center; background-color:lightgrey">
+                                        {{ number_format($nominal,2,'.',',') }}
+                                    </td>
+                                    <td style="text-align:center; background-color:lightgrey">
+                                        {{ $status }}</td>
+                                </tr>
+                            @else
+                                <tr>
+                                    <td style="text-align:center"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;{{ $row->account->account_code }}</td>
+                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;{{ $row->account->account_name }}</td>
+                                    <td style="text-align:center;">{{ number_format($nominal, 2) }}</td>
+                                    <td style="text-align:center;">{{ $status }}</td>
+                                </tr>
+                            @endif
+                            @php
+                                $i++;
+                                $totaldebet += $row['journal_voucher_debit_amount'];
+                                $totalkredit += $row['journal_voucher_credit_amount'];
+                                if ($id != $row['journal_voucher_id']) {
+                                    $id = $row['journal_voucher_id'];
+                                }
+                            @endphp
+                        @endforeach
+                    @endforeach
+                @endif
+                    <?php
+                        // $no = 1;
+                        // $total_debit = 0;
+                        // $total_credit = 0;
+                        // if(empty($data)){
+                        //     echo "
+                        //         <tr>
+                        //             <td colspan='8' align='center'>Data Kosong</td>
+                        //         </tr>
+                        //         ";
+                        // } else{
+                        //     foreach ($data as $key => $val) {
+                        //         $id = $JournalMemorial->getMinID($val['journal_voucher_id']);
+
+                        //             if ($val['journal_voucher_debit_amount'] <> 0) {
+                        //                 $nominal = $val['journal_voucher_debit_amount'];
+                        //                 $status = 'D';
+                        //             } else if ($val['journal_voucher_credit_amount'] <> 0){
+                        //                 $nominal = $val['journal_voucher_credit_amount'];
+                        //                 $status = 'K';
+                        //             } else {
+                        //                 $nominal = 0;
+                        //                 $status = 'Kosong';
+                        //             }
+
+                        //         if ($val['journal_voucher_item_id'] == $id) {
+                        //             $delete = '<td> </td>';
+                        //             $now = Carbon\Carbon::now()->format('Y-m');
+                        //             if ($val['reverse_state']==0&&(Auth::id()=='55'||Auth::id()==58||Auth::id()==61)&&$now==Carbon\Carbon::parse($val['journal_voucher_date'])->format('Y-m')) {
+                        //             $delete = "
+                        //             <td>
+                        //             <a type='button' class='btn my-3 btn-outline-danger btn-sm' href='".route('reverse-journal-memorial',['journal_voucher_id'=>$val['journal_voucher_id']])."' onclick='".'return confirm("Apakah Anda Yakin Menghapus Data Ini ? ")'."'>Hapus</a>
+                        //             </td>";}
+                        //             echo"
+                        //                 <tr class='table-active'>
+                        //                     <td style='text-align:center'>$no.</td>
+                        //                     <td>".$val['transaction_module_code']."</td>
+                        //                     <td>".$val['journal_voucher_description']."</td>
+                        //                     <td>".date('d-m-Y', strtotime($val['journal_voucher_date']))."</td>
+                        //                     <td>".$JournalMemorial->getAccountCode($val['account_id'])."</td>
+                        //                     <td>".$JournalMemorial->getAccountName($val['account_id'])."</td>
+                        //                     <td style='text-align: right'>".number_format($nominal,2,'.',',')."</td>
+                        //                     <td style='text-align: right'>".$status."</td>
+                        //             ";
+                        //             $no++;
+                        //         } else{
+                        //             echo "
+                        //                 <tr>
+                        //                     <td style='text-align:center'></td>
+                        //                     <td></td>
+                        //                     <td></td>
+                        //                     <td></td>
+                        //                     <td> ".$JournalMemorial->getAccountCode($val['account_id'])."</td>
+                        //                     <td> ".$JournalMemorial->getAccountName($val['account_id'])."</td>
+                        //                     <td style='text-align: right'>".number_format($nominal,2,'.',',')."</td>
+                        //                     <td style='text-align: right'>".$status."</td>
+                        //                 </tr>
+                        //             ";
+                        //         }
+                        //         $total_debit += $val['journal_voucher_debit_amount'];
+                        //         $total_credit += $val['journal_voucher_credit_amount'];
                                 
-                            }
-                        }
+                        //     }
+                        // }
                         ?>
                 </tbody>
                 <tfoot class="ui-state-default">
                 <tr class="ui-state-default">
                     <td style="text-align: right;font-weight:bold;" colspan="6">Total Debit</td>
-                    <td style="text-align: right">{{ number_format($total_debit,2,'.',',')}}</td>
+                    <td style="text-align: right">{{ number_format($totaldebet,2,'.',',')}}</td>
                     <td></td>
                 </tr>
                 <tr>
                     <td style="text-align: right;font-weight:bold;" colspan="6">Total Kredit</td>
-                    <td style="text-align: right">{{ number_format($total_credit,2,'.',',')}}</td>
+                    <td style="text-align: right">{{ number_format($totalkredit,2,'.',',')}}</td>
                     <td></td>
                 </tr>
                 </tfoot>
