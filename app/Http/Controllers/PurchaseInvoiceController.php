@@ -1412,4 +1412,42 @@ class PurchaseInvoiceController extends Controller
 
         return $data;
     }
+
+    public function selectItemCost($item_packge_id)
+    {
+        $unit = InvtItemPackge::select('item_unit_cost')
+        ->where('item_unit_id', '!=', null)
+        ->where('item_packge_id', $item_packge_id)
+        ->where('company_id', Auth::user()->company_id)
+        ->first();
+
+        return $unit['item_unit_cost'];
+    }
+
+    public function selectItemPrice($item_packge_id)
+    {
+        $data = InvtItemPackge::select('item_unit_price')
+        ->where('item_unit_id', '!=', null)
+        ->where('item_packge_id', $item_packge_id)
+        ->where('company_id', Auth::user()->company_id)
+        ->first();
+
+        return $data['item_unit_price'];
+    }
+
+    public function getMarginCategory($item_packge_id)
+    {
+        $category_id = InvtItemPackge::select('item_category_id')
+        ->where('item_unit_id', '!=', null)
+        ->where('item_packge_id', $item_packge_id)
+        ->where('company_id', Auth::user()->company_id)
+        ->fisrt()
+        ->item_category_id;
+
+        $data = InvtItemCategory::where('company_id', Auth::user()->company_id)
+        ->where('iem_category_id', $category_id)
+        ->first();
+
+        return $data['margin_percentage'];
+    }
 }

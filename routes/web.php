@@ -212,6 +212,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/expenditure-cash/{purchase_invoice_id}', [PurchaseInvoiceController::class, 'printProofExpenditureCash'])->name('print-expend');
         Route::get('/purchase/{purchase_invoice_id}', [PurchaseInvoiceController::class, 'printProofPurchaseItem'])->name('print-purchase');
         Route::post('/count-margin', [PurchaseInvoiceController::class, 'countMarginAddItem'])->name('count-margin');
+        Route::get('/select-item-cost/{item_packge_id}', [PurchaseInvoiceController::class, 'selectItemCost'])->name('item-cost');
+        Route::get('/select-item-price/{item_packge_id}', [PurchaseInvoiceController::class, 'selectItemPrice'])->name('item-price');
+        Route::get('/margin-category/{item_packge_id}', [PurchaseInvoiceController::class, 'getMarginCategory'])->name('margin-category');
     });
     Route::prefix('journal-memorial')->name('jm.')->group(function() {
         Route::get('/', [AcctJournalMemorialController::class, 'index'])->name('index');

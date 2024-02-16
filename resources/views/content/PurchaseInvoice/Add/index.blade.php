@@ -7,7 +7,7 @@
     function function_elements_add(name, value){
         $.ajax({
             type: "POST",
-            url:  "{{ url('pi.add-elements') }}",
+            url:  "{{ route('pi.add-elements') }}",
             data: {
                 'name'  :name,
                 'value' :value,
@@ -64,11 +64,11 @@
         });
 
         $("#item_unit_cost_view").change(function(){
-            var item_package_id     = $("#item_package_id").val();
+            var item_packge_id     = $("#item_packge_id").val();
             var cost_new            = $("#item_unit_cost_view").val();
             var cost                = $("item_unit_cost").val();
             $.ajax({
-                url::"{{ route('pi.index') }}"+'/'+item_package_id,
+                url:"{{ url('purchase-invoice/item-price') }}"+'/'+item_packge_id,
                 type: "GET",
                 dataType: "html",
                 success:function(price)
@@ -76,7 +76,7 @@
                     if(price != '') {
                         if(cost != cost_new){
                             $.ajax({
-                                url: "{{url('get-margin-category')}}"+'/'+item_package_id,
+                                url: "{{ url('purchase-invoice/margin-category') }}"+'/'+item_packge_id,
                                 type: "GET",
                                 dataType: "html",
                                 success:function(margin)
@@ -159,7 +159,7 @@
     });
 
     function proccess_change_cost(){
-        var item_package_id         = document.getElementById("item_package_id").value;
+        var item_packge_id         = document.getElementById("item_packge_id").value;
         var item_cost_new           = document.getElementById("item_cost_new").value;
         var item_price_new          = document.getElementById("item_price_new").value;
         var margin_percentage       = document.getElementById("margin_percentage").value;
@@ -168,7 +168,7 @@
             type: "POST",
             url: "{{route('pi.change-cost')}}",
             data: {
-                'item_package_id'           : item_package_id,
+                'item_packge_id'           : item_packge_id,
                 'item_cost_new'             : item_cost_new,
                 'item_price_new'            : item_price_new,
                 'margin_percentage'         : margin_percentage,
@@ -182,12 +182,12 @@
     }
 
     function processAddArrayPurchaseInvoice(){
-        var item_package_id                         = document.getElementById("item_package_id").value;
+        var item_packge_id                         = document.getElementById("item_packge_id").value;
         var item_unit_cost                          = document.getElementById("item_unit_cost").value;
         var quantity                                = document.getElementById("quantity").value;
         var discount_percentage                     = document.getElementById("discount_percentage").value;
         var discount_amount                         = document.getElementById("discount_amount").value;
-        var subtotal_amount_after_discount          = document.getElementById("item_package_id").value;
+        var subtotal_amount_after_discount          = document.getElementById("item_packge_id").value;
         var subtotal_amount                         = document.getElementById("subtotal_amount").value;
         var item_expired_date                       = document.getElementById("item_expired_date").value;
 
@@ -195,7 +195,7 @@
             type: "POST",
             url: "{{route('pi.add-array')}}",
             data: {
-                'item_package_id'                   : item_package_id,
+                'item_packge_id'                   : item_packge_id,
                 'item_unit_cost'                    : item_unit_cost,
                 'quantity'                          : quantity,
                 'discount_percentage'               : discount_percentage,
@@ -221,9 +221,9 @@
     }
 
     $(document).ready(function(){
-        $("#item_package_id").select2("val", "0");
+        $("#item_packge_id").select2("val", "0");
 
-        $("#item_packafe_id").change(function(){
+        $("#item_packge_id").change(function(){
             $('#subtotal_amount').val('');
                 $('#subtotal_amount_view').val('');
                 $('#discount_percentage').val('');
@@ -234,7 +234,7 @@
                 $('#subtotal_amount_after_discount_view').val('');
             if (this.value != '') {
                 $.ajax({
-                    url: "{{ url('select-item-cost') }}"+'/'+this.value,
+                    url: "{{ url('purchase-invoice/select-item-cost') }}"+'/'+this.value,
                     type: "GET",
                     dataType: "html",
                     success:function(data)
@@ -602,7 +602,7 @@
 
 <div class="modal fade" id="addNewItem" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="addNewItemLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
-        <form method="post" action="{{ route('process-add-item') }}" enctype="multipart/form-data">
+        <form method="post" action="{{ route('pi.add-process') }}" enctype="multipart/form-data">
         @csrf
             <div class="modal-content">
                 <div class="modal-header">
@@ -788,24 +788,24 @@
                 Form Tambah
             </h5>
             <div class="float-right">
-                <button onclick="location.href='{{route('PI.index')}}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left">Kembali</i></button>
+                <button onclick="location.href='{{route('pi.index')}}'" name="Find" class="btn btn-sm btn-info" title="Back"><i class="fa fa-angle-left">Kembali</i></button>
             </div>
         </div>
 
-        <form id="form-invoice" method="post" action="{{ route('PI.add-process')}}" enctype="multipart/form-data"></form>
+        <form id="form-invoice" method="post" action="{{ route('pi.add-process')}}" enctype="multipart/form-data"></form>
             @csrf
             <div class="card-body">
                 <div class="row form-group">
                     <div class="col-md-4">
                         <div class="form-group">
                             <a class="text-dark">Nama Supplier <a class="red"> *</a></a>
-                            {!! Form::select('supplier_id',$supplier, $datases['supplier_id']??'',['class' => 'form-control selection-search-clear select-form', 'id' => 'supplier_id', 'name' => 'supplier_id', 'onchange' => 'function_elements_add(this.name, this.value)']) !!}
+                            {!! Form::select('supplier_id',$suppliers, $datases['supplier_id']??'',['class' => 'form-control selection-search-clear select-form', 'id' => 'supplier_id', 'name' => 'supplier_id', 'onchange' => 'function_elements_add(this.name, this.value)']) !!}
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <a class="text-dark">Nama Gudang<a class='red'> *</a></a>
-                            {!! Form::select('warehouse_id', $warehouses, $datases['warehouse_id'] ??'', ['class' => 'form-control selection-search-clear select-form', 'id' => 'warehouse_id', 'name' => 'warehouse_id', 'onchange' => 'function_elements_add(this.name, this.value)']) !!}
+                            {!! Form::select('warehouse_id', $warehouse, $datases['warehouse_id'] ??'', ['class' => 'form-control selection-search-clear select-form', 'id' => 'warehouse_id', 'name' => 'warehouse_id', 'onchange' => 'function_elements_add(this.name, this.value)']) !!}
 
                         </div>
                     </div>
